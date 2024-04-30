@@ -1,5 +1,7 @@
 package com.example.cinemania.core.network.di
 
+import com.example.cinemania.core.network.interceptor.ParameterInterceptor
+import com.example.cinemania.core.network.service.CinemaniaService
 import com.example.cinemania.core.network.utils.UrlHelper.BASE_URL
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -37,9 +39,11 @@ object NetworkModule {
     @Provides
     fun provideOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
+        parameterInterceptor: ParameterInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(parameterInterceptor)
             .build()
     }
 
@@ -49,5 +53,11 @@ object NetworkModule {
         return HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
+    }
+
+    @Singleton
+    @Provides
+    fun provideCinemaniaService(retrofit: Retrofit.Builder): CinemaniaService {
+        return retrofit.build().create(CinemaniaService::class.java)
     }
 }
