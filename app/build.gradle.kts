@@ -94,4 +94,6 @@ dependencies {
 
     implementation(libs.androidx.hilt.common)
 
+    implementation(libs.io.coil.compose)
+
 }

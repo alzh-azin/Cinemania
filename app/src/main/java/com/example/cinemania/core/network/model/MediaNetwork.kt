@@ -1,6 +1,7 @@
 package com.example.cinemania.core.network.model
 
 import com.example.cinemania.core.domain.model.Media
+import com.example.cinemania.core.network.utils.UrlHelper
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -41,10 +42,10 @@ data class MediaNetwork(
 )
 
 fun MediaNetwork.toMedia() = Media(
-    backdropPath = backdropPath,
+    backdropPath = UrlHelper.BASE_IMAGE_URL + backdropPath,
     id = id,
     overview = overview,
-    posterPath = posterPath,
+    posterPath = UrlHelper.BASE_IMAGE_URL + posterPath,
     mediaType = mediaType,
     adult = adult,
     title = when (mediaType) {
