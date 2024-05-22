@@ -17,6 +17,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -25,8 +26,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import coil.compose.rememberAsyncImagePainter
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
+import kotlin.math.ceil
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -40,8 +43,13 @@ fun ImageSlider(
     val interactionSource = remember { MutableInteractionSource() }
 
     val itemSpacing = 16.dp
-    val pagerState = rememberPagerState {
+    val pagerState = rememberPagerState(initialPage = ceil(images.size / 2f).toInt() - 1) {
         images.size
+    }
+
+    LaunchedEffect(key1 = pagerState.settledPage) {
+        delay(2000)
+        pagerState.animateScrollToPage((pagerState.currentPage + 1) % images.size)
     }
 
     Box(modifier = modifier.fillMaxSize()) {

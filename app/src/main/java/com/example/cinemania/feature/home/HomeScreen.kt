@@ -19,7 +19,9 @@ fun HomeRoute(homeViewModel: HomeViewModel = hiltViewModel()) {
 fun HomeScreen(trendMedia: List<Media>) {
 
     if (trendMedia.isNotEmpty())
-        ImageSlider(trendMedia.map {
-            it.posterPath
-        })
+        ImageSlider(
+            trendMedia.map {
+                it.posterPath
+            }.take(5)
+        )
 }
