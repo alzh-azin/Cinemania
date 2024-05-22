@@ -52,11 +52,10 @@ fun ImageSlider(
         pagerState.animateScrollToPage((pagerState.currentPage + 1) % images.size)
     }
 
-    Box(modifier = modifier.fillMaxSize()) {
-
+    Box(modifier = modifier) {
 
         HorizontalPager(
-            state = pagerState, modifier = modifier,
+            state = pagerState, modifier = modifier.padding(vertical = 16.dp),
             flingBehavior = PagerDefaults.flingBehavior(
                 state = pagerState,
                 pagerSnapDistance = PagerSnapDistance.atMost(0)
@@ -69,8 +68,8 @@ fun ImageSlider(
             Card(
                 modifier = modifier
                     .fillMaxWidth()
-                    .aspectRatio(9 / 16f)
-                    .padding(vertical = 64.dp)
+                    .aspectRatio(6 / 9f)
+
                     .graphicsLayer {
                         val pageOffSet = (
                                 (pagerState.currentPage - currentPage) + pagerState
