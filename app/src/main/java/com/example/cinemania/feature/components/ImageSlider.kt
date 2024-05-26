@@ -2,8 +2,6 @@ package com.example.cinemania.feature.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
@@ -18,15 +16,19 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import coil.compose.rememberAsyncImagePainter
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 import kotlin.math.ceil
@@ -38,18 +40,25 @@ fun ImageSlider(
     modifier: Modifier = Modifier
 ) {
 
-    val scope = rememberCoroutineScope()
-
-    val interactionSource = remember { MutableInteractionSource() }
-
-    val itemSpacing = 16.dp
     val pagerState = rememberPagerState(initialPage = ceil(images.size / 2f).toInt() - 1) {
         images.size
     }
+    val autoScrollJob = remember { mutableStateOf<Job?>(null) }
+    val scope = rememberCoroutineScope()
 
-    LaunchedEffect(key1 = pagerState.settledPage) {
-        delay(2000)
-        pagerState.animateScrollToPage((pagerState.currentPage + 1) % images.size)
+    LaunchedEffect(key1 = Unit) {
+        snapshotFlow { pagerState.settledPage }
+            .distinctUntilChanged()
+            .collect { page ->
+
+                autoScrollJob.value?.cancel()
+                autoScrollJob.value = scope.launch {
+                    delay(2000)
+                    val nextPage = (page + 1) % images.size
+                    pagerState.animateScrollToPage(nextPage)
+                }
+            }
+
     }
 
     Box(modifier = modifier) {
@@ -61,7 +70,7 @@ fun ImageSlider(
                 pagerSnapDistance = PagerSnapDistance.atMost(0)
             ),
             contentPadding = PaddingValues(horizontal = 48.dp),
-            pageSpacing = itemSpacing
+            pageSpacing = 16.dp
         ) { currentPage ->
             val painter = rememberAsyncImagePainter(model = images[currentPage % images.size])
 
@@ -69,7 +78,6 @@ fun ImageSlider(
                 modifier = modifier
                     .fillMaxWidth()
                     .aspectRatio(6 / 9f)
-
                     .graphicsLayer {
                         val pageOffSet = (
                                 (pagerState.currentPage - currentPage) + pagerState
@@ -92,57 +100,12 @@ fun ImageSlider(
                     painter = painter,
                     contentDescription = null,
                     modifier = modifier
-                        .fillMaxSize()
-                        .clickable(
-                            interactionSource = interactionSource,
-                            indication = null,
-                            enabled = true,
-                        ) {
-                            scope.launch {
-                                pagerState.animateScrollToPage(currentPage)
-                            }
-                        },
+                        .fillMaxSize(),
                     contentScale = ContentScale.FillBounds
 
                 )
             }
 
-
         }
-
-
     }
-
-
-//    val pagerState = rememberPagerState {
-//        images.size
-//    }
-//
-//    HorizontalPager(
-//        state = pagerState,
-//        modifier = modifier
-//            .fillMaxSize(),
-//
-//        ) { currentPage ->
-//
-//        Card(
-//            modifier = modifier
-//                .fillMaxSize()
-//                .padding(26.dp),
-//            elevation = CardDefaults.cardElevation(8.dp)
-//        ) {
-//
-//            val painter = rememberAsyncImagePainter(model = images[currentPage % images.size])
-//
-//            Image(
-//                painter = painter,
-//                contentDescription = null,
-//                modifier = modifier
-//                    .fillMaxSize(),
-//                contentScale = ContentScale.FillBounds
-//
-//
-//            )
-//        }
-//    }
 }
