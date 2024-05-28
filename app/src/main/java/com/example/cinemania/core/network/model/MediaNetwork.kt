@@ -1,5 +1,6 @@
 package com.example.cinemania.core.network.model
 
+import com.example.cinemania.core.database.model.MediaEntity
 import com.example.cinemania.core.domain.model.Media
 import com.example.cinemania.core.network.utils.UrlHelper
 import com.squareup.moshi.Json
@@ -16,11 +17,11 @@ data class MediaNetwork(
     @Json(name = "original_name")
     val originalName: String?,
     @Json(name = "overview")
-    val overview: String?,
+    val overview: String,
     @Json(name = "poster_path")
-    val posterPath: String?,
+    val posterPath: String,
     @Json(name = "media_type")
-    val mediaType: String?,
+    val mediaType: String,
     @Json(name = "adult")
     val adult: Boolean?,
     @Json(name = "title")
@@ -59,4 +60,25 @@ fun MediaNetwork.toMedia() = Media(
     video = video,
     voteAverage = voteAverage,
     voteCount = voteCount
+)
+
+fun MediaNetwork.toMediaEntity() = MediaEntity(
+    backdropPath = backdropPath,
+    id = id,
+    overview = overview,
+    posterPath = UrlHelper.BASE_IMAGE_URL + posterPath,
+    mediaType = mediaType,
+    adult = adult,
+    title = when (mediaType) {
+        MediaTypeNetwork.MOVIE.value -> title
+        MediaTypeNetwork.TV_SHOW.value -> name
+        else -> ""
+    },
+    originalLanguage = originalLanguage,
+    popularity = popularity,
+    releaseDate = releaseDate,
+    video = video,
+    voteAverage = voteAverage,
+    voteCount = voteCount
+
 )

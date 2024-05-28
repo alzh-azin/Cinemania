@@ -17,8 +17,6 @@ class CinemaniaApplication : Application(), ImageLoaderFactory {
             .memoryCache {
                 MemoryCache.Builder(this)
                     .maxSizePercent(0.1)
-                    //Strong references are images that would not be garbage collected
-                    //Weak references are images that could be garbage collected
                     .strongReferencesEnabled(true)
                     .build()
             }

@@ -3,6 +3,7 @@ package com.example.cinemania.core.database.di
 import android.app.Application
 import androidx.room.Room
 import com.example.cinemania.core.database.CinemaniaDatabase
+import com.example.cinemania.core.database.dao.CinemaniaDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,5 +22,11 @@ object DatabaseModule {
             CinemaniaDatabase::class.java,
             "cinemania.db"
         ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCinemaniaDao(database: CinemaniaDatabase): CinemaniaDao {
+        return database.cinemaniaDao()
     }
 }

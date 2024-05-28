@@ -22,6 +22,6 @@ fun HomeScreen(trendMedia: List<Media>) {
         ImageSlider(
             trendMedia.map {
                 it.posterPath
-            }.take(5)
+            }
         )
 }

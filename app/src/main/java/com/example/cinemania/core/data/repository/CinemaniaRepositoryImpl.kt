@@ -1,10 +1,12 @@
 package com.example.cinemania.core.data.repository
 
 import com.example.cinemania.core.data.util.NetworkConnectivityObserver
+import com.example.cinemania.core.database.dao.CinemaniaLocalDataSource
+import com.example.cinemania.core.database.model.toMedia
 import com.example.cinemania.core.domain.model.Media
 import com.example.cinemania.core.domain.repository.CinemaniaRepository
-import com.example.cinemania.core.network.model.MediaNetwork
 import com.example.cinemania.core.network.model.toMedia
+import com.example.cinemania.core.network.model.toMediaEntity
 import com.example.cinemania.core.network.service.CinemaniaRemoteDataSource
 import com.example.cinemania.core.network.utils.NetworkResult
 import kotlinx.coroutines.flow.Flow
@@ -14,6 +16,7 @@ import javax.inject.Singleton
 
 @Singleton
 class CinemaniaRepositoryImpl @Inject constructor(
+    private val cinemaniaLocalDataSource: CinemaniaLocalDataSource,
     private val cinemaniaRemoteDataSource: CinemaniaRemoteDataSource,
     private val connectivityObserver: NetworkConnectivityObserver
 ) : CinemaniaRepository {
@@ -24,10 +27,30 @@ class CinemaniaRepositoryImpl @Inject constructor(
         onError: (String?) -> Unit
     ): Flow<List<Media>> = flow {
         onStart()
+
+        val localList = cinemaniaLocalDataSource.getTrendMovies().map { mediaEntity ->
+            mediaEntity.toMedia()
+        }
+        emit(localList)
+
         if (connectivityObserver.isConnected()) {
+
             when (val trendingMediaNetwork = cinemaniaRemoteDataSource.getTrendingMedia()) {
                 is NetworkResult.Success -> {
-                    emit(trendingMediaNetwork.data?.results?.map(MediaNetwork::toMedia).orEmpty())
+
+                    val networkList = trendingMediaNetwork.data?.results?.map { mediaNetwork ->
+                        mediaNetwork
+                    }?.take(TREND_MOVIES_LIST_SIZE)
+
+
+                    cinemaniaLocalDataSource.insertTrendMovies(networkList?.map { mediaNetwork ->
+                        mediaNetwork.toMediaEntity()
+                    }.orEmpty())
+
+                    emit(networkList?.map { mediaNetwork ->
+                        mediaNetwork.toMedia()
+                    }.orEmpty())
+
                     onComplete()
                 }
 
@@ -42,6 +65,11 @@ class CinemaniaRepositoryImpl @Inject constructor(
         } else {
             onError("No internet connection")
         }
+    }
+
+    companion object {
+
+        const val TREND_MOVIES_LIST_SIZE = 5
     }
 
 }
