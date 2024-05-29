@@ -1,7 +1,11 @@
 package com.example.cinemania.feature
 
-sealed class Routes(val route: String) {
+import kotlinx.serialization.Serializable
 
-    object Home : Routes("home")
-    object Detail : Routes("details")
+sealed class NavigationRoutes {
+    @Serializable
+    object Home
+
+    @Serializable
+    object Details
 }

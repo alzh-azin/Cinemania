@@ -1,7 +1,7 @@
 package com.example.cinemania.feature.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
@@ -25,7 +25,10 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
+import com.example.cinemania.feature.NavigationRoutes
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -33,10 +36,10 @@ import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 import kotlin.math.ceil
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ImageSlider(
     images: List<String?>,
+    navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier
 ) {
 
@@ -93,6 +96,9 @@ fun ImageSlider(
                             stop = 1f,
                             fraction = 1f - pageOffSet.coerceIn(0f, 1f)
                         )
+                    }
+                    .clickable {
+                        navController.navigate(NavigationRoutes.Details)
                     },
                 elevation = CardDefaults.cardElevation(8.dp)
             ) {
