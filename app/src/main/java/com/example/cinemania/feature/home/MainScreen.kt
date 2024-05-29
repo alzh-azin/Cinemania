@@ -16,7 +16,9 @@ fun MainScreen(
     NavHost(navController = navController, startDestination = NavigationRoutes.Home) {
 
         composable<NavigationRoutes.Home> {
-            HomeRoute(navController = navController)
+            HomeRoute(onNavigateToDetailsScreen = {
+                navController.navigate(NavigationRoutes.Details)
+            })
         }
 
         composable<NavigationRoutes.Details> {

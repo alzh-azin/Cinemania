@@ -25,10 +25,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
-import com.example.cinemania.feature.NavigationRoutes
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -39,7 +36,7 @@ import kotlin.math.ceil
 @Composable
 fun ImageSlider(
     images: List<String?>,
-    navController: NavHostController = rememberNavController(),
+    onNavigateToDetailsScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -98,7 +95,7 @@ fun ImageSlider(
                         )
                     }
                     .clickable {
-                        navController.navigate(NavigationRoutes.Details)
+                        onNavigateToDetailsScreen()
                     },
                 elevation = CardDefaults.cardElevation(8.dp)
             ) {
