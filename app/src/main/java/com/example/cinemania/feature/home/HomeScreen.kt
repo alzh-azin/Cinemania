@@ -10,7 +10,7 @@ import com.example.cinemania.feature.components.ImageSlider
 @Composable
 fun HomeRoute(
     homeViewModel: HomeViewModel = hiltViewModel(),
-    onNavigateToDetailsScreen: () -> Unit,
+    onNavigateToDetailsScreen: (id: Int) -> Unit,
 ) {
 
     val trendMedia by homeViewModel.trendList.collectAsStateWithLifecycle()
@@ -24,14 +24,12 @@ fun HomeRoute(
 @Composable
 fun HomeScreen(
     trendMedia: List<Media>,
-    onNavigateToDetailsScreen: () -> Unit,
+    onNavigateToDetailsScreen: (id: Int) -> Unit,
 ) {
 
     if (trendMedia.isNotEmpty())
         ImageSlider(
-            trendMedia.map {
-                it.posterPath
-            },
+            trendMedia,
             onNavigateToDetailsScreen
         )
 }

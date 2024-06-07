@@ -12,14 +12,10 @@ data class MediaEntity(
     val overview: String,
     val posterPath: String,
     val mediaType: String,
-    val adult: Boolean?,
     val title: String?,
-    val originalLanguage: String?,
-    val popularity: Double?,
     val releaseDate: String?,
-    val video: Boolean?,
     val voteAverage: Double?,
-    val voteCount: Int?
+    val isTrendMedia: Boolean
 )
 
 fun MediaEntity.toMedia() = Media(
@@ -28,12 +24,7 @@ fun MediaEntity.toMedia() = Media(
     overview = overview,
     posterPath = posterPath,
     mediaType = mediaType,
-    adult = adult,
     title = title,
-    originalLanguage = originalLanguage,
-    popularity = popularity,
     releaseDate = releaseDate,
-    video = video,
     voteAverage = voteAverage,
-    voteCount = voteCount
 )

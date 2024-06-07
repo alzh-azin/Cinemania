@@ -10,36 +10,22 @@ import com.squareup.moshi.JsonClass
 data class MediaNetwork(
     @Json(name = "backdrop_path")
     val backdropPath: String?,
-    @Json(name = "id")
     val id: Int,
-    @Json(name = "original_title")
-    val originalTitle: String?,
-    @Json(name = "original_name")
-    val originalName: String?,
-    @Json(name = "overview")
     val overview: String,
     @Json(name = "poster_path")
     val posterPath: String,
     @Json(name = "media_type")
     val mediaType: String,
-    @Json(name = "adult")
-    val adult: Boolean?,
-    @Json(name = "title")
     val title: String?,
-    @Json(name = "name")
     val name: String?,
-    @Json(name = "original_language")
-    val originalLanguage: String?,
-    @Json(name = "popularity")
-    val popularity: Double?,
     @Json(name = "release_date")
     val releaseDate: String?,
-    @Json(name = "video")
-    val video: Boolean?,
+    @Json(name = "first_air_date")
+    val firstAirDate: String?,
     @Json(name = "vote_average")
     val voteAverage: Double?,
-    @Json(name = "vote_count")
-    val voteCount: Int?
+    @Json(name = "genres")
+    val genres: List<Int>?
 )
 
 fun MediaNetwork.toMedia() = Media(
@@ -48,37 +34,35 @@ fun MediaNetwork.toMedia() = Media(
     overview = overview,
     posterPath = UrlHelper.BASE_IMAGE_URL + posterPath,
     mediaType = mediaType,
-    adult = adult,
     title = when (mediaType) {
         MediaTypeNetwork.MOVIE.value -> title
         MediaTypeNetwork.TV_SHOW.value -> name
         else -> ""
     },
-    originalLanguage = originalLanguage,
-    popularity = popularity,
     releaseDate = releaseDate,
-    video = video,
     voteAverage = voteAverage,
-    voteCount = voteCount
 )
 
-fun MediaNetwork.toMediaEntity() = MediaEntity(
-    backdropPath = backdropPath,
+fun MediaNetwork.toMediaEntity(isTrendMedia: Boolean) = MediaEntity(
+    backdropPath = UrlHelper.BASE_IMAGE_URL + backdropPath,
     id = id,
     overview = overview,
     posterPath = UrlHelper.BASE_IMAGE_URL + posterPath,
-    mediaType = mediaType,
-    adult = adult,
+    mediaType = when (mediaType) {
+        MediaTypeNetwork.MOVIE.value -> MediaTypeNetwork.MOVIE.typeName
+        MediaTypeNetwork.TV_SHOW.value -> MediaTypeNetwork.TV_SHOW.typeName
+        else -> ""
+    },
     title = when (mediaType) {
         MediaTypeNetwork.MOVIE.value -> title
         MediaTypeNetwork.TV_SHOW.value -> name
         else -> ""
     },
-    originalLanguage = originalLanguage,
-    popularity = popularity,
-    releaseDate = releaseDate,
-    video = video,
+    releaseDate = when (mediaType) {
+        MediaTypeNetwork.MOVIE.value -> releaseDate
+        MediaTypeNetwork.TV_SHOW.value -> firstAirDate
+        else -> ""
+    },
     voteAverage = voteAverage,
-    voteCount = voteCount
-
+    isTrendMedia = isTrendMedia
 )

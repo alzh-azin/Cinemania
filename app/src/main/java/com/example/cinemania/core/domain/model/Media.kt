@@ -6,12 +6,7 @@ data class Media(
     val overview: String?,
     val posterPath: String?,
     val mediaType: String?,
-    val adult: Boolean?,
     val title: String?,
-    val originalLanguage: String?,
-    val popularity: Double?,
     val releaseDate: String?,
-    val video: Boolean?,
     val voteAverage: Double?,
-    val voteCount: Int?
 )

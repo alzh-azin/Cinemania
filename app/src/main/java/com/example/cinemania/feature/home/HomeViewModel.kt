@@ -16,7 +16,8 @@ class HomeViewModel @Inject constructor(
     val trendList = getTrendMedia(
         onStart = {},
         onComplete = {},
-        onError = {})
+        onError = {}
+    )
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(),

@@ -10,4 +10,11 @@ interface CinemaniaRepository {
         onComplete: () -> Unit,
         onError: (String?) -> Unit,
     ): Flow<List<Media>>
+
+    fun getMedia(
+        id: Int,
+        onStart: () -> Unit,
+        onComplete: () -> Unit,
+        onError: (String?) -> Unit
+    ): Flow<Media>
 }

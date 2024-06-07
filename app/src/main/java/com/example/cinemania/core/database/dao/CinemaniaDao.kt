@@ -11,10 +11,18 @@ import com.example.cinemania.core.database.model.MediaEntity
 interface CinemaniaDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTrendMovies(movies: List<MediaEntity>)
+    suspend fun insertMedia(movies: List<MediaEntity>)
 
     @Transaction
     @Query("SELECT * FROM MediaEntity")
-    suspend fun getTrendMovies(): List<MediaEntity>
+    suspend fun getMediaList(): List<MediaEntity>
+
+    @Transaction
+    @Query("SELECT * FROM MediaEntity WHERE id = :id")
+    suspend fun getMedia(id: Int): MediaEntity
+
+    @Transaction
+    @Query("DELETE FROM MediaEntity WHERE isTrendMedia = 1")
+    suspend fun deleteTrendMedia()
 
 }

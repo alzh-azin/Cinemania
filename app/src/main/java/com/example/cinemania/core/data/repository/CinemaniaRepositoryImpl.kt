@@ -34,7 +34,6 @@ class CinemaniaRepositoryImpl @Inject constructor(
         emit(localList)
 
         if (connectivityObserver.isConnected()) {
-
             when (val trendingMediaNetwork = cinemaniaRemoteDataSource.getTrendingMedia()) {
                 is NetworkResult.Success -> {
 
@@ -44,7 +43,7 @@ class CinemaniaRepositoryImpl @Inject constructor(
 
 
                     cinemaniaLocalDataSource.insertTrendMovies(networkList?.map { mediaNetwork ->
-                        mediaNetwork.toMediaEntity()
+                        mediaNetwork.toMediaEntity(true)
                     }.orEmpty())
 
                     emit(networkList?.map { mediaNetwork ->
@@ -67,9 +66,19 @@ class CinemaniaRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getMedia(
+        id: Int,
+        onStart: () -> Unit,
+        onComplete: () -> Unit,
+        onError: (String?) -> Unit
+    ): Flow<Media> = flow {
+
+        emit(cinemaniaLocalDataSource.getMedia(id).toMedia())
+    }
+
     companion object {
 
-        const val TREND_MOVIES_LIST_SIZE = 5
+        const val TREND_MOVIES_LIST_SIZE = 10
     }
 
 }

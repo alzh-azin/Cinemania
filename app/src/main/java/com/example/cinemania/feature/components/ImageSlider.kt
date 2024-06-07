@@ -26,6 +26,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import coil.compose.rememberAsyncImagePainter
+import com.example.cinemania.core.domain.model.Media
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -35,8 +36,8 @@ import kotlin.math.ceil
 
 @Composable
 fun ImageSlider(
-    images: List<String?>,
-    onNavigateToDetailsScreen: () -> Unit,
+    images: List<Media?>,
+    onNavigateToDetailsScreen: (id: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -64,7 +65,8 @@ fun ImageSlider(
     Box(modifier = modifier) {
 
         HorizontalPager(
-            state = pagerState, modifier = modifier.padding(vertical = 16.dp),
+            state = pagerState,
+            modifier = modifier.padding(vertical = 16.dp),
             flingBehavior = PagerDefaults.flingBehavior(
                 state = pagerState,
                 pagerSnapDistance = PagerSnapDistance.atMost(0)
@@ -72,7 +74,8 @@ fun ImageSlider(
             contentPadding = PaddingValues(horizontal = 48.dp),
             pageSpacing = 16.dp
         ) { currentPage ->
-            val painter = rememberAsyncImagePainter(model = images[currentPage % images.size])
+            val painter =
+                rememberAsyncImagePainter(model = images[currentPage % images.size]?.posterPath)
 
             Card(
                 modifier = modifier
@@ -95,7 +98,8 @@ fun ImageSlider(
                         )
                     }
                     .clickable {
-                        onNavigateToDetailsScreen()
+                        images[currentPage % images.size]
+                            ?.let { onNavigateToDetailsScreen(it.id) }
                     },
                 elevation = CardDefaults.cardElevation(8.dp)
             ) {
