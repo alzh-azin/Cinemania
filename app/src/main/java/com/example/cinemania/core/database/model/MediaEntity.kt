@@ -2,6 +2,7 @@ package com.example.cinemania.core.database.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.cinemania.core.domain.model.Genre
 import com.example.cinemania.core.domain.model.Media
 
 @Entity
@@ -15,7 +16,8 @@ data class MediaEntity(
     val title: String?,
     val releaseDate: String?,
     val voteAverage: Double?,
-    val isTrendMedia: Boolean
+    val isTrendMedia: Boolean,
+    val genres: List<Int>?,
 )
 
 fun MediaEntity.toMedia() = Media(
@@ -27,4 +29,7 @@ fun MediaEntity.toMedia() = Media(
     title = title,
     releaseDate = releaseDate,
     voteAverage = voteAverage,
+    genres = genres?.map {
+        Genre.enumValueOf(it)
+    }
 )

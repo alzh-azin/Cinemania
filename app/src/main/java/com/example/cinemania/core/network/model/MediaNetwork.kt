@@ -1,6 +1,7 @@
 package com.example.cinemania.core.network.model
 
 import com.example.cinemania.core.database.model.MediaEntity
+import com.example.cinemania.core.domain.model.Genre
 import com.example.cinemania.core.domain.model.Media
 import com.example.cinemania.core.network.utils.UrlHelper
 import com.squareup.moshi.Json
@@ -24,7 +25,7 @@ data class MediaNetwork(
     val firstAirDate: String?,
     @Json(name = "vote_average")
     val voteAverage: Double?,
-    @Json(name = "genres")
+    @Json(name = "genre_ids")
     val genres: List<Int>?
 )
 
@@ -41,6 +42,9 @@ fun MediaNetwork.toMedia() = Media(
     },
     releaseDate = releaseDate,
     voteAverage = voteAverage,
+    genres = genres?.map {
+        Genre.enumValueOf(it)
+    }
 )
 
 fun MediaNetwork.toMediaEntity(isTrendMedia: Boolean) = MediaEntity(
@@ -64,5 +68,6 @@ fun MediaNetwork.toMediaEntity(isTrendMedia: Boolean) = MediaEntity(
         else -> ""
     },
     voteAverage = voteAverage,
-    isTrendMedia = isTrendMedia
+    isTrendMedia = isTrendMedia,
+    genres = genres
 )

@@ -59,7 +59,8 @@ fun DetailsScreen(
             imageUrl = media?.posterPath.orEmpty(),
             title = media?.title.orEmpty(),
             type = media?.mediaType.orEmpty(),
-            releaseDate = media?.releaseDate.orEmpty()
+            releaseDate = media?.releaseDate.orEmpty(),
+            genres = media?.genres.orEmpty()
         )
 
         DetailsInfo(media?.overview.orEmpty())
@@ -71,6 +72,7 @@ fun DetailsHeader(
     imageUrl: String,
     title: String,
     type: String,
+    genres: List<String>,
     releaseDate: String,
     modifier: Modifier = Modifier
 ) {
@@ -124,7 +126,7 @@ fun DetailsHeader(
                 Spacer(modifier = modifier.padding(vertical = 4.dp))
 
                 Text(
-                    text = "$type / $releaseDate",
+                    text = "$type / ${genres.joinToString("/")} / $releaseDate",
                     color = Color.Gray,
                     fontSize = 20.sp
                 )
