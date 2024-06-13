@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -30,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
+import com.example.cinemania.R
 import com.example.cinemania.core.domain.model.Media
 
 @Composable
@@ -60,7 +64,7 @@ fun DetailsScreen(
         DetailsHeader(
             imageUrl = media?.posterPath.orEmpty(),
             title = media?.title.orEmpty(),
-            type = media?.mediaType.orEmpty(),
+            voteAverage = media?.voteAverage,
             releaseDate = media?.releaseDate.orEmpty(),
             genres = media?.genres.orEmpty()
         )
@@ -73,7 +77,7 @@ fun DetailsScreen(
 fun DetailsHeader(
     imageUrl: String,
     title: String,
-    type: String,
+    voteAverage: Double?,
     genres: List<String>,
     releaseDate: String,
     modifier: Modifier = Modifier
@@ -109,29 +113,82 @@ fun DetailsHeader(
                 )
         ) {
             DetailsHeaderCard {
-                Text(
-                    text = title,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 30.sp,
-                    style = TextStyle(
-                        lineHeight = 1.em
-                    ),
-                    modifier = modifier.padding(
-                        12.dp
-                    )
-                )
 
-                Spacer(modifier = modifier.padding(vertical = 4.dp))
-
-                Text(
-                    text = "$type / ${genres.joinToString("/")} / $releaseDate",
-                    color = Color.Gray,
-                    fontSize = 20.sp,
-                    modifier = modifier.padding(
-                        horizontal = 8.dp
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(top = 20.dp)
+                        .padding(horizontal = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = title,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 30.sp,
+                        style = TextStyle(
+                            lineHeight = 1.em
+                        ),
+                        modifier = modifier.weight(1f)
                     )
-                )
+                    if (voteAverage != null) {
+
+                        Text(
+                            //TODO - Move this to utils
+                            text = String.format("%.1f", voteAverage),
+                            color = Color.White,
+                            fontSize = 20.sp,
+                            modifier = modifier
+                        )
+                        Spacer(modifier = modifier.padding(4.dp))
+                        Icon(
+                            painter = painterResource(
+                                id = R.drawable.ic_star
+                            ),
+                            contentDescription = null,
+                            tint = Color.White
+                        )
+
+                    }
+
+                }
+
+//                Text(
+//                    text = extractYear(releaseDate).orEmpty(),
+//                    color = Color.Gray,
+//                    fontSize = 20.sp,
+//                    modifier = modifier.padding(
+//                        horizontal = 20.dp
+//                    )
+//                )
+                Row(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp, vertical = 12.dp),
+                ) {
+
+                    if (genres.size > 1) {
+
+                        DetailsGenreTag(
+                            title = genres[0],
+                            backgroundColor = Color(0xFF06B1FB),
+                        )
+                        Spacer(modifier = modifier.padding(horizontal = 8.dp))
+                        DetailsGenreTag(
+                            title = genres[1],
+                            backgroundColor = Color(0xFFBB06FB)
+                        )
+                        Spacer(modifier = modifier.padding(horizontal = 8.dp))
+                    }
+
+                    DetailsGenreTag(
+                        title = extractYear(releaseDate).orEmpty(),
+                        backgroundColor = Color(0xFFFBB106)
+                    )
+
+
+                }
+
             }
 
         }
@@ -161,7 +218,7 @@ fun DetailsHeaderCard(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp)
-            .clip(shape = RoundedCornerShape(20.dp))
+            .clip(shape = RoundedCornerShape(30.dp))
             .background(
                 Color.Gray.copy(alpha = 0.4f),
                 shape = RoundedCornerShape(30.dp)
@@ -169,4 +226,34 @@ fun DetailsHeaderCard(
     ) {
         content()
     }
+}
+
+@Composable
+fun DetailsGenreTag(
+    title: String,
+    backgroundColor: Color,
+    modifier: Modifier = Modifier
+) {
+    Column {
+        Text(
+            text = title,
+            modifier = modifier
+                .clip(shape = RoundedCornerShape(20.dp))
+                .background(
+                    backgroundColor,
+                    shape = RoundedCornerShape(20.dp)
+                )
+                .padding(horizontal = 10.dp, vertical = 8.dp),
+            color = Color.White,
+            fontSize = 20.sp,
+        )
+
+    }
+}
+
+//TODO move this function to utils
+fun extractYear(dateString: String): String? {
+    val regex = """^(\d{4})""".toRegex()
+    val matchResult = regex.find(dateString)
+    return matchResult?.groups?.get(1)?.value
 }
