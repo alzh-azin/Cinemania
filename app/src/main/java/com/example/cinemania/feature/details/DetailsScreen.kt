@@ -11,12 +11,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -32,8 +34,8 @@ import com.example.cinemania.core.domain.model.Media
 
 @Composable
 fun DetailsRoute(
-    detailsViewModel: DetailsViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    detailsViewModel: DetailsViewModel = hiltViewModel()
 ) {
 
     val media by detailsViewModel.media.collectAsStateWithLifecycle()
@@ -106,14 +108,7 @@ fun DetailsHeader(
                     )
                 )
         ) {
-            Column(
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(
-                        top = 40.dp,
-                        start = 16.dp
-                    )
-            ) {
+            DetailsHeaderCard {
                 Text(
                     text = title,
                     color = Color.White,
@@ -121,16 +116,24 @@ fun DetailsHeader(
                     fontSize = 30.sp,
                     style = TextStyle(
                         lineHeight = 1.em
+                    ),
+                    modifier = modifier.padding(
+                        12.dp
                     )
                 )
+
                 Spacer(modifier = modifier.padding(vertical = 4.dp))
 
                 Text(
                     text = "$type / ${genres.joinToString("/")} / $releaseDate",
                     color = Color.Gray,
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
+                    modifier = modifier.padding(
+                        horizontal = 8.dp
+                    )
                 )
             }
+
         }
     }
 }
@@ -147,4 +150,23 @@ fun DetailsInfo(overview: String, modifier: Modifier = Modifier) {
         modifier = modifier
             .padding(16.dp)
     )
+}
+
+@Composable
+fun DetailsHeaderCard(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp)
+            .clip(shape = RoundedCornerShape(20.dp))
+            .background(
+                Color.Gray.copy(alpha = 0.4f),
+                shape = RoundedCornerShape(30.dp)
+            )
+    ) {
+        content()
+    }
 }
