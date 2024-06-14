@@ -3,6 +3,7 @@ package com.example.cinemania.feature.details
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -87,111 +88,60 @@ fun DetailsHeader(
         modifier = modifier
     ) {
 
-        val painter = rememberAsyncImagePainter(model = imageUrl)
-        Image(
-            painter = painter,
-            contentDescription = null,
-            contentScale = ContentScale.FillBounds,
-            modifier = modifier
-                .fillMaxWidth()
-                .aspectRatio(3 / 4f)
-        )
-        Box(
-            modifier = modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxHeight(0.2f)
-                .fillMaxWidth()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            Color.Transparent,
-                            Color(0xFF101331).copy(alpha = 0.5f),
-                            Color(0xFF101331).copy(alpha = 0.9f),
-                            Color(0xFF101331),
-                        )
-                    )
-                )
-        ) {
+        DetailsHeaderImage(imageUrl = imageUrl)
+
+        DetailsHeaderImageOverlay {
+
             DetailsHeaderCard {
 
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(top = 20.dp)
-                        .padding(horizontal = 20.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = title,
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 30.sp,
-                        style = TextStyle(
-                            lineHeight = 1.em
-                        ),
-                        modifier = modifier.weight(1f)
-                    )
-                    if (voteAverage != null) {
-
-                        Text(
-                            //TODO - Move this to utils
-                            text = String.format("%.1f", voteAverage),
-                            color = Color.White,
-                            fontSize = 20.sp,
-                            modifier = modifier
-                        )
-                        Spacer(modifier = modifier.padding(4.dp))
-                        Icon(
-                            painter = painterResource(
-                                id = R.drawable.ic_star
-                            ),
-                            contentDescription = null,
-                            tint = Color.White
-                        )
-
-                    }
-
-                }
-
-//                Text(
-//                    text = extractYear(releaseDate).orEmpty(),
-//                    color = Color.Gray,
-//                    fontSize = 20.sp,
-//                    modifier = modifier.padding(
-//                        horizontal = 20.dp
-//                    )
-//                )
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 12.dp),
-                ) {
-
-                    if (genres.size > 1) {
-
-                        DetailsGenreTag(
-                            title = genres[0],
-                            backgroundColor = Color(0xFF06B1FB),
-                        )
-                        Spacer(modifier = modifier.padding(horizontal = 8.dp))
-                        DetailsGenreTag(
-                            title = genres[1],
-                            backgroundColor = Color(0xFFBB06FB)
-                        )
-                        Spacer(modifier = modifier.padding(horizontal = 8.dp))
-                    }
-
-                    DetailsGenreTag(
-                        title = extractYear(releaseDate).orEmpty(),
-                        backgroundColor = Color(0xFFFBB106)
-                    )
-
-
-                }
+                DetailsHeaderTitle(title, voteAverage)
+                DetailsHeaderTagList(genres, releaseDate)
 
             }
 
         }
+
+    }
+}
+
+@Composable
+fun DetailsHeaderImage(
+    imageUrl: String,
+    modifier: Modifier = Modifier
+) {
+    val painter = rememberAsyncImagePainter(model = imageUrl)
+    Image(
+        painter = painter,
+        contentDescription = null,
+        contentScale = ContentScale.FillBounds,
+        modifier = modifier
+            .fillMaxWidth()
+            .aspectRatio(3 / 4f)
+    )
+}
+
+@Composable
+fun BoxScope.DetailsHeaderImageOverlay(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    Box(
+        modifier = modifier
+            .align(Alignment.BottomCenter)
+            .fillMaxHeight(0.2f)
+            .fillMaxWidth()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        Color.Transparent,
+                        Color(0xFF101331).copy(alpha = 0.5f),
+                        Color(0xFF101331).copy(alpha = 0.9f),
+                        Color(0xFF101331),
+                    )
+                )
+            )
+    ) {
+        content()
     }
 }
 
@@ -200,7 +150,7 @@ fun DetailsInfo(overview: String, modifier: Modifier = Modifier) {
     Text(
         text = overview,
         color = Color.White,
-        fontSize = 20.sp,
+        fontSize = 14.sp,
         style = TextStyle(
             lineHeight = 1.5.em
         ),
@@ -229,6 +179,89 @@ fun DetailsHeaderCard(
 }
 
 @Composable
+fun DetailsHeaderTitle(
+    title: String,
+    voteAverage: Double?,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 20.dp)
+            .padding(horizontal = 20.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = title,
+            color = Color.White,
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp,
+            style = TextStyle(
+                lineHeight = 1.em
+            ),
+            modifier = modifier.weight(1f)
+        )
+        if (voteAverage != null) {
+
+            Text(
+                //TODO - Move this to utils
+                text = String.format("%.1f", voteAverage),
+                color = Color.White,
+                fontSize = 14.sp,
+                modifier = modifier
+            )
+            Spacer(modifier = modifier.padding(4.dp))
+            Icon(
+                painter = painterResource(
+                    id = R.drawable.ic_star
+                ),
+                contentDescription = null,
+                tint = Color.White
+            )
+
+        }
+
+    }
+}
+
+@Composable
+fun DetailsHeaderTagList(
+    genres: List<String>,
+    releaseDate: String,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp, vertical = 12.dp),
+    ) {
+
+        if (genres.isNotEmpty()) {
+
+            DetailsGenreTag(
+                title = genres[0],
+                backgroundColor = Color(0xFF06B1FB),
+            )
+        }
+
+        if (genres.size > 1) {
+            Spacer(modifier = modifier.padding(horizontal = 4.dp))
+            DetailsGenreTag(
+                title = genres[1],
+                backgroundColor = Color(0xFFBB06FB)
+            )
+        }
+
+        Spacer(modifier = modifier.padding(horizontal = 4.dp))
+        DetailsGenreTag(
+            title = extractYear(releaseDate).orEmpty(),
+            backgroundColor = Color(0xFFFBB106)
+        )
+    }
+
+}
+
+@Composable
 fun DetailsGenreTag(
     title: String,
     backgroundColor: Color,
@@ -245,7 +278,7 @@ fun DetailsGenreTag(
                 )
                 .padding(horizontal = 10.dp, vertical = 8.dp),
             color = Color.White,
-            fontSize = 20.sp,
+            fontSize = 14.sp,
         )
 
     }

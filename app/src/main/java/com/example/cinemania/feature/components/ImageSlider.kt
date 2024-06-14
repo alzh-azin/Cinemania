@@ -15,11 +15,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
@@ -27,10 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import coil.compose.rememberAsyncImagePainter
 import com.example.cinemania.core.domain.model.Media
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 import kotlin.math.ceil
 
@@ -43,23 +34,6 @@ fun ImageSlider(
 
     val pagerState = rememberPagerState(initialPage = ceil(images.size / 2f).toInt() - 1) {
         images.size
-    }
-    val autoScrollJob = remember { mutableStateOf<Job?>(null) }
-    val scope = rememberCoroutineScope()
-
-    LaunchedEffect(key1 = Unit) {
-        snapshotFlow { pagerState.settledPage }
-            .distinctUntilChanged()
-            .collect { page ->
-
-                autoScrollJob.value?.cancel()
-                autoScrollJob.value = scope.launch {
-                    delay(2000)
-                    val nextPage = (page + 1) % images.size
-                    pagerState.animateScrollToPage(nextPage)
-                }
-            }
-
     }
 
     Box(modifier = modifier) {
