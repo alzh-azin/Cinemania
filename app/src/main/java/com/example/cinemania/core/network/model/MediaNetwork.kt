@@ -34,13 +34,21 @@ fun MediaNetwork.toMedia() = Media(
     id = id,
     overview = overview,
     posterPath = UrlHelper.BASE_IMAGE_URL + posterPath,
-    mediaType = mediaType,
+    mediaType = when (mediaType) {
+        MediaTypeNetwork.MOVIE.value -> MediaTypeNetwork.MOVIE.typeName
+        MediaTypeNetwork.TV_SHOW.value -> MediaTypeNetwork.TV_SHOW.typeName
+        else -> ""
+    },
     title = when (mediaType) {
         MediaTypeNetwork.MOVIE.value -> title
         MediaTypeNetwork.TV_SHOW.value -> name
         else -> ""
     },
-    releaseDate = releaseDate,
+    releaseDate = when (mediaType) {
+        MediaTypeNetwork.MOVIE.value -> title
+        MediaTypeNetwork.TV_SHOW.value -> name
+        else -> ""
+    },
     voteAverage = voteAverage,
     genres = genres?.map {
         Genre.enumValueOf(it)
