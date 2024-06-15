@@ -45,8 +45,8 @@ fun MediaNetwork.toMedia() = Media(
         else -> ""
     },
     releaseDate = when (mediaType) {
-        MediaTypeNetwork.MOVIE.value -> title
-        MediaTypeNetwork.TV_SHOW.value -> name
+        MediaTypeNetwork.MOVIE.value -> releaseDate
+        MediaTypeNetwork.TV_SHOW.value -> firstAirDate
         else -> ""
     },
     voteAverage = voteAverage,
@@ -55,7 +55,7 @@ fun MediaNetwork.toMedia() = Media(
     }
 )
 
-fun MediaNetwork.toMediaEntity(isTrendMedia: Boolean) = MediaEntity(
+fun MediaNetwork.toMediaEntity(isTrendMedia: Boolean = false, index: Int = 0) = MediaEntity(
     backdropPath = UrlHelper.BASE_IMAGE_URL + backdropPath,
     id = id,
     overview = overview,
@@ -77,5 +77,6 @@ fun MediaNetwork.toMediaEntity(isTrendMedia: Boolean) = MediaEntity(
     },
     voteAverage = voteAverage,
     isTrendMedia = isTrendMedia,
-    genres = genres
+    genres = genres,
+    index = index
 )

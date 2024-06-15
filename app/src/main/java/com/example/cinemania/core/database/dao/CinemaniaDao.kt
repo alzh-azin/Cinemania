@@ -18,6 +18,10 @@ interface CinemaniaDao {
     suspend fun getMediaList(): List<MediaEntity>
 
     @Transaction
+    @Query("SELECT * FROM MediaEntity WHERE isTrendMedia = 1 ORDER BY `index` ASC")
+    suspend fun getMediaTrendList(): List<MediaEntity>
+
+    @Transaction
     @Query("SELECT * FROM MediaEntity WHERE id = :id")
     suspend fun getMedia(id: Int): MediaEntity
 

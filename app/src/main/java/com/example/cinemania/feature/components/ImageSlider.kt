@@ -54,7 +54,7 @@ fun ImageSlider(
             Card(
                 modifier = modifier
                     .fillMaxWidth()
-                    .aspectRatio(6 / 9f)
+                    .aspectRatio(6 / 8f)
                     .graphicsLayer {
                         val pageOffSet = (
                                 (pagerState.currentPage - currentPage) + pagerState

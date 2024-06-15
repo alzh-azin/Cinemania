@@ -42,8 +42,11 @@ class CinemaniaRepositoryImpl @Inject constructor(
                     }?.take(TREND_MOVIES_LIST_SIZE)
 
 
-                    cinemaniaLocalDataSource.insertTrendMovies(networkList?.map { mediaNetwork ->
-                        mediaNetwork.toMediaEntity(true)
+                    cinemaniaLocalDataSource.insertTrendMovies(networkList?.mapIndexed { index, mediaNetwork ->
+                        mediaNetwork.toMediaEntity(
+                            isTrendMedia = true,
+                            index = index
+                        )
                     }.orEmpty())
 
                     emit(networkList?.map { mediaNetwork ->

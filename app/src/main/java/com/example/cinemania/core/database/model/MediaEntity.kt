@@ -18,6 +18,7 @@ data class MediaEntity(
     val voteAverage: Double?,
     val isTrendMedia: Boolean,
     val genres: List<Int>?,
+    val index: Int,
 )
 
 fun MediaEntity.toMedia() = Media(

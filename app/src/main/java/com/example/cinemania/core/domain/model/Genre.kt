@@ -16,7 +16,7 @@ enum class Genre(val genreName: String, val movieCode: Int? = null, val tvShowCo
     Music(genreName = "Music", movieCode = 10402, tvShowCode = null),
     Mystery(genreName = "Mystery", movieCode = 9648, tvShowCode = 9648),
     Romance(genreName = "Romance", movieCode = 10749, tvShowCode = null),
-    ScienceFiction(genreName = "Science Fiction", movieCode = 878, tvShowCode = 10765),
+    ScienceFiction(genreName = "Sci-Fi", movieCode = 878, tvShowCode = 10765),
     TVMovie(genreName = "TV Movie", movieCode = 10770, tvShowCode = null),
     Thriller(genreName = "Thriller", movieCode = 53, tvShowCode = null),
     War(genreName = "War", movieCode = 10752, tvShowCode = 10768),
