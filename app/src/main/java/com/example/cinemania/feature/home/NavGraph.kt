@@ -4,14 +4,15 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.cinemania.feature.NavigationRoutes
 import com.example.cinemania.feature.details.DetailsRoute
 
 @Composable
 fun NavGraph(
-    navController: NavHostController = rememberNavController(),
+    onNavigateBackAvailable: (Boolean) -> Unit,
+    navController: NavHostController,
 ) {
+
 
     NavHost(
         navController = navController,
@@ -19,6 +20,8 @@ fun NavGraph(
     ) {
 
         composable<NavigationRoutes.Home> {
+
+            onNavigateBackAvailable(false)
             HomeRoute(
                 onNavigateToDetailsScreen = { id ->
                     navController.navigate(NavigationRoutes.Details(id))
@@ -26,6 +29,7 @@ fun NavGraph(
         }
 
         composable<NavigationRoutes.Details> {
+            onNavigateBackAvailable(true)
             DetailsRoute()
         }
     }
