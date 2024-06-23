@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -5,6 +7,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinKapt)
     alias(libs.plugins.googleDaggerHiltAndroid)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.composeCompiler)
 }
 
 android {
@@ -34,17 +37,19 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
+    kotlin {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_17
+        }
     }
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.10"
+    composeCompiler {
+        enableStrongSkippingMode = true
     }
     packaging {
         resources {
@@ -88,7 +93,7 @@ dependencies {
     ksp(libs.moshi.kotlin.codegen)
 
     implementation(libs.room.runtime)
-    kapt(libs.room.compiler)
+    ksp(libs.room.compiler)
     implementation(libs.room.ktx)
 
     implementation(libs.kotlinx.coroutines.android)
@@ -99,6 +104,5 @@ dependencies {
 
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
-
 
 }
