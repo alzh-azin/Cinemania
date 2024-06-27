@@ -8,7 +8,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.cinemania.feature.components.TopAppBar
@@ -32,8 +31,6 @@ fun CinemaniaApp(
 
             )
         },
-        //TODO is it a good place to set the background color?
-        containerColor = Color(0xFF101331),
         content = { padding ->
             NavGraph(
                 onNavigateBackAvailable = { isAvailable ->
