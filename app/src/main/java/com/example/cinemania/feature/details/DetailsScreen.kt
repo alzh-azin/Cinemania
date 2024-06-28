@@ -148,7 +148,7 @@ fun BoxScope.DetailsHeaderImageOverlay(
 fun DetailsInfo(overview: String, modifier: Modifier = Modifier) {
     Text(
         text = overview,
-        color = Color.White,
+        color = MaterialTheme.colorScheme.onSurface,
         fontSize = 14.sp,
         style = TextStyle(
             lineHeight = 1.5.em
@@ -167,9 +167,10 @@ fun DetailsHeaderCard(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp)
+            .padding(top = 16.dp)
             .clip(shape = RoundedCornerShape(30.dp))
             .background(
-                Color.Gray.copy(alpha = 0.4f),
+                MaterialTheme.colorScheme.scrim.copy(alpha = 0.7f),
                 shape = RoundedCornerShape(30.dp)
             )
     ) {

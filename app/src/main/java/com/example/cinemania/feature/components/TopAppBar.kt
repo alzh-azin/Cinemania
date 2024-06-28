@@ -32,7 +32,7 @@ fun TopAppBar(
                     text = "Cinemania",
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 30.sp
+                    fontSize = 36.sp
                 )
         },
         colors = TopAppBarDefaults.topAppBarColors(
