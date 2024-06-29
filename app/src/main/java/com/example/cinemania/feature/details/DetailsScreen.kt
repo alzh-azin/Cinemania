@@ -28,11 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
@@ -153,10 +149,7 @@ fun DetailsInfo(overview: String, modifier: Modifier = Modifier) {
     Text(
         text = overview,
         color = MaterialTheme.colorScheme.onSurface,
-        fontSize = 14.sp,
-        style = TextStyle(
-            lineHeight = 1.5.em
-        ),
+        style = MaterialTheme.typography.bodyMedium,
         modifier = modifier
             .padding(16.dp)
     )
@@ -198,11 +191,7 @@ fun DetailsHeaderTitle(
         Text(
             text = title,
             color = MaterialTheme.colorScheme.onSecondaryContainer,
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
-            style = TextStyle(
-                lineHeight = 1.em
-            ),
+            style = MaterialTheme.typography.titleLarge,
             modifier = modifier.weight(1f)
         )
         if (voteAverage != null) {
@@ -211,7 +200,7 @@ fun DetailsHeaderTitle(
                 //TODO - Move this to utils
                 text = String.format("%.1f", voteAverage),
                 color = MaterialTheme.colorScheme.onSecondaryContainer,
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.labelLarge,
                 modifier = modifier
             )
             Spacer(modifier = modifier.padding(2.dp))
@@ -280,7 +269,7 @@ fun DetailsGenreTag(
                 )
                 .padding(horizontal = 10.dp, vertical = 8.dp),
             color = white,
-            fontSize = 14.sp,
+            style = MaterialTheme.typography.labelLarge,
         )
 
     }
