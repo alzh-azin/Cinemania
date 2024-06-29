@@ -37,6 +37,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.example.cinemania.core.domain.model.Media
+import com.example.cinemania.ui.theme.amber600
+import com.example.cinemania.ui.theme.lightBlue500
+import com.example.cinemania.ui.theme.purpleA700
+import com.example.cinemania.ui.theme.white
 
 @Composable
 fun DetailsRoute(
@@ -170,7 +174,7 @@ fun DetailsHeaderCard(
             .padding(top = 16.dp)
             .clip(shape = RoundedCornerShape(30.dp))
             .background(
-                MaterialTheme.colorScheme.scrim.copy(alpha = 0.7f),
+                MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.9f),
                 shape = RoundedCornerShape(30.dp)
             )
     ) {
@@ -193,7 +197,7 @@ fun DetailsHeaderTitle(
     ) {
         Text(
             text = title,
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onSecondaryContainer,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
             style = TextStyle(
@@ -206,7 +210,7 @@ fun DetailsHeaderTitle(
             Text(
                 //TODO - Move this to utils
                 text = String.format("%.1f", voteAverage),
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
                 fontSize = 14.sp,
                 modifier = modifier
             )
@@ -214,7 +218,7 @@ fun DetailsHeaderTitle(
             Icon(
                 imageVector = Icons.Filled.Star,
                 contentDescription = null,
-                tint = Color.White
+                tint = MaterialTheme.colorScheme.onSecondaryContainer
             )
 
         }
@@ -238,7 +242,7 @@ fun DetailsHeaderTagList(
 
             DetailsGenreTag(
                 title = genres[0],
-                backgroundColor = Color(0xFF06B1FB),
+                backgroundColor = lightBlue500,
             )
         }
 
@@ -246,14 +250,14 @@ fun DetailsHeaderTagList(
             Spacer(modifier = modifier.padding(horizontal = 4.dp))
             DetailsGenreTag(
                 title = genres[1],
-                backgroundColor = Color(0xFFBB06FB)
+                backgroundColor = purpleA700
             )
         }
 
         Spacer(modifier = modifier.padding(horizontal = 4.dp))
         DetailsGenreTag(
             title = extractYear(releaseDate).orEmpty(),
-            backgroundColor = Color(0xFFFBB106)
+            backgroundColor = amber600
         )
     }
 
@@ -275,7 +279,7 @@ fun DetailsGenreTag(
                     shape = RoundedCornerShape(20.dp)
                 )
                 .padding(horizontal = 10.dp, vertical = 8.dp),
-            color = Color.White,
+            color = white,
             fontSize = 14.sp,
         )
 

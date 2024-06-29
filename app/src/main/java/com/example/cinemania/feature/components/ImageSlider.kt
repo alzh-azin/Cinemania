@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerDefaults
-import androidx.compose.foundation.pager.PagerSnapDistance
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -44,10 +42,6 @@ fun ImageSlider(
         HorizontalPager(
             state = pagerState,
             modifier = modifier.padding(vertical = 16.dp),
-            flingBehavior = PagerDefaults.flingBehavior(
-                state = pagerState,
-                pagerSnapDistance = PagerSnapDistance.atMost(0)
-            ),
             contentPadding = PaddingValues(horizontal = 48.dp),
             pageSpacing = 16.dp
         ) { currentPage ->

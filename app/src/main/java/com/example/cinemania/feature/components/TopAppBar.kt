@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
@@ -25,35 +26,24 @@ fun TopAppBar(
     onNavigationClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+
     CenterAlignedTopAppBar(
         title = {
-            if (!navigateBackAvailable)
-                Text(
-                    text = "Cinemania",
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 36.sp
-                )
+            TopAppBarTitle(
+                title = "Cinemania",
+                isVisible = !navigateBackAvailable
+            )
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.Transparent,
-            titleContentColor = Color.White,
         ),
         navigationIcon = {
             if (navigateBackAvailable) {
                 IconButton(onClick = {
                     onNavigationClick()
                 }) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        tint = Color.White,
-                        contentDescription = null,
-                        modifier = modifier.drawBehind {
-                            drawCircle(
-                                color = Color.Gray.copy(alpha = 0.4f),
-                                radius = this.size.maxDimension
-                            )
-                        }
+                    TopAppBarIcon(
+                        icon = Icons.AutoMirrored.Filled.ArrowBack,
                     )
                 }
 
@@ -62,39 +52,54 @@ fun TopAppBar(
         actions = {
             if (navigateBackAvailable) {
                 IconButton(onClick = {}) {
-                    Icon(
-                        imageVector = Icons.Outlined.FavoriteBorder,
-                        tint = Color.White,
-                        contentDescription = null,
-                        modifier = modifier
-                            .drawBehind {
-                                drawCircle(
-                                    color = Color.Gray.copy(alpha = 0.4f),
-                                    radius = this.size.maxDimension
-                                )
-                            }
+                    TopAppBarIcon(
+                        icon = Icons.Outlined.FavoriteBorder,
                     )
                 }
             } else {
 
                 IconButton(onClick = { }) {
-                    Icon(
-                        imageVector = Icons.Filled.Search,
-                        tint = Color.White,
-                        contentDescription = null,
-                        modifier = modifier
-                            .drawBehind {
-                                drawCircle(
-                                    color = Color.Gray.copy(alpha = 0.4f),
-                                    radius = this.size.maxDimension
-                                )
-                            }
+                    TopAppBarIcon(
+                        icon = Icons.Filled.Search,
                     )
 
                 }
             }
         }
     )
+}
+
+@Composable
+fun TopAppBarIcon(
+    icon: ImageVector,
+    modifier: Modifier = Modifier,
+    iconTint: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    backgroundColor: Color = MaterialTheme.colorScheme.surfaceVariant.copy(0.6f)
+) {
+    Icon(
+        imageVector = icon,
+        tint = iconTint,
+        contentDescription = null,
+        modifier = modifier
+            .drawBehind {
+                drawCircle(
+                    color = backgroundColor,
+                    radius = this.size.maxDimension
+                )
+            }
+    )
+}
+
+@Composable
+fun TopAppBarTitle(title: String, isVisible: Boolean) {
+    if (isVisible) {
+        Text(
+            text = title,
+            color = MaterialTheme.colorScheme.primary,
+            fontWeight = FontWeight.Bold,
+            fontSize = 36.sp
+        )
+    }
 }
 
 

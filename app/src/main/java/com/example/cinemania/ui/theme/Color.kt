@@ -2,6 +2,7 @@ package com.example.cinemania.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+//region Light
 val primaryLight = Color(0xFFA10049)
 val onPrimaryLight = Color(0xFFFFFFFF)
 val primaryContainerLight = Color(0xFFE4006B)
@@ -41,7 +42,9 @@ val surfaceContainerLowLight = Color(0xFFF3F3F9)
 val surfaceContainerLight = Color(0xFFEEEDF3)
 val surfaceContainerHighLight = Color(0xFFE8E7ED)
 val surfaceContainerHighestLight = Color(0xFFE2E2E8)
+//endregion Light
 
+//region Dark
 val primaryDark = Color(0xFFFF0078)
 val onPrimaryDark = Color(0xFFFFFFFF)
 val primaryContainerDark = Color(0xFFFF0078)
@@ -82,3 +85,11 @@ val surfaceContainerLowDark = Color(0xFF1A1C20)
 val surfaceContainerDark = Color(0xFF1E2024)
 val surfaceContainerHighDark = Color(0xFF282A2E)
 val surfaceContainerHighestDark = Color(0xFF333539)
+//endregion Dark
+
+//region Custom colors
+val lightBlue500 = Color(0xFF06B1FB)
+val purpleA700 = Color(0xFFBB06FB)
+val amber600 = Color(0xFFFBB106)
+val white = Color.White
+//endregion Custom colors

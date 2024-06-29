@@ -11,18 +11,6 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-//private val DarkColorScheme = darkColorScheme(
-//    primary = primaryContainerDark,
-//    secondary = PurpleGrey80,
-//    tertiary = Pink80
-//)
-//
-//private val LightColorScheme = lightColorScheme(
-//    primary = primaryContainerLight,
-//    secondary = PurpleGrey40,
-//    tertiary = Pink40
-//)
-
 private val DarkColorScheme = darkColorScheme(
     primary = primaryDark,
     onPrimary = onPrimaryDark,
