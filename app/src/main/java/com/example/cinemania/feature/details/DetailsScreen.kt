@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
@@ -165,10 +165,10 @@ fun DetailsHeaderCard(
             .fillMaxWidth()
             .padding(horizontal = 8.dp)
             .padding(top = 16.dp)
-            .clip(shape = RoundedCornerShape(30.dp))
+            .clip(shape = MaterialTheme.shapes.extraLarge)
             .background(
                 MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.9f),
-                shape = RoundedCornerShape(30.dp)
+                shape = MaterialTheme.shapes.extraLarge
             )
     ) {
         content()
@@ -262,10 +262,10 @@ fun DetailsGenreTag(
         Text(
             text = title,
             modifier = modifier
-                .clip(shape = RoundedCornerShape(20.dp))
+                .clip(shape = CircleShape)
                 .background(
                     backgroundColor,
-                    shape = RoundedCornerShape(20.dp)
+                    shape = CircleShape
                 )
                 .padding(horizontal = 10.dp, vertical = 8.dp),
             color = white,
