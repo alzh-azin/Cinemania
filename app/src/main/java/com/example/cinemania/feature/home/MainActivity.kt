@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.Surface
+import androidx.compose.ui.unit.dp
 import com.example.cinemania.ui.theme.CinemaniaTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -14,7 +15,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             CinemaniaTheme {
-                Surface {
+                Surface(tonalElevation = 5.dp) {
                     CinemaniaApp()
                 }
             }
