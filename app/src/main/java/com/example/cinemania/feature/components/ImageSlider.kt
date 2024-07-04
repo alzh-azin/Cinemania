@@ -34,10 +34,7 @@ fun ImageSlider(
         images.size
     }
 
-    Box(
-        modifier = modifier
-            .padding(top = 50.dp)
-    ) {
+    Box {
 
         HorizontalPager(
             state = pagerState,

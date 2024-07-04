@@ -7,11 +7,15 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -127,6 +131,28 @@ fun BoxScope.DetailsHeaderImageOverlay(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
+
+    Box(
+        modifier = modifier
+            .align(Alignment.TopCenter)
+            .fillMaxWidth()
+            .height(
+                WindowInsets.statusBars
+                    .asPaddingValues()
+                    .calculateTopPadding() * 1.5f
+            )
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        MaterialTheme.colorScheme.surfaceColorAtElevation(5.dp),
+                        Color.Transparent
+
+                    )
+                )
+            )
+    ) {
+    }
+
     Box(
         modifier = modifier
             .align(Alignment.BottomCenter)

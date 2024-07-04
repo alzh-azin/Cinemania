@@ -33,6 +33,7 @@ fun CinemaniaApp(
         },
         content = { padding ->
             NavGraph(
+                contentPadding = padding,
                 onNavigateBackAvailable = { isAvailable ->
                     navigateBackAvailable = isAvailable
                 },

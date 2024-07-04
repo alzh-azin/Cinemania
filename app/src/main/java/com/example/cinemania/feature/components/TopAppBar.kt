@@ -32,7 +32,7 @@ fun TopAppBar(
                 isVisible = !navigateBackAvailable
             )
         },
-        colors = TopAppBarDefaults.topAppBarColors(
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = Color.Transparent,
         ),
         navigationIcon = {
