@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -45,6 +46,7 @@ import com.example.cinemania.ui.theme.white
 
 @Composable
 fun DetailsRoute(
+    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     detailsViewModel: DetailsViewModel = hiltViewModel()
 ) {
@@ -53,19 +55,22 @@ fun DetailsRoute(
 
     DetailsScreen(
         media = media,
-        modifier = modifier
+        modifier = modifier,
+        contentPadding = contentPadding
     )
 }
 
 @Composable
 fun DetailsScreen(
     media: Media?,
+    contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
 
     Column(
         modifier = modifier
             .fillMaxSize()
+            .padding(bottom = contentPadding.calculateBottomPadding())
             .verticalScroll(rememberScrollState())
     ) {
         DetailsHeader(

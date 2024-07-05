@@ -12,9 +12,9 @@ import com.example.cinemania.feature.details.DetailsRoute
 fun NavGraph(
     contentPadding: PaddingValues,
     onNavigateBackAvailable: (Boolean) -> Unit,
+    onNavigateBarAvailable: (Boolean) -> Unit,
     navController: NavHostController,
 ) {
-
 
     NavHost(
         navController = navController,
@@ -24,6 +24,7 @@ fun NavGraph(
         composable<NavigationRoutes.Home> {
 
             onNavigateBackAvailable(false)
+            onNavigateBarAvailable(true)
             HomeRoute(
                 contentPadding = contentPadding,
                 onNavigateToDetailsScreen = { id ->
@@ -33,7 +34,16 @@ fun NavGraph(
 
         composable<NavigationRoutes.Details> {
             onNavigateBackAvailable(true)
-            DetailsRoute()
+            onNavigateBarAvailable(false)
+            DetailsRoute(contentPadding = contentPadding)
+        }
+
+        composable<NavigationRoutes.Search> {
+            onNavigateBarAvailable(true)
+        }
+
+        composable<NavigationRoutes.Favorites> {
+            onNavigateBarAvailable(true)
         }
     }
 }
