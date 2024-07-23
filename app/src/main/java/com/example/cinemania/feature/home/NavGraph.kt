@@ -1,5 +1,6 @@
 package com.example.cinemania.feature.home
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -9,10 +10,11 @@ import com.example.cinemania.feature.details.DetailsRoute
 
 @Composable
 fun NavGraph(
+    contentPadding: PaddingValues,
     onNavigateBackAvailable: (Boolean) -> Unit,
+    onNavigateBarAvailable: (Boolean) -> Unit,
     navController: NavHostController,
 ) {
-
 
     NavHost(
         navController = navController,
@@ -22,7 +24,9 @@ fun NavGraph(
         composable<NavigationRoutes.Home> {
 
             onNavigateBackAvailable(false)
+            onNavigateBarAvailable(true)
             HomeRoute(
+                contentPadding = contentPadding,
                 onNavigateToDetailsScreen = { id ->
                     navController.navigate(NavigationRoutes.Details(id))
                 })
@@ -30,7 +34,16 @@ fun NavGraph(
 
         composable<NavigationRoutes.Details> {
             onNavigateBackAvailable(true)
-            DetailsRoute()
+            onNavigateBarAvailable(false)
+            DetailsRoute(contentPadding = contentPadding)
+        }
+
+        composable<NavigationRoutes.Search> {
+            onNavigateBarAvailable(true)
+        }
+
+        composable<NavigationRoutes.Favorites> {
+            onNavigateBarAvailable(true)
         }
     }
 }

@@ -5,13 +5,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -20,6 +25,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -40,6 +46,7 @@ import com.example.cinemania.ui.theme.white
 
 @Composable
 fun DetailsRoute(
+    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     detailsViewModel: DetailsViewModel = hiltViewModel()
 ) {
@@ -48,19 +55,22 @@ fun DetailsRoute(
 
     DetailsScreen(
         media = media,
-        modifier = modifier
+        modifier = modifier,
+        contentPadding = contentPadding
     )
 }
 
 @Composable
 fun DetailsScreen(
     media: Media?,
+    contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
 
     Column(
         modifier = modifier
             .fillMaxSize()
+            .padding(bottom = contentPadding.calculateBottomPadding())
             .verticalScroll(rememberScrollState())
     ) {
         DetailsHeader(
@@ -126,6 +136,28 @@ fun BoxScope.DetailsHeaderImageOverlay(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
+
+    Box(
+        modifier = modifier
+            .align(Alignment.TopCenter)
+            .fillMaxWidth()
+            .height(
+                WindowInsets.statusBars
+                    .asPaddingValues()
+                    .calculateTopPadding() * 1.5f
+            )
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        MaterialTheme.colorScheme.surfaceColorAtElevation(5.dp),
+                        Color.Transparent
+
+                    )
+                )
+            )
+    ) {
+    }
+
     Box(
         modifier = modifier
             .align(Alignment.BottomCenter)
@@ -135,7 +167,7 @@ fun BoxScope.DetailsHeaderImageOverlay(
                 brush = Brush.verticalGradient(
                     colors = listOf(
                         Color.Transparent,
-                        MaterialTheme.colorScheme.background,
+                        MaterialTheme.colorScheme.surfaceColorAtElevation(5.dp),
                     )
                 )
             )
