@@ -6,13 +6,5 @@ import javax.inject.Inject
 class GetTrendMedia @Inject constructor(
     private val cinemaniaRepository: CinemaniaRepository
 ) {
-    operator fun invoke(
-        onStart: () -> Unit,
-        onComplete: () -> Unit,
-        onError: (String?) -> Unit,
-    ) = cinemaniaRepository.getTrendingMedia(
-        onStart = onStart,
-        onComplete = onComplete,
-        onError = onError
-    )
+    operator fun invoke() = cinemaniaRepository.getTrendingMedia()
 }

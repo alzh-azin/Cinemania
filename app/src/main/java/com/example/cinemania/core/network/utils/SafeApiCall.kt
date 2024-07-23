@@ -17,7 +17,7 @@ suspend fun <T> safeApiCall(
         } else {
 
             val error = errorParser(response.errorBody()?.string())
-            NetworkResult.Error(error.code, error.message)
+            NetworkResult.Error(error.code, error.message.orEmpty())
         }
     } catch (e: Exception) {
         NetworkResult.Exception(exceptionMessage)
