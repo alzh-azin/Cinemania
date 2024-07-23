@@ -8,7 +8,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.cinemania.core.domain.model.Media
 import com.example.cinemania.feature.components.ImageSlider
 
 @Composable
@@ -17,12 +16,11 @@ fun HomeRoute(
     homeViewModel: HomeViewModel = hiltViewModel(),
     onNavigateToDetailsScreen: (id: Int) -> Unit,
 ) {
-
-    val trendMedia by homeViewModel.trendList.collectAsStateWithLifecycle()
+    val homeUiState by homeViewModel.homeUiState.collectAsStateWithLifecycle()
 
     HomeScreen(
         contentPadding,
-        trendMedia,
+        homeUiState,
         onNavigateToDetailsScreen
     )
 }
@@ -30,16 +28,29 @@ fun HomeRoute(
 @Composable
 fun HomeScreen(
     contentPadding: PaddingValues,
-    trendMedia: List<Media>,
+    homeUiState: HomeUiState,
     onNavigateToDetailsScreen: (id: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
-    if (trendMedia.isNotEmpty())
-        Row(modifier = modifier.padding(contentPadding)) {
-            ImageSlider(
-                trendMedia,
-                onNavigateToDetailsScreen
-            )
+    when (homeUiState) {
+        is HomeUiState.Loading -> {
         }
+
+        is HomeUiState.Success -> {
+            if (homeUiState.trendMedia.isNotEmpty()) {
+                Row(modifier = modifier.padding(contentPadding)) {
+                    ImageSlider(
+                        homeUiState.trendMedia,
+                        onNavigateToDetailsScreen
+                    )
+                }
+            }
+        }
+
+        is HomeUiState.Error -> {
+
+        }
+    }
+
 }

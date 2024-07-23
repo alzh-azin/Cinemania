@@ -21,17 +21,14 @@ class CinemaniaRepositoryImpl @Inject constructor(
     private val connectivityObserver: NetworkConnectivityObserver
 ) : CinemaniaRepository {
 
-    override fun getTrendingMedia(
-        onStart: () -> Unit,
-        onComplete: () -> Unit,
-        onError: (String?) -> Unit
-    ): Flow<List<Media>> = flow {
-        onStart()
+    override fun getTrendingMedia(): Flow<NetworkResult<List<Media>>> = flow {
+
+        emit(NetworkResult.Loading())
 
         val localList = cinemaniaLocalDataSource.getTrendMovies().map { mediaEntity ->
             mediaEntity.toMedia()
         }
-        emit(localList)
+        emit(NetworkResult.Success(localList))
 
         if (connectivityObserver.isConnected()) {
             when (val trendingMediaNetwork = cinemaniaRemoteDataSource.getTrendingMedia()) {
@@ -49,23 +46,26 @@ class CinemaniaRepositoryImpl @Inject constructor(
                         )
                     }.orEmpty())
 
-                    emit(networkList?.map { mediaNetwork ->
-                        mediaNetwork.toMedia()
-                    }.orEmpty())
+                    emit(
+                        NetworkResult.Success(
+                            networkList?.map { mediaNetwork ->
+                                mediaNetwork.toMedia()
+                            }.orEmpty()
+                        )
+                    )
 
-                    onComplete()
                 }
 
                 is NetworkResult.Error -> {
-                    onError("Something went wrong, please try again")
+                    emit(NetworkResult.Error(errorMessage = "Something went wrong, please try again"))
                 }
 
                 else -> {
-                    onError("Something went wrong, please try again")
+                    emit(NetworkResult.Error(errorMessage = "Something went wrong, please try again"))
                 }
             }
         } else {
-            onError("No internet connection")
+            emit(NetworkResult.Error(errorMessage = "Something went wrong, please try again"))
         }
     }
 
