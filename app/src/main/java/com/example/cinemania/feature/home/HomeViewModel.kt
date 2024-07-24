@@ -2,51 +2,57 @@ package com.example.cinemania.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cinemania.core.domain.usecase.GetTrendMedia
+import com.example.cinemania.core.domain.usecase.GetTrendMediaLocal
+import com.example.cinemania.core.domain.usecase.GetTrendMediaRemote
 import com.example.cinemania.core.network.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getTrendMedia: GetTrendMedia
+    private val getTrendMediaLocal: GetTrendMediaLocal,
+    private val getTrendMediaRemote: GetTrendMediaRemote
 ) : ViewModel() {
 
-    val homeUiState: StateFlow<HomeUiState> =
-        getTrendMediaList(getTrendMedia)
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(),
-                initialValue = HomeUiState.Loading
+
+    var homeUiState = MutableStateFlow(HomeUiState())
+        private set
+
+    init {
+
+        getData()
+
+        viewModelScope.launch {
+            getTrendMediaLocal.invoke().collect { trendMediaList ->
+                homeUiState.value = homeUiState.value.copy(trendMedia = trendMediaList)
+            }
+        }
+    }
+
+    fun getData() {
+        getTrendMediaList()
+    }
+
+
+    private fun getTrendMediaList() {
+
+        viewModelScope.launch {
+            homeUiState.value = homeUiState.value.copy(
+                isLoading = true
             )
 
-    private fun getTrendMediaList(getTrendMedia: GetTrendMedia): Flow<HomeUiState> {
-
-        val trendMediaList = getTrendMedia.invoke()
-
-        return trendMediaList.map { networkResult ->
-            when (networkResult) {
+            when (getTrendMediaRemote.invoke()) {
                 is NetworkResult.Success -> {
-                    HomeUiState.Success(networkResult.data.orEmpty())
+                    homeUiState.value = homeUiState.value.copy(
+                        isLoading = false
+                    )
                 }
 
-                is NetworkResult.Loading -> {
-                    HomeUiState.Loading
-                }
-
-                is NetworkResult.Error -> {
-                    HomeUiState.Error(errorMessage = networkResult.errorMessage)
-                }
-
-                is NetworkResult.Exception -> {
-                    HomeUiState.Error(errorMessage = networkResult.exceptionMessage)
-                }
+                else -> {}
             }
+
         }
     }
 }

@@ -33,24 +33,12 @@ fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
 
-    when (homeUiState) {
-        is HomeUiState.Loading -> {
-        }
-
-        is HomeUiState.Success -> {
-            if (homeUiState.trendMedia.isNotEmpty()) {
-                Row(modifier = modifier.padding(contentPadding)) {
-                    ImageSlider(
-                        homeUiState.trendMedia,
-                        onNavigateToDetailsScreen
-                    )
-                }
-            }
-        }
-
-        is HomeUiState.Error -> {
-
+    if (homeUiState.trendMedia.isNotEmpty()) {
+        Row(modifier = modifier.padding(contentPadding)) {
+            ImageSlider(
+                homeUiState.trendMedia,
+                onNavigateToDetailsScreen
+            )
         }
     }
-
 }

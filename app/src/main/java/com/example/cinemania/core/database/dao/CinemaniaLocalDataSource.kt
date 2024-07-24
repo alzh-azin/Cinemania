@@ -20,7 +20,7 @@ class CinemaniaLocalDataSource @Inject constructor(
     }
 
 
-    suspend fun getTrendMovies() =
+    fun getTrendMovies() =
         cinemaniaDao.getMediaTrendList()
 
     suspend fun getMedia(id: Int) =

@@ -6,7 +6,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface CinemaniaRepository {
 
-    fun getTrendingMedia(): Flow<NetworkResult<List<Media>>>
+    fun getTrendMediaLocal(): Flow<List<Media>>
+
+    suspend fun getTrendMediaRemote(): NetworkResult<Unit>
 
     fun getMedia(
         id: Int,

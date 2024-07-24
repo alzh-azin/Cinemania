@@ -5,12 +5,12 @@ import com.example.cinemania.core.database.dao.CinemaniaLocalDataSource
 import com.example.cinemania.core.database.model.toMedia
 import com.example.cinemania.core.domain.model.Media
 import com.example.cinemania.core.domain.repository.CinemaniaRepository
-import com.example.cinemania.core.network.model.toMedia
 import com.example.cinemania.core.network.model.toMediaEntity
 import com.example.cinemania.core.network.service.CinemaniaRemoteDataSource
 import com.example.cinemania.core.network.utils.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -21,14 +21,15 @@ class CinemaniaRepositoryImpl @Inject constructor(
     private val connectivityObserver: NetworkConnectivityObserver
 ) : CinemaniaRepository {
 
-    override fun getTrendingMedia(): Flow<NetworkResult<List<Media>>> = flow {
-
-        emit(NetworkResult.Loading())
-
-        val localList = cinemaniaLocalDataSource.getTrendMovies().map { mediaEntity ->
-            mediaEntity.toMedia()
+    override fun getTrendMediaLocal() =
+        cinemaniaLocalDataSource.getTrendMovies().map { trendMediaList ->
+            trendMediaList.map { mediaEntity ->
+                mediaEntity.toMedia()
+            }
         }
-        emit(NetworkResult.Success(localList))
+
+
+    override suspend fun getTrendMediaRemote(): NetworkResult<Unit> {
 
         if (connectivityObserver.isConnected()) {
             when (val trendingMediaNetwork = cinemaniaRemoteDataSource.getTrendingMedia()) {
@@ -46,26 +47,19 @@ class CinemaniaRepositoryImpl @Inject constructor(
                         )
                     }.orEmpty())
 
-                    emit(
-                        NetworkResult.Success(
-                            networkList?.map { mediaNetwork ->
-                                mediaNetwork.toMedia()
-                            }.orEmpty()
-                        )
-                    )
-
+                    return NetworkResult.Success(Unit)
                 }
 
                 is NetworkResult.Error -> {
-                    emit(NetworkResult.Error(errorMessage = "Something went wrong, please try again"))
+                    return NetworkResult.Error(errorMessage = "Something went wrong, please try again")
                 }
 
                 else -> {
-                    emit(NetworkResult.Error(errorMessage = "Something went wrong, please try again"))
+                    return NetworkResult.Error(errorMessage = "Something went wrong, please try again")
                 }
             }
         } else {
-            emit(NetworkResult.Error(errorMessage = "Something went wrong, please try again"))
+            return NetworkResult.Error(errorMessage = "Something went wrong, please try again")
         }
     }
 

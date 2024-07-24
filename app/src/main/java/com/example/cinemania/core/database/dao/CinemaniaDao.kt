@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.example.cinemania.core.database.model.MediaEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CinemaniaDao {
@@ -19,7 +20,7 @@ interface CinemaniaDao {
 
     @Transaction
     @Query("SELECT * FROM MediaEntity WHERE isTrendMedia = 1 ORDER BY `index` ASC")
-    suspend fun getMediaTrendList(): List<MediaEntity>
+    fun getMediaTrendList(): Flow<List<MediaEntity>>
 
     @Transaction
     @Query("SELECT * FROM MediaEntity WHERE id = :id")
