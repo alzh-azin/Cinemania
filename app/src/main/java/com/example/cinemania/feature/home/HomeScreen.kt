@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.cinemania.feature.components.ImageSlider
+import com.example.cinemania.feature.components.PullToRefreshContent
 
 @Composable
 fun HomeRoute(
@@ -19,9 +21,10 @@ fun HomeRoute(
     val homeUiState by homeViewModel.homeUiState.collectAsStateWithLifecycle()
 
     HomeScreen(
-        contentPadding,
-        homeUiState,
-        onNavigateToDetailsScreen
+        contentPadding = contentPadding,
+        homeUiState = homeUiState,
+        onNavigateToDetailsScreen = onNavigateToDetailsScreen,
+        onRefresh = { homeViewModel.getData() }
     )
 }
 
@@ -30,15 +33,27 @@ fun HomeScreen(
     contentPadding: PaddingValues,
     homeUiState: HomeUiState,
     onNavigateToDetailsScreen: (id: Int) -> Unit,
+    onRefresh: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
-    if (homeUiState.trendMedia.isNotEmpty()) {
-        Row(modifier = modifier.padding(contentPadding)) {
-            ImageSlider(
-                homeUiState.trendMedia,
-                onNavigateToDetailsScreen
-            )
+    val items = remember {
+        (1..100).map { "Item $it" }
+    }
+
+    PullToRefreshContent(
+        items = items,
+        isRefreshing = homeUiState.isLoading,
+        onRefresh = { onRefresh.invoke() },
+        modifier = Modifier.padding(contentPadding)
+    ) {
+        if (homeUiState.trendMedia.isNotEmpty()) {
+            Row {
+                ImageSlider(
+                    homeUiState.trendMedia,
+                    onNavigateToDetailsScreen
+                )
+            }
         }
     }
 }
