@@ -216,7 +216,7 @@ fun DetailsHeaderTitle(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 20.dp)
+            .padding(top = 20.dp, end = 8.dp)
             .padding(horizontal = 20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
