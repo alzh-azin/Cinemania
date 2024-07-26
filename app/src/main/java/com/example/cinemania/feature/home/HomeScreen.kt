@@ -2,7 +2,6 @@ package com.example.cinemania.feature.home
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -38,8 +37,8 @@ fun HomeScreen(
 
     PullToRefreshContent(
         isRefreshing = homeUiState.isLoading,
+        contentPadding = contentPadding,
         onRefresh = { onRefresh.invoke() },
-        modifier = modifier.padding(contentPadding),
     ) {
         if (homeUiState.trendMedia.isNotEmpty()) {
             Row {

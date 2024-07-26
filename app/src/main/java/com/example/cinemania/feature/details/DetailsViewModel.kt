@@ -7,6 +7,7 @@ import androidx.navigation.toRoute
 import com.example.cinemania.core.domain.usecase.GetMedia
 import com.example.cinemania.feature.NavigationRoutes
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,6 +24,7 @@ class DetailsViewModel @Inject constructor(
     private val id =
         MutableStateFlow(savedStateHandle.toRoute<NavigationRoutes.Details>().id).asStateFlow()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     val media = id.flatMapLatest { id ->
         getMedia(
             id = id,
