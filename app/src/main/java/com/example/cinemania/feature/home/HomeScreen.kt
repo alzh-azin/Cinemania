@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -37,15 +36,10 @@ fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
 
-    val items = remember {
-        (1..100).map { "Item $it" }
-    }
-
     PullToRefreshContent(
-        items = items,
         isRefreshing = homeUiState.isLoading,
         onRefresh = { onRefresh.invoke() },
-        modifier = Modifier.padding(contentPadding)
+        modifier = modifier.padding(contentPadding),
     ) {
         if (homeUiState.trendMedia.isNotEmpty()) {
             Row {
