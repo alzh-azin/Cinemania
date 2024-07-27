@@ -6,6 +6,7 @@ import com.example.cinemania.core.domain.usecase.GetTrendMediaLocal
 import com.example.cinemania.core.domain.usecase.GetTrendMediaRemote
 import com.example.cinemania.core.network.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,6 +19,9 @@ class HomeViewModel @Inject constructor(
 
 
     var homeUiState = MutableStateFlow(HomeUiState())
+        private set
+
+    var homeUiEffect = MutableSharedFlow<HomeUiEffect>()
         private set
 
     init {
@@ -48,6 +52,10 @@ class HomeViewModel @Inject constructor(
                     homeUiState.value = homeUiState.value.copy(
                         isLoading = false
                     )
+                }
+
+                is NetworkResult.Error -> {
+                    homeUiEffect.emit(HomeUiEffect(showError = true))
                 }
 
                 else -> {}

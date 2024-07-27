@@ -14,15 +14,19 @@ import com.example.cinemania.feature.components.PullToRefreshContent
 fun HomeRoute(
     contentPadding: PaddingValues,
     homeViewModel: HomeViewModel = hiltViewModel(),
+    onNetworkConnectionError: (isConnected: Boolean) -> Unit,
     onNavigateToDetailsScreen: (id: Int) -> Unit,
 ) {
     val homeUiState by homeViewModel.homeUiState.collectAsStateWithLifecycle()
+    val homeUiEffect by homeViewModel.homeUiEffect.collectAsStateWithLifecycle(HomeUiEffect())
 
     HomeScreen(
         contentPadding = contentPadding,
         homeUiState = homeUiState,
+        homeUiEffect = homeUiEffect,
         onNavigateToDetailsScreen = onNavigateToDetailsScreen,
-        onRefresh = { homeViewModel.getData() }
+        onRefresh = { homeViewModel.getData() },
+        onNetworkConnectionError = onNetworkConnectionError
     )
 }
 
@@ -30,10 +34,15 @@ fun HomeRoute(
 fun HomeScreen(
     contentPadding: PaddingValues,
     homeUiState: HomeUiState,
+    homeUiEffect: HomeUiEffect,
     onNavigateToDetailsScreen: (id: Int) -> Unit,
     onRefresh: () -> Unit,
+    onNetworkConnectionError: (isConnected: Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    if (homeUiEffect.showError)
+        onNetworkConnectionError(false)
 
     PullToRefreshContent(
         isRefreshing = homeUiState.isLoading,

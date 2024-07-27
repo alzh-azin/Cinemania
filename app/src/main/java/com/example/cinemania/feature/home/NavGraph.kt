@@ -13,6 +13,7 @@ fun NavGraph(
     contentPadding: PaddingValues,
     onNavigateBackAvailable: (Boolean) -> Unit,
     onNavigateBarAvailable: (Boolean) -> Unit,
+    onNetworkConnectionError: (isConnected: Boolean) -> Unit,
     navController: NavHostController,
 ) {
 
@@ -29,7 +30,9 @@ fun NavGraph(
                 contentPadding = contentPadding,
                 onNavigateToDetailsScreen = { id ->
                     navController.navigate(NavigationRoutes.Details(id))
-                })
+                },
+                onNetworkConnectionError = onNetworkConnectionError
+            )
         }
 
         composable<NavigationRoutes.Details> {

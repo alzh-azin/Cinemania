@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Cinemania</string>
+    <string name="msg_network_error">Something went wrong.</string>
+    <string name="label_retry">Retry</string>
 </resources>
