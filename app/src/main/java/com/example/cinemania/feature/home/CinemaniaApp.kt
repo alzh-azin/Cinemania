@@ -39,14 +39,18 @@ fun CinemaniaApp(
         SnackbarHostState()
     }
 
-    var isOffline by remember {
+    var showErrorSnackBar by remember {
         mutableStateOf(false)
+    }
+
+    var snackBarResult by remember {
+        mutableStateOf(SnackbarResult.Dismissed)
     }
 
     val networkConnectionError = stringResource(id = R.string.msg_network_error)
     val snackBarActionLabel = stringResource(id = R.string.label_retry)
-    LaunchedEffect(key1 = isOffline) {
-        if (isOffline) {
+    LaunchedEffect(key1 = showErrorSnackBar) {
+        if (showErrorSnackBar) {
             val result = snackBarHostState.showSnackbar(
                 message = networkConnectionError,
                 actionLabel = snackBarActionLabel,
@@ -54,15 +58,13 @@ fun CinemaniaApp(
                 duration = Indefinite
             )
 
-            when (result) {
-                SnackbarResult.ActionPerformed -> {
+            snackBarResult = result
 
-                }
-
-                SnackbarResult.Dismissed -> {
-                    snackBarHostState.currentSnackbarData?.dismiss()
-                }
+            if (result == SnackbarResult.Dismissed) {
+                snackBarHostState.currentSnackbarData?.dismiss()
             }
+
+            showErrorSnackBar = false
         }
     }
 
@@ -96,9 +98,13 @@ fun CinemaniaApp(
                     navigationBarAvailable = isAvailable
                 },
                 onNetworkConnectionError = { isConnected ->
-                    isOffline = !isConnected
+                    showErrorSnackBar = !isConnected
                 },
-                navController = navController
+                onSnackBarRetryClick = {
+                    snackBarResult = SnackbarResult.Dismissed
+                },
+                navController = navController,
+                snackBarResult = snackBarResult
             )
         }
     )

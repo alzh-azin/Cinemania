@@ -1,6 +1,7 @@
 package com.example.cinemania.feature.home
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -11,6 +12,8 @@ import com.example.cinemania.feature.details.DetailsRoute
 @Composable
 fun NavGraph(
     contentPadding: PaddingValues,
+    snackBarResult: SnackbarResult,
+    onSnackBarRetryClick: () -> Unit,
     onNavigateBackAvailable: (Boolean) -> Unit,
     onNavigateBarAvailable: (Boolean) -> Unit,
     onNetworkConnectionError: (isConnected: Boolean) -> Unit,
@@ -31,7 +34,9 @@ fun NavGraph(
                 onNavigateToDetailsScreen = { id ->
                     navController.navigate(NavigationRoutes.Details(id))
                 },
-                onNetworkConnectionError = onNetworkConnectionError
+                onNetworkConnectionError = onNetworkConnectionError,
+                onSnackBarRetryClick = onSnackBarRetryClick,
+                snackBarResult = snackBarResult
             )
         }
 

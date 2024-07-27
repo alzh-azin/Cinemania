@@ -6,6 +6,8 @@ import com.example.cinemania.core.domain.usecase.GetTrendMediaLocal
 import com.example.cinemania.core.domain.usecase.GetTrendMediaRemote
 import com.example.cinemania.core.network.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -26,13 +28,14 @@ class HomeViewModel @Inject constructor(
 
     init {
 
-        getData()
-
         viewModelScope.launch {
             getTrendMediaLocal.invoke().collect { trendMediaList ->
                 homeUiState.value = homeUiState.value.copy(trendMedia = trendMediaList)
             }
         }
+
+        getData()
+
     }
 
     fun getData() {
@@ -42,12 +45,15 @@ class HomeViewModel @Inject constructor(
 
     private fun getTrendMediaList() {
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
+
+            val asyncResult = async { getTrendMediaRemote() }
+
             homeUiState.value = homeUiState.value.copy(
                 isLoading = true
             )
 
-            when (getTrendMediaRemote.invoke()) {
+            when (asyncResult.await()) {
                 is NetworkResult.Success -> {
                     homeUiState.value = homeUiState.value.copy(
                         isLoading = false
@@ -56,9 +62,17 @@ class HomeViewModel @Inject constructor(
 
                 is NetworkResult.Error -> {
                     homeUiEffect.emit(HomeUiEffect(showError = true))
+                    homeUiState.value = homeUiState.value.copy(
+                        isLoading = false
+                    )
                 }
 
-                else -> {}
+                else -> {
+                    homeUiEffect.emit(HomeUiEffect(showError = true))
+                    homeUiState.value = homeUiState.value.copy(
+                        isLoading = false
+                    )
+                }
             }
 
         }
