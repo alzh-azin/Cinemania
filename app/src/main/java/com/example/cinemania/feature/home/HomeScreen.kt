@@ -16,27 +16,24 @@ import com.example.cinemania.feature.components.PullToRefreshContent
 fun HomeRoute(
     contentPadding: PaddingValues,
     homeViewModel: HomeViewModel = hiltViewModel(),
-    onNetworkConnectionError: (isConnected: Boolean) -> Unit,
+    onNetworkConnectionError: (showError: Boolean) -> Unit,
     snackBarResult: SnackbarResult,
-    onSnackBarRetryClick: () -> Unit,
     onNavigateToDetailsScreen: (id: Int) -> Unit,
 ) {
     val homeUiState by homeViewModel.homeUiState.collectAsStateWithLifecycle()
-    val homeUiEffect by homeViewModel.homeUiEffect.collectAsStateWithLifecycle(HomeUiEffect())
 
-    LaunchedEffect(key1 = snackBarResult) {
-        if (snackBarResult == SnackbarResult.ActionPerformed) {
-            homeViewModel.getData()
-            onSnackBarRetryClick()
+    LaunchedEffect(key1 = Unit) {
+        homeViewModel.homeUiEffect.collect {
+            onNetworkConnectionError(true)
         }
     }
 
     HomeScreen(
         contentPadding = contentPadding,
         homeUiState = homeUiState,
-        homeUiEffect = homeUiEffect,
-        onNavigateToDetailsScreen = onNavigateToDetailsScreen,
+        snackBarResult = snackBarResult,
         onRefresh = { homeViewModel.getData() },
+        onNavigateToDetailsScreen = onNavigateToDetailsScreen,
         onNetworkConnectionError = onNetworkConnectionError,
     )
 }
@@ -45,16 +42,22 @@ fun HomeRoute(
 fun HomeScreen(
     contentPadding: PaddingValues,
     homeUiState: HomeUiState,
-    homeUiEffect: HomeUiEffect,
+    snackBarResult: SnackbarResult,
     onNavigateToDetailsScreen: (id: Int) -> Unit,
     onRefresh: () -> Unit,
-    onNetworkConnectionError: (isConnected: Boolean) -> Unit,
+    onNetworkConnectionError: (showError: Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
-    if (homeUiEffect.showError) {
-        onNetworkConnectionError(false)
+    LaunchedEffect(key1 = snackBarResult) {
+        if (snackBarResult == SnackbarResult.ActionPerformed) {
+            onRefresh()
+            onNetworkConnectionError(false)
+        }
     }
+
+    if (homeUiState.isLoading)
+        onNetworkConnectionError(false)
 
     PullToRefreshContent(
         isRefreshing = homeUiState.isLoading,

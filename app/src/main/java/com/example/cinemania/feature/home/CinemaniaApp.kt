@@ -50,6 +50,7 @@ fun CinemaniaApp(
     val networkConnectionError = stringResource(id = R.string.msg_network_error)
     val snackBarActionLabel = stringResource(id = R.string.label_retry)
     LaunchedEffect(key1 = showErrorSnackBar) {
+
         if (showErrorSnackBar) {
             val result = snackBarHostState.showSnackbar(
                 message = networkConnectionError,
@@ -97,11 +98,11 @@ fun CinemaniaApp(
                 onNavigateBarAvailable = { isAvailable ->
                     navigationBarAvailable = isAvailable
                 },
-                onNetworkConnectionError = { isConnected ->
-                    showErrorSnackBar = !isConnected
-                },
-                onSnackBarRetryClick = {
-                    snackBarResult = SnackbarResult.Dismissed
+                onNetworkConnectionError = { showError ->
+                    showErrorSnackBar = showError
+
+                    if (!showError)
+                        snackBarResult = SnackbarResult.Dismissed
                 },
                 navController = navController,
                 snackBarResult = snackBarResult

@@ -13,7 +13,6 @@ import com.example.cinemania.feature.details.DetailsRoute
 fun NavGraph(
     contentPadding: PaddingValues,
     snackBarResult: SnackbarResult,
-    onSnackBarRetryClick: () -> Unit,
     onNavigateBackAvailable: (Boolean) -> Unit,
     onNavigateBarAvailable: (Boolean) -> Unit,
     onNetworkConnectionError: (isConnected: Boolean) -> Unit,
@@ -35,7 +34,6 @@ fun NavGraph(
                     navController.navigate(NavigationRoutes.Details(id))
                 },
                 onNetworkConnectionError = onNetworkConnectionError,
-                onSnackBarRetryClick = onSnackBarRetryClick,
                 snackBarResult = snackBarResult
             )
         }
