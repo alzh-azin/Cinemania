@@ -2,7 +2,7 @@ package com.example.cinemania.core.database.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.cinemania.core.domain.model.Genre
+import com.example.cinemania.core.domain.model.GenreType
 import com.example.cinemania.core.domain.model.Media
 
 @Entity
@@ -31,6 +31,6 @@ fun MediaEntity.toMedia() = Media(
     releaseDate = releaseDate,
     voteAverage = voteAverage,
     genres = genres?.map {
-        Genre.enumValueOf(it)
+        GenreType.enumValueOf(it)
     }
 )

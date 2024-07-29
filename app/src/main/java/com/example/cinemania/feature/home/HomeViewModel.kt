@@ -19,6 +19,7 @@ class HomeViewModel @Inject constructor(
     private val getTrendMediaRemote: GetTrendMediaRemote
 ) : ViewModel() {
 
+    private var selectedGenre = 0
 
     var homeUiState = MutableStateFlow(HomeUiState())
         private set
@@ -76,5 +77,15 @@ class HomeViewModel @Inject constructor(
             }
 
         }
+    }
+
+    fun selectGenreType(index: Int) {
+        val genreList = homeUiState.value.genreList.toMutableList()
+
+        genreList[selectedGenre] = genreList[selectedGenre].copy(isSelected = false)
+        genreList[index] = genreList[index].copy(isSelected = true)
+
+        selectedGenre = index
+        homeUiState.value = homeUiState.value.copy(genreList = genreList)
     }
 }

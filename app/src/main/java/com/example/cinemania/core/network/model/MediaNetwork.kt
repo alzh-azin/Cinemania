@@ -1,7 +1,7 @@
 package com.example.cinemania.core.network.model
 
 import com.example.cinemania.core.database.model.MediaEntity
-import com.example.cinemania.core.domain.model.Genre
+import com.example.cinemania.core.domain.model.GenreType
 import com.example.cinemania.core.domain.model.Media
 import com.example.cinemania.core.network.utils.UrlHelper
 import com.squareup.moshi.Json
@@ -51,7 +51,7 @@ fun MediaNetwork.toMedia() = Media(
     },
     voteAverage = voteAverage,
     genres = genres?.map {
-        Genre.enumValueOf(it)
+        GenreType.enumValueOf(it)
     }
 )
 
