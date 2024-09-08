@@ -3,7 +3,7 @@ package com.example.cinemania.core.network.model
 import com.example.cinemania.core.database.model.MediaEntity
 import com.example.cinemania.core.domain.model.GenreType
 import com.example.cinemania.core.domain.model.Media
-import com.example.cinemania.core.network.utils.UrlHelper
+import com.example.cinemania.core.network.utils.UrlHelper.BASE_IMAGE_URL
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -12,11 +12,11 @@ data class MediaNetwork(
     @Json(name = "backdrop_path")
     val backdropPath: String?,
     val id: Int,
-    val overview: String,
+    val overview: String?,
     @Json(name = "poster_path")
-    val posterPath: String,
+    val posterPath: String?,
     @Json(name = "media_type")
-    val mediaType: String,
+    val mediaType: String?,
     val title: String?,
     val name: String?,
     @Json(name = "release_date")
@@ -29,11 +29,11 @@ data class MediaNetwork(
     val genres: List<Int>?
 )
 
-fun MediaNetwork.toMedia() = Media(
-    backdropPath = UrlHelper.BASE_IMAGE_URL + backdropPath,
+fun MediaNetwork.toMedia(imageQuality: String) = Media(
+    backdropPath = "$BASE_IMAGE_URL$imageQuality" + backdropPath,
     id = id,
     overview = overview,
-    posterPath = UrlHelper.BASE_IMAGE_URL + posterPath,
+    posterPath = "$BASE_IMAGE_URL$imageQuality" + posterPath,
     mediaType = when (mediaType) {
         MediaTypeNetwork.MOVIE.value -> MediaTypeNetwork.MOVIE.typeName
         MediaTypeNetwork.TV_SHOW.value -> MediaTypeNetwork.TV_SHOW.typeName
@@ -56,10 +56,10 @@ fun MediaNetwork.toMedia() = Media(
 )
 
 fun MediaNetwork.toMediaEntity(isTrendMedia: Boolean = false, index: Int = 0) = MediaEntity(
-    backdropPath = UrlHelper.BASE_IMAGE_URL + backdropPath,
+    backdropPath = backdropPath,
     id = id,
     overview = overview,
-    posterPath = UrlHelper.BASE_IMAGE_URL + posterPath,
+    posterPath = posterPath,
     mediaType = when (mediaType) {
         MediaTypeNetwork.MOVIE.value -> MediaTypeNetwork.MOVIE.typeName
         MediaTypeNetwork.TV_SHOW.value -> MediaTypeNetwork.TV_SHOW.typeName

@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.cinemania.R
+import com.example.cinemania.feature.NavigationRoutes
 import com.example.cinemania.feature.components.CinemaniaNavigationBar
 import com.example.cinemania.feature.components.NavigationBarScreens
 import com.example.cinemania.feature.components.TopAppBar
@@ -32,6 +33,10 @@ fun CinemaniaApp(
     }
 
     var navigationBarAvailable by remember {
+        mutableStateOf(true)
+    }
+
+    var topAppBarAvailable by remember {
         mutableStateOf(true)
     }
 
@@ -71,11 +76,15 @@ fun CinemaniaApp(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                navigateBackAvailable = navigateBackAvailable,
-                onNavigationClick = { navController.navigateUp() }
-
-            )
+            if (topAppBarAvailable) {
+                TopAppBar(
+                    navigateBackAvailable = navigateBackAvailable,
+                    onNavigationClick = { navController.navigateUp() },
+                    onSearchClick = {
+                        navController.navigate(NavigationRoutes.Search)
+                    }
+                )
+            }
         },
         bottomBar = {
             val items = listOf(
@@ -92,6 +101,9 @@ fun CinemaniaApp(
         content = { padding ->
             NavGraph(
                 contentPadding = padding,
+                onTopAppBarAvailable = { isAvailable ->
+                    topAppBarAvailable = isAvailable
+                },
                 onNavigateBackAvailable = { isAvailable ->
                     navigateBackAvailable = isAvailable
                 },

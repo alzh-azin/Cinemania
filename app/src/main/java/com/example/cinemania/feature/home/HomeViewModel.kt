@@ -67,13 +67,6 @@ class HomeViewModel @Inject constructor(
                         isLoading = false
                     )
                 }
-
-                else -> {
-                    homeUiEffect.emit(HomeUiEffect(showError = true))
-                    homeUiState.value = homeUiState.value.copy(
-                        isLoading = false
-                    )
-                }
             }
 
         }

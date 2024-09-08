@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 fun TopAppBar(
     navigateBackAvailable: Boolean,
     onNavigationClick: () -> Unit,
+    onSearchClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -56,7 +57,9 @@ fun TopAppBar(
                 }
             } else {
 
-                IconButton(onClick = { }) {
+                IconButton(onClick = {
+                    onSearchClick()
+                }) {
                     TopAppBarIcon(
                         icon = Icons.Filled.Search,
                     )

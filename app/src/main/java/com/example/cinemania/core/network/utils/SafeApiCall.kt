@@ -20,7 +20,7 @@ suspend fun <T> safeApiCall(
             NetworkResult.Error(error.code, error.message.orEmpty())
         }
     } catch (e: Exception) {
-        NetworkResult.Exception(exceptionMessage)
+        NetworkResult.Error(errorMessage = exceptionMessage)
     }
 }
 

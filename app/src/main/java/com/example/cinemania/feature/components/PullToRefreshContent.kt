@@ -24,7 +24,10 @@ fun PullToRefreshContent(
         isRefreshing = isRefreshing,
         onRefresh = { onRefresh() },
         state = pullToRefreshState,
-        modifier = modifier.padding(top = contentPadding.calculateTopPadding())
+        modifier = modifier.padding(
+            top = contentPadding.calculateTopPadding(),
+            bottom = contentPadding.calculateBottomPadding()
+        )
     ) {
         content()
     }

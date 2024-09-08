@@ -30,7 +30,7 @@ import com.example.cinemania.ui.theme.CinemaniaNavigationDefaults.navigationSele
 
 enum class NavigationBarTypes {
     Home,
-    Search,
+    Discover,
     Favorites
 }
 
@@ -49,9 +49,9 @@ sealed class NavigationBarScreens(
 
     data object Search :
         NavigationBarScreens(
-            title = NavigationBarTypes.Search,
+            title = NavigationBarTypes.Discover,
             icon = Icons.Filled.Search,
-            route = NavigationRoutes.Search
+            route = NavigationRoutes.Discover
         )
 
     data object Favorites :

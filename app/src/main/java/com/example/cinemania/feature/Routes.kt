@@ -15,5 +15,8 @@ sealed class NavigationRoutes {
     data object Search : NavigationRoutes()
 
     @Serializable
+    data object Discover : NavigationRoutes()
+
+    @Serializable
     data object Favorites : NavigationRoutes()
 }

@@ -6,5 +6,4 @@ sealed interface NetworkResult<out T> {
 
     class Error<out T>(val code: String? = null, val errorMessage: String) : NetworkResult<T>
 
-    class Exception<out T>(val exceptionMessage: String) : NetworkResult<T>
 }

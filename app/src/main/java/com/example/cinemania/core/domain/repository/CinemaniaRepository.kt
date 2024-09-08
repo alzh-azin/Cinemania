@@ -10,6 +10,8 @@ interface CinemaniaRepository {
 
     suspend fun getTrendMediaRemote(): NetworkResult<Unit>
 
+    suspend fun searchMediaRemote(query: String): NetworkResult<List<Media>>
+
     fun getMedia(
         id: Int,
         onStart: () -> Unit,

@@ -8,11 +8,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.cinemania.feature.NavigationRoutes
 import com.example.cinemania.feature.details.DetailsRoute
+import com.example.cinemania.feature.search.SearchRoute
 
 @Composable
 fun NavGraph(
     contentPadding: PaddingValues,
     snackBarResult: SnackbarResult,
+    onTopAppBarAvailable: (Boolean) -> Unit,
     onNavigateBackAvailable: (Boolean) -> Unit,
     onNavigateBarAvailable: (Boolean) -> Unit,
     onNetworkConnectionError: (isConnected: Boolean) -> Unit,
@@ -26,8 +28,10 @@ fun NavGraph(
 
         composable<NavigationRoutes.Home> {
 
+            onTopAppBarAvailable(true)
             onNavigateBackAvailable(false)
             onNavigateBarAvailable(true)
+
             HomeRoute(
                 contentPadding = contentPadding,
                 onNavigateToDetailsScreen = { id ->
@@ -39,17 +43,36 @@ fun NavGraph(
         }
 
         composable<NavigationRoutes.Details> {
+
+            onTopAppBarAvailable(true)
             onNavigateBackAvailable(true)
             onNavigateBarAvailable(false)
+
             DetailsRoute(contentPadding = contentPadding)
         }
 
-        composable<NavigationRoutes.Search> {
+        composable<NavigationRoutes.Discover> {
+
+            onTopAppBarAvailable(true)
             onNavigateBarAvailable(true)
         }
 
         composable<NavigationRoutes.Favorites> {
+
+            onTopAppBarAvailable(true)
             onNavigateBarAvailable(true)
+        }
+
+        composable<NavigationRoutes.Search> {
+
+            onTopAppBarAvailable(false)
+            onNavigateBarAvailable(false)
+
+            SearchRoute(
+                contentPadding = contentPadding,
+                onNetworkConnectionError = onNetworkConnectionError,
+                snackBarResult = snackBarResult
+            )
         }
     }
 }
