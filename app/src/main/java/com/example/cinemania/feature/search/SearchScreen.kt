@@ -31,16 +31,25 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
@@ -128,11 +137,30 @@ fun SearchTextField(
     onEvent: (SearchUiEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val focusManager = LocalFocusManager.current
+    var isFocused by rememberSaveable { mutableStateOf(false) }
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_STOP) {
+                focusManager.clearFocus()
+                isFocused = false
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
 
     TextField(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(16.dp)
+            .onFocusEvent { focusState ->
+                isFocused = focusState.isFocused
+            },
         shape = RoundedCornerShape(32.dp),
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.Transparent,
@@ -141,10 +169,7 @@ fun SearchTextField(
         ),
         value = query,
         onValueChange = {
-            if (it.isEmpty())
-                onEvent(SearchUiEvent.onClearSearch)
-            else
-                onEvent(SearchUiEvent.onSearchQueryChange(it))
+            onEvent(SearchUiEvent.onSearchQueryChange(it))
         },
         label = { Text(text = stringResource(id = R.string.label_search)) },
         singleLine = true,
@@ -156,11 +181,18 @@ fun SearchTextField(
             if (query.isNotEmpty())
                 IconButton(onClick = {
                     onEvent(SearchUiEvent.onClearSearch)
+                    focusManager.clearFocus()
                 }) {
                     Icon(imageVector = Icons.Filled.Clear, contentDescription = null)
                 }
-        })
+        }
+    )
 
+    LaunchedEffect(isFocused) {
+        if (!isFocused) {
+            focusManager.clearFocus()
+        }
+    }
 }
 
 @Composable

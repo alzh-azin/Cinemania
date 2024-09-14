@@ -1,6 +1,14 @@
 pluginManagement {
     repositories {
 
+        maven {
+            url = uri("https://inexus.samentic.com/repository/samentic-android")
+            credentials {
+                username = "azin.alizadeh"
+                password = "K}bWjB%k7PpAJ>."
+            }
+        }
+
         google {
             content {
                 includeGroupByRegex("com\\.android.*")
@@ -15,6 +23,13 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
+        maven {
+            url = uri("https://inexus.samentic.com/repository/samentic-android")
+            credentials {
+                username = "azin.alizadeh"
+                password = "K}bWjB%k7PpAJ>."
+            }
+        }
         google()
         mavenCentral()
     }
