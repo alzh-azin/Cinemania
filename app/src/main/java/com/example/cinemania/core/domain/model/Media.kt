@@ -6,6 +6,7 @@ import androidx.compose.runtime.Stable
 data class Media(
     val backdropPath: String?,
     val id: Int,
+    val index: Int = 0,
     val overview: String?,
     val posterPath: String?,
     val mediaType: String?,

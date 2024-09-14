@@ -17,8 +17,7 @@ interface CinemaniaService {
     @GET
     suspend fun searchMedia(
         @Url url: String = UrlHelper.SEARCH,
-        @Query("query") query: String
+        @Query("query") query: String,
+        @Query("page") page: Int
     ): Response<CinemaniaListApiResponse>
-
-
 }

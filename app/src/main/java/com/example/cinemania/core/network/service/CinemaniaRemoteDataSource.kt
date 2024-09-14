@@ -18,9 +18,10 @@ class CinemaniaRemoteDataSource @Inject constructor(
         exceptionMessage = "Error getting trend media"
     )
 
-    suspend fun searchMedia(query: String): NetworkResult<CinemaniaListApiResponse> = safeApiCall(
+    suspend fun searchMedia(query: String, page: Int): NetworkResult<CinemaniaListApiResponse> =
+        safeApiCall(
         call = {
-            cinemaniaService.searchMedia(query = query)
+            cinemaniaService.searchMedia(query = query, page = page)
         },
         exceptionMessage = "Error searching media"
     )

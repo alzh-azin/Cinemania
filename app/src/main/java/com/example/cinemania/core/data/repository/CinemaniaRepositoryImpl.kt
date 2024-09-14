@@ -1,17 +1,17 @@
 package com.example.cinemania.core.data.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import com.example.cinemania.core.data.util.NetworkConnectivityObserver
 import com.example.cinemania.core.database.dao.CinemaniaLocalDataSource
 import com.example.cinemania.core.database.model.toMedia
 import com.example.cinemania.core.domain.model.Media
 import com.example.cinemania.core.domain.repository.CinemaniaRepository
-import com.example.cinemania.core.network.model.MediaTypeNetwork
-import com.example.cinemania.core.network.model.toMedia
 import com.example.cinemania.core.network.model.toMediaEntity
 import com.example.cinemania.core.network.service.CinemaniaRemoteDataSource
+import com.example.cinemania.core.network.service.SearchPagingSource
 import com.example.cinemania.core.network.utils.NetworkResult
 import com.example.cinemania.core.network.utils.UrlHelper.BASE_IMAGE_URL_HIGH_QUALITY
-import com.example.cinemania.core.network.utils.UrlHelper.BASE_IMAGE_URL_LOW_QUALITY
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -66,32 +66,14 @@ class CinemaniaRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun searchMediaRemote(query: String): NetworkResult<List<Media>> {
-        return if (connectivityObserver.isConnected()) {
-            when (val searchMediaNetwork = cinemaniaRemoteDataSource.searchMedia(query)) {
-                is NetworkResult.Success -> {
-
-                    val result =
-                        searchMediaNetwork.data?.results?.filter {
-                            it.mediaType == MediaTypeNetwork.MOVIE.value
-                                    || it.mediaType == MediaTypeNetwork.TV_SHOW.value
-                        }
-
-                    NetworkResult.Success(result?.map { mediaNetwork ->
-                        mediaNetwork.toMedia(
-                            imageQuality = BASE_IMAGE_URL_LOW_QUALITY
-                        )
-                    })
-                }
-
-                is NetworkResult.Error -> {
-                    NetworkResult.Error(errorMessage = "Something went wrong, please try again")
-                }
+    override suspend fun searchMediaRemote(query: String) =
+        Pager(
+            config = PagingConfig(pageSize = PAGE_SIZE),
+            pagingSourceFactory = {
+                SearchPagingSource(query, cinemaniaRemoteDataSource)
             }
-        } else {
-            NetworkResult.Error(errorMessage = "Something went wrong, please try again")
-        }
-    }
+        ).flow
+
 
     override fun getMedia(
         id: Int,
@@ -109,6 +91,7 @@ class CinemaniaRepositoryImpl @Inject constructor(
     companion object {
 
         const val TREND_MOVIES_LIST_SIZE = 10
+        const val PAGE_SIZE = 20
     }
 
 }

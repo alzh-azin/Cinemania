@@ -24,6 +24,8 @@ hiltCommon = "1.2.0"
 coilCompose = "2.6.0"
 serialization = "1.6.3"
 material3 = "1.3.0-beta05"
+paging = "3.3.2"
+pagingCompose = "3.3.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -69,6 +71,9 @@ io-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompo
 
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+
+paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
+paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingCompose" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

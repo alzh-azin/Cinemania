@@ -12,6 +12,7 @@ data class MediaNetwork(
     @Json(name = "backdrop_path")
     val backdropPath: String?,
     val id: Int,
+    val index: Int = 0,
     val overview: String?,
     @Json(name = "poster_path")
     val posterPath: String?,

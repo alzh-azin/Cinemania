@@ -3,7 +3,6 @@ package com.example.cinemania.feature.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cinemania.core.domain.usecase.SearchMediaRemote
-import com.example.cinemania.core.network.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -49,10 +48,39 @@ class SearchViewModel @Inject constructor(
                 searchUiState.value =
                     searchUiState.value.copy(
                         searchQuery = "",
-                        searchResult = emptyList(),
+                        searchResult = null,
                         isLoading = false,
                         emptyResult = false
                     )
+            }
+
+            is SearchUiEvent.startLoading -> {
+                searchUiState.value = searchUiState.value.copy(isLoading = true)
+            }
+
+            is SearchUiEvent.stopLoading -> {
+                searchUiState.value = searchUiState.value.copy(isLoading = false)
+            }
+
+            is SearchUiEvent.onError -> {
+                viewModelScope.launch(Dispatchers.IO) {
+                    searchUiEffect.emit(SearchUiEffect(showError = true))
+                }
+            }
+
+            is SearchUiEvent.startPaginationLoading -> {
+                searchUiState.value =
+                    searchUiState.value.copy(isLoadingNextPage = true, showPaginationError = false)
+            }
+
+            is SearchUiEvent.stopPaginationLoading -> {
+                searchUiState.value =
+                    searchUiState.value.copy(isLoadingNextPage = false, showPaginationError = false)
+            }
+
+            is SearchUiEvent.showPaginationError -> {
+                searchUiState.value =
+                    searchUiState.value.copy(showPaginationError = true, isLoadingNextPage = false)
             }
         }
     }
@@ -60,33 +88,8 @@ class SearchViewModel @Inject constructor(
     fun searchMedia(query: String) {
         viewModelScope.launch(Dispatchers.IO) {
 
-            val asyncResult = async { searchMediaRemote(query) }
-
-            searchUiState.value = searchUiState.value.copy(isLoading = true)
-
-            when (val result = asyncResult.await()) {
-                is NetworkResult.Success -> {
-
-                    searchUiState.value = searchUiState.value
-                        .copy(
-                            searchResult = result.data.orEmpty(),
-                            emptyResult = if (result.data?.isEmpty() == true)
-                                true
-                            else
-                                false
-                        )
-
-                    searchUiState.value = searchUiState.value.copy(isLoading = false)
-
-                }
-
-                is NetworkResult.Error -> {
-
-                    searchUiEffect.emit(SearchUiEffect(showError = true))
-                    searchUiState.value = searchUiState.value.copy(isLoading = false)
-
-                }
-            }
+            val searchResult = async { searchMediaRemote(query) }
+            searchUiState.value = searchUiState.value.copy(searchResult = searchResult.await())
 
         }
     }

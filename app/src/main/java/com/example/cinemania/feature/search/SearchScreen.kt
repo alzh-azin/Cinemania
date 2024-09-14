@@ -1,6 +1,8 @@
 package com.example.cinemania.feature.search
 
+import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -12,16 +14,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -29,6 +33,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -37,12 +42,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
+import androidx.paging.PagingData
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.rememberAsyncImagePainter
 import com.example.cinemania.R
 import com.example.cinemania.core.domain.model.Media
 import com.example.cinemania.feature.components.PullToRefreshContent
 import com.example.cinemania.feature.details.extractYear
 import com.example.cinemania.ui.theme.CinemaniaTheme
+import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun SearchRoute(
@@ -100,14 +109,17 @@ fun SearchScreen(
 
             SearchTextField(query = searchUiState.searchQuery, onEvent)
 
-            SearchResultList(
-                emptyResult = searchUiState.emptyResult,
-                searchResult = searchUiState.searchResult
-            )
+            if (searchUiState.searchQuery.isNotBlank()) {
+
+                SearchResultList(
+                    isLoadingNextPage = searchUiState.isLoadingNextPage,
+                    showPaginationError = searchUiState.showPaginationError,
+                    searchResult = searchUiState.searchResult,
+                    onEvent = onEvent
+                )
+            }
         }
-
     }
-
 }
 
 @Composable
@@ -153,12 +165,45 @@ fun SearchTextField(
 
 @Composable
 fun SearchResultList(
-    emptyResult: Boolean,
-    searchResult: List<Media>,
+    isLoadingNextPage: Boolean,
+    showPaginationError: Boolean,
+    searchResult: Flow<PagingData<Media>>?,
+    onEvent: (SearchUiEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
-    if (emptyResult) {
+    val searchList = searchResult?.collectAsLazyPagingItems()
+
+    LaunchedEffect(key1 = searchList?.loadState) {
+
+        Log.d("StateLog", "${searchList?.loadState}")
+
+        if (searchList?.loadState?.append is LoadState.Error) {
+            onEvent(SearchUiEvent.showPaginationError)
+
+        }
+        if (searchList?.loadState?.append is LoadState.Loading) {
+
+            onEvent(SearchUiEvent.startPaginationLoading)
+        }
+        if (searchList?.loadState?.append is LoadState.NotLoading) {
+            onEvent(SearchUiEvent.stopPaginationLoading)
+        }
+
+        if (searchList?.loadState?.refresh is LoadState.Loading) {
+            onEvent(SearchUiEvent.startLoading)
+        }
+        if (searchList?.loadState?.refresh is LoadState.NotLoading) {
+            onEvent(SearchUiEvent.stopLoading)
+        }
+        if (searchList?.loadState?.refresh is LoadState.Error) {
+            onEvent(SearchUiEvent.onError)
+            onEvent(SearchUiEvent.stopLoading)
+        }
+    }
+
+
+    if (searchList?.itemCount == 0 && searchList.loadState.refresh is LoadState.NotLoading) {
         Text(
             modifier = modifier
                 .fillMaxSize()
@@ -167,14 +212,67 @@ fun SearchResultList(
         )
     } else {
         LazyColumn {
-            items(searchResult) { item ->
-                SearchItem(
-                    title = item.title.orEmpty(),
-                    image = item.posterPath,
-                    voteAverage = item.voteAverage,
-                    releaseDate = item.releaseDate
-                )
+            items(
+                count = searchList?.itemCount ?: 0,
+                key = { index ->
+                    searchList?.peek(index)?.id ?: 0
+                }
+            ) { index ->
+                val media = searchList?.get(index)
+
+                if (media != null) {
+                    SearchItem(
+                        title = media.title.orEmpty(),
+                        image = media.posterPath,
+                        voteAverage = media.voteAverage,
+                        releaseDate = media.releaseDate
+                    )
+                }
             }
+            if (isLoadingNextPage) {
+                item { LoadingItem() }
+            }
+            if (showPaginationError) {
+                item {
+                    ErrorMessage(message = "Please try again") {
+                        searchList?.retry()
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+@Composable
+fun LoadingItem(modifier: Modifier = Modifier) {
+    CircularProgressIndicator(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .wrapContentWidth(Alignment.CenterHorizontally)
+    )
+}
+
+@Composable
+fun ErrorMessage(
+    message: String,
+    modifier: Modifier = Modifier,
+    onClickRetry: () -> Unit
+) {
+    Row(
+        modifier = modifier.padding(10.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = message,
+            color = MaterialTheme.colorScheme.error,
+            modifier = Modifier.weight(1f),
+            maxLines = 2
+        )
+        OutlinedButton(onClick = onClickRetry) {
+            Text(text = "Retry")
         }
     }
 }
