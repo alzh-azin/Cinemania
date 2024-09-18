@@ -3,6 +3,7 @@ package com.example.cinemania.feature.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cinemania.core.domain.usecase.SearchMediaRemote
+import com.example.cinemania.core.utils.CinemaniaConstants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -35,7 +36,8 @@ class SearchViewModel @Inject constructor(
 
             is SearchUiEvent.onSearchQueryChange -> {
 
-                searchUiState.value = searchUiState.value.copy(searchQuery = event.query)
+                searchUiState.value =
+                    searchUiState.value.copy(searchQuery = event.query)
 
                 searchJob?.cancel()
                 searchJob = viewModelScope.launch(Dispatchers.IO) {
@@ -88,7 +90,7 @@ class SearchViewModel @Inject constructor(
     fun searchMedia(query: String) {
         viewModelScope.launch(Dispatchers.IO) {
 
-            val searchResult = async { searchMediaRemote(query) }
+            val searchResult = async { searchMediaRemote(query, CinemaniaConstants.PAGE_SIZE) }
             searchUiState.value = searchUiState.value.copy(searchResult = searchResult.await())
 
         }

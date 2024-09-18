@@ -12,6 +12,7 @@ import com.example.cinemania.core.network.service.CinemaniaRemoteDataSource
 import com.example.cinemania.core.network.service.SearchPagingSource
 import com.example.cinemania.core.network.utils.NetworkResult
 import com.example.cinemania.core.network.utils.UrlHelper.BASE_IMAGE_URL_HIGH_QUALITY
+import com.example.cinemania.core.utils.CinemaniaConstants.TREND_MOVIES_LIST_SIZE
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -31,7 +32,6 @@ class CinemaniaRepositoryImpl @Inject constructor(
                 mediaEntity.toMedia(imageQuality = BASE_IMAGE_URL_HIGH_QUALITY)
             }
         }
-
 
     override suspend fun getTrendMediaRemote(): NetworkResult<Unit> {
 
@@ -66,9 +66,9 @@ class CinemaniaRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun searchMediaRemote(query: String) =
+    override suspend fun searchMediaRemote(query: String, pageSize: Int) =
         Pager(
-            config = PagingConfig(pageSize = PAGE_SIZE),
+            config = PagingConfig(pageSize = pageSize),
             pagingSourceFactory = {
                 SearchPagingSource(query, cinemaniaRemoteDataSource)
             }
@@ -86,12 +86,6 @@ class CinemaniaRepositoryImpl @Inject constructor(
             cinemaniaLocalDataSource.getMedia(id)
                 .toMedia(imageQuality = BASE_IMAGE_URL_HIGH_QUALITY)
         )
-    }
-
-    companion object {
-
-        const val TREND_MOVIES_LIST_SIZE = 10
-        const val PAGE_SIZE = 20
     }
 
 }

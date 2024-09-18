@@ -57,6 +57,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.rememberAsyncImagePainter
 import com.example.cinemania.R
 import com.example.cinemania.core.domain.model.Media
+import com.example.cinemania.core.utils.CinemaniaConstants
 import com.example.cinemania.feature.components.PullToRefreshContent
 import com.example.cinemania.feature.details.extractYear
 import com.example.cinemania.ui.theme.CinemaniaTheme
@@ -234,8 +235,10 @@ fun SearchResultList(
         }
     }
 
+    if (searchList?.itemCount == 0
+        && searchList.loadState.source.isIdle
+    ) {
 
-    if (searchList?.itemCount == 0 && searchList.loadState.refresh is LoadState.NotLoading) {
         Text(
             modifier = modifier
                 .fillMaxSize()
@@ -261,7 +264,7 @@ fun SearchResultList(
                     )
                 }
             }
-            if (isLoadingNextPage) {
+            if (isLoadingNextPage && searchList?.itemCount?.rem(CinemaniaConstants.PAGE_SIZE) == 0) {
                 item { LoadingItem() }
             }
             if (showPaginationError) {
@@ -292,6 +295,8 @@ fun ErrorMessage(
     modifier: Modifier = Modifier,
     onClickRetry: () -> Unit
 ) {
+    //TODO change the design
+
     Row(
         modifier = modifier.padding(10.dp),
         horizontalArrangement = Arrangement.SpaceBetween,

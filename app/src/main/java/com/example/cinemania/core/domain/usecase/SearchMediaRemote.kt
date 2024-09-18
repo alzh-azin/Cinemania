@@ -6,5 +6,6 @@ import javax.inject.Inject
 class SearchMediaRemote @Inject constructor(
     private val cinemaniaRepository: CinemaniaRepository
 ) {
-    suspend operator fun invoke(query: String) = cinemaniaRepository.searchMediaRemote(query)
+    suspend operator fun invoke(query: String, pageSize: Int) =
+        cinemaniaRepository.searchMediaRemote(query, pageSize)
 }

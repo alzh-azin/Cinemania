@@ -11,7 +11,7 @@ interface CinemaniaRepository {
 
     suspend fun getTrendMediaRemote(): NetworkResult<Unit>
 
-    suspend fun searchMediaRemote(query: String): Flow<PagingData<Media>>
+    suspend fun searchMediaRemote(query: String, pageSize: Int): Flow<PagingData<Media>>
 
     fun getMedia(
         id: Int,
