@@ -1,6 +1,5 @@
 package com.example.cinemania.feature.search
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -208,8 +207,6 @@ fun SearchResultList(
     val searchList = searchResult?.collectAsLazyPagingItems()
 
     LaunchedEffect(key1 = searchList?.loadState) {
-
-        Log.d("StateLog", "${searchList?.loadState}")
 
         if (searchList?.loadState?.append is LoadState.Error) {
             onEvent(SearchUiEvent.showPaginationError)

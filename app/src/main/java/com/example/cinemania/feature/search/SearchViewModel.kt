@@ -37,8 +37,7 @@ class SearchViewModel @Inject constructor(
             is SearchUiEvent.onSearchQueryChange -> {
 
                 searchUiState.value =
-                    searchUiState.value.copy(searchQuery = event.query)
-
+                    searchUiState.value.copy(searchQuery = event.query, searchResult = null)
                 searchJob?.cancel()
                 searchJob = viewModelScope.launch(Dispatchers.IO) {
                     delay(1000)
