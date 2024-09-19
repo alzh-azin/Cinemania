@@ -32,11 +32,11 @@ class SearchViewModel @Inject constructor(
 
     fun onEvent(event: SearchUiEvent) {
         when (event) {
-            is SearchUiEvent.refresh -> {
+            is SearchUiEvent.Refresh -> {
                 searchMedia(searchUiState.value.searchQuery)
             }
 
-            is SearchUiEvent.onSearchQueryChange -> {
+            is SearchUiEvent.ChangeSearchQuery -> {
 
                 searchUiState.value =
                     searchUiState.value.copy(searchQuery = event.query, searchResult = null)
@@ -47,7 +47,7 @@ class SearchViewModel @Inject constructor(
                 }
             }
 
-            is SearchUiEvent.onClearSearch -> {
+            is SearchUiEvent.ClearSearch -> {
                 searchUiState.value =
                     searchUiState.value.copy(
                         searchQuery = "",
@@ -57,36 +57,36 @@ class SearchViewModel @Inject constructor(
                     )
             }
 
-            is SearchUiEvent.startLoading -> {
+            is SearchUiEvent.StartLoading -> {
                 searchUiState.value = searchUiState.value.copy(isLoading = true)
             }
 
-            is SearchUiEvent.stopLoading -> {
+            is SearchUiEvent.StopLoading -> {
                 searchUiState.value = searchUiState.value.copy(isLoading = false)
             }
 
-            is SearchUiEvent.onError -> {
+            is SearchUiEvent.ShowSearchResultError -> {
                 viewModelScope.launch(Dispatchers.IO) {
                     searchUiEffect.emit(SearchUiEffect(showError = true))
                 }
             }
 
-            is SearchUiEvent.startPaginationLoading -> {
+            is SearchUiEvent.StartPaginationLoading -> {
                 searchUiState.value =
                     searchUiState.value.copy(isLoadingNextPage = true, showPaginationError = false)
             }
 
-            is SearchUiEvent.stopPaginationLoading -> {
+            is SearchUiEvent.StopPaginationLoading -> {
                 searchUiState.value =
                     searchUiState.value.copy(isLoadingNextPage = false, showPaginationError = false)
             }
 
-            is SearchUiEvent.showPaginationError -> {
+            is SearchUiEvent.ShowPaginationError -> {
                 searchUiState.value =
                     searchUiState.value.copy(showPaginationError = true, isLoadingNextPage = false)
             }
 
-            is SearchUiEvent.navigateToDetailsScreen -> {
+            is SearchUiEvent.NavigateToDetailsScreen -> {
                 viewModelScope.launch(Dispatchers.IO) {
                     insertMedia(event.media)
                 }

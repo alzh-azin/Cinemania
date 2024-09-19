@@ -4,23 +4,23 @@ import com.example.cinemania.core.domain.model.Media
 
 sealed class SearchUiEvent {
 
-    data object refresh : SearchUiEvent()
+    data object Refresh : SearchUiEvent()
 
-    data class onSearchQueryChange(val query: String) : SearchUiEvent()
+    data class ChangeSearchQuery(val query: String) : SearchUiEvent()
 
-    data object onClearSearch : SearchUiEvent()
+    data object ClearSearch : SearchUiEvent()
 
-    data object startLoading : SearchUiEvent()
+    data object StartLoading : SearchUiEvent()
 
-    data object stopLoading : SearchUiEvent()
+    data object StopLoading : SearchUiEvent()
 
-    data object startPaginationLoading : SearchUiEvent()
+    data object StartPaginationLoading : SearchUiEvent()
 
-    data object stopPaginationLoading : SearchUiEvent()
+    data object StopPaginationLoading : SearchUiEvent()
 
-    data object showPaginationError : SearchUiEvent()
+    data object ShowPaginationError : SearchUiEvent()
 
-    data object onError : SearchUiEvent()
+    data object ShowSearchResultError : SearchUiEvent()
 
-    data class navigateToDetailsScreen(val media: Media) : SearchUiEvent()
+    data class NavigateToDetailsScreen(val media: Media) : SearchUiEvent()
 }

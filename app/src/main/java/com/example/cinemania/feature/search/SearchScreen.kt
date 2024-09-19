@@ -109,7 +109,7 @@ fun SearchScreen(
 
     LaunchedEffect(key1 = snackBarResult) {
         if (snackBarResult == SnackbarResult.ActionPerformed) {
-            onEvent(SearchUiEvent.refresh)
+            onEvent(SearchUiEvent.Refresh)
             onNetworkConnectionError(false)
         }
     }
@@ -118,7 +118,7 @@ fun SearchScreen(
         isRefreshing = searchUiState.isLoading,
         contentPadding = contentPadding,
         onRefresh = {
-            onEvent(SearchUiEvent.refresh)
+            onEvent(SearchUiEvent.Refresh)
         }) {
         Column {
 
@@ -176,7 +176,7 @@ fun SearchTextField(
         ),
         value = query,
         onValueChange = {
-            onEvent(SearchUiEvent.onSearchQueryChange(it))
+            onEvent(SearchUiEvent.ChangeSearchQuery(it))
         },
         label = { Text(text = stringResource(id = R.string.label_search)) },
         singleLine = true,
@@ -187,7 +187,7 @@ fun SearchTextField(
         trailingIcon = {
             if (query.isNotEmpty())
                 IconButton(onClick = {
-                    onEvent(SearchUiEvent.onClearSearch)
+                    onEvent(SearchUiEvent.ClearSearch)
                     focusManager.clearFocus()
                 }) {
                     Icon(imageVector = Icons.Filled.Clear, contentDescription = null)
@@ -217,26 +217,26 @@ fun SearchResultList(
     LaunchedEffect(key1 = searchList?.loadState) {
 
         if (searchList?.loadState?.append is LoadState.Error) {
-            onEvent(SearchUiEvent.showPaginationError)
+            onEvent(SearchUiEvent.ShowPaginationError)
 
         }
         if (searchList?.loadState?.append is LoadState.Loading) {
 
-            onEvent(SearchUiEvent.startPaginationLoading)
+            onEvent(SearchUiEvent.StartPaginationLoading)
         }
         if (searchList?.loadState?.append is LoadState.NotLoading) {
-            onEvent(SearchUiEvent.stopPaginationLoading)
+            onEvent(SearchUiEvent.StopPaginationLoading)
         }
 
         if (searchList?.loadState?.refresh is LoadState.Loading) {
-            onEvent(SearchUiEvent.startLoading)
+            onEvent(SearchUiEvent.StartLoading)
         }
         if (searchList?.loadState?.refresh is LoadState.NotLoading) {
-            onEvent(SearchUiEvent.stopLoading)
+            onEvent(SearchUiEvent.StopLoading)
         }
         if (searchList?.loadState?.refresh is LoadState.Error) {
-            onEvent(SearchUiEvent.onError)
-            onEvent(SearchUiEvent.stopLoading)
+            onEvent(SearchUiEvent.ShowSearchResultError)
+            onEvent(SearchUiEvent.StopLoading)
         }
     }
 
@@ -267,7 +267,7 @@ fun SearchResultList(
                         voteAverage = media.voteAverage,
                         releaseDate = media.releaseDate,
                         onNavigateToDetailsScreen = {
-                            onEvent(SearchUiEvent.navigateToDetailsScreen(media))
+                            onEvent(SearchUiEvent.NavigateToDetailsScreen(media))
                             onNavigateToDetailsScreen(media.id)
                         }
                     )
