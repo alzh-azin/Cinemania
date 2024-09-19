@@ -3,7 +3,7 @@ package com.example.cinemania.core.network.model
 import com.example.cinemania.core.database.model.MediaEntity
 import com.example.cinemania.core.domain.model.GenreType
 import com.example.cinemania.core.domain.model.Media
-import com.example.cinemania.core.network.utils.UrlHelper.BASE_IMAGE_URL
+import com.example.cinemania.core.domain.model.MediaType
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -30,24 +30,20 @@ data class MediaNetwork(
     val genres: List<Int>?
 )
 
-fun MediaNetwork.toMedia(imageQuality: String) = Media(
-    backdropPath = "$BASE_IMAGE_URL$imageQuality" + backdropPath,
+fun MediaNetwork.toMedia() = Media(
+    backdropPath = backdropPath,
     id = id,
     overview = overview,
-    posterPath = "$BASE_IMAGE_URL$imageQuality" + posterPath,
-    mediaType = when (mediaType) {
-        MediaTypeNetwork.MOVIE.value -> MediaTypeNetwork.MOVIE.typeName
-        MediaTypeNetwork.TV_SHOW.value -> MediaTypeNetwork.TV_SHOW.typeName
-        else -> ""
-    },
+    posterPath = posterPath,
+    mediaType = MediaType.toMediaType(mediaType),
     title = when (mediaType) {
-        MediaTypeNetwork.MOVIE.value -> title
-        MediaTypeNetwork.TV_SHOW.value -> name
+        MediaType.MOVIE.value -> title
+        MediaType.TV_SHOW.value -> name
         else -> ""
     },
     releaseDate = when (mediaType) {
-        MediaTypeNetwork.MOVIE.value -> releaseDate
-        MediaTypeNetwork.TV_SHOW.value -> firstAirDate
+        MediaType.MOVIE.value -> releaseDate
+        MediaType.TV_SHOW.value -> firstAirDate
         else -> ""
     },
     voteAverage = voteAverage,
@@ -61,19 +57,15 @@ fun MediaNetwork.toMediaEntity(isTrendMedia: Boolean = false, index: Int = 0) = 
     id = id,
     overview = overview,
     posterPath = posterPath,
-    mediaType = when (mediaType) {
-        MediaTypeNetwork.MOVIE.value -> MediaTypeNetwork.MOVIE.typeName
-        MediaTypeNetwork.TV_SHOW.value -> MediaTypeNetwork.TV_SHOW.typeName
-        else -> ""
-    },
+    mediaType = mediaType,
     title = when (mediaType) {
-        MediaTypeNetwork.MOVIE.value -> title
-        MediaTypeNetwork.TV_SHOW.value -> name
+        MediaType.MOVIE.value -> title
+        MediaType.TV_SHOW.value -> name
         else -> ""
     },
     releaseDate = when (mediaType) {
-        MediaTypeNetwork.MOVIE.value -> releaseDate
-        MediaTypeNetwork.TV_SHOW.value -> firstAirDate
+        MediaType.MOVIE.value -> releaseDate
+        MediaType.TV_SHOW.value -> firstAirDate
         else -> ""
     },
     voteAverage = voteAverage,

@@ -2,6 +2,7 @@ package com.example.cinemania.feature.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cinemania.core.domain.usecase.InsertMedia
 import com.example.cinemania.core.domain.usecase.SearchMediaRemote
 import com.example.cinemania.core.utils.CinemaniaConstants
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val searchMediaRemote: SearchMediaRemote
+    private val searchMediaRemote: SearchMediaRemote,
+    private val insertMedia: InsertMedia
 ) : ViewModel() {
 
     var searchUiState = MutableStateFlow(SearchUiState())
@@ -82,6 +84,12 @@ class SearchViewModel @Inject constructor(
             is SearchUiEvent.showPaginationError -> {
                 searchUiState.value =
                     searchUiState.value.copy(showPaginationError = true, isLoadingNextPage = false)
+            }
+
+            is SearchUiEvent.navigateToDetailsScreen -> {
+                viewModelScope.launch(Dispatchers.IO) {
+                    insertMedia(event.media)
+                }
             }
         }
     }

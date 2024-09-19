@@ -71,7 +71,10 @@ fun NavGraph(
             SearchRoute(
                 contentPadding = contentPadding,
                 onNetworkConnectionError = onNetworkConnectionError,
-                snackBarResult = snackBarResult
+                snackBarResult = snackBarResult,
+                onNavigateToDetailsScreen = {
+                    navController.navigate(NavigationRoutes.Details(it))
+                }
             )
         }
     }

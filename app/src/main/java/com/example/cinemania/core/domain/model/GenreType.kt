@@ -48,6 +48,19 @@ enum class GenreType(
             return ""
         }
 
+        fun getGenreCode(name: String, mediaType: MediaType?): Int {
+            enumValues<GenreType>().forEach {
+                if (it.genreName == name) {
+                    return when (mediaType) {
+                        MediaType.MOVIE -> it.movieCode ?: -1
+                        MediaType.TV_SHOW -> it.tvShowCode ?: -1
+                        null -> -1
+                    }
+                }
+            }
+            return -1
+        }
+
         fun getGenreList(): List<Genre> {
             val allGenre = Genre("All", isSelected = true)
             val genreList = enumValues<GenreType>().map { genreType ->

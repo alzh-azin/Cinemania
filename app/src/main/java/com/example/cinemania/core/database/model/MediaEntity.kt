@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.cinemania.core.domain.model.GenreType
 import com.example.cinemania.core.domain.model.Media
-import com.example.cinemania.core.network.utils.UrlHelper.BASE_IMAGE_URL
+import com.example.cinemania.core.domain.model.MediaType
 
 @Entity
 data class MediaEntity(
@@ -20,18 +20,36 @@ data class MediaEntity(
     val isTrendMedia: Boolean?,
     val genres: List<Int>?,
     val index: Int,
-)
+) {
+    fun toMedia() = Media(
+        backdropPath = backdropPath,
+        id = id,
+        overview = overview,
+        posterPath = posterPath,
+        mediaType = MediaType.toMediaType(mediaType),
+        title = title,
+        releaseDate = releaseDate,
+        voteAverage = voteAverage,
+        genres = genres?.map {
+            GenreType.enumValueOf(it)
+        }
+    )
+}
 
-fun MediaEntity.toMedia(imageQuality: String) = Media(
-    backdropPath = "$BASE_IMAGE_URL$imageQuality" + backdropPath,
+fun Media.toMediaEntity() = MediaEntity(
+    backdropPath = backdropPath,
     id = id,
     overview = overview,
-    posterPath = "$BASE_IMAGE_URL$imageQuality" + posterPath,
-    mediaType = mediaType,
+    posterPath = posterPath,
+    mediaType = mediaType?.value,
     title = title,
     releaseDate = releaseDate,
     voteAverage = voteAverage,
+    isTrendMedia = false,
     genres = genres?.map {
-        GenreType.enumValueOf(it)
-    }
+        GenreType.getGenreCode(it, mediaType)
+    },
+    index = index
+
 )
+

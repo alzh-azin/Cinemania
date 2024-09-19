@@ -19,4 +19,6 @@ interface CinemaniaRepository {
         onComplete: () -> Unit,
         onError: (String?) -> Unit
     ): Flow<Media>
+
+    suspend fun insertMedia(media: Media)
 }

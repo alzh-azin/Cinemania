@@ -4,14 +4,13 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.example.cinemania.core.data.util.NetworkConnectivityObserver
 import com.example.cinemania.core.database.dao.CinemaniaLocalDataSource
-import com.example.cinemania.core.database.model.toMedia
+import com.example.cinemania.core.database.model.toMediaEntity
 import com.example.cinemania.core.domain.model.Media
 import com.example.cinemania.core.domain.repository.CinemaniaRepository
 import com.example.cinemania.core.network.model.toMediaEntity
 import com.example.cinemania.core.network.service.CinemaniaRemoteDataSource
 import com.example.cinemania.core.network.service.SearchPagingSource
 import com.example.cinemania.core.network.utils.NetworkResult
-import com.example.cinemania.core.network.utils.UrlHelper.BASE_IMAGE_URL_HIGH_QUALITY
 import com.example.cinemania.core.utils.CinemaniaConstants.TREND_MOVIES_LIST_SIZE
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -29,7 +28,7 @@ class CinemaniaRepositoryImpl @Inject constructor(
     override fun getTrendMediaLocal() =
         cinemaniaLocalDataSource.getTrendMovies().map { trendMediaList ->
             trendMediaList.map { mediaEntity ->
-                mediaEntity.toMedia(imageQuality = BASE_IMAGE_URL_HIGH_QUALITY)
+                mediaEntity.toMedia()
             }
         }
 
@@ -83,9 +82,12 @@ class CinemaniaRepositoryImpl @Inject constructor(
     ): Flow<Media> = flow {
 
         emit(
-            cinemaniaLocalDataSource.getMedia(id)
-                .toMedia(imageQuality = BASE_IMAGE_URL_HIGH_QUALITY)
+            cinemaniaLocalDataSource.getMedia(id).toMedia()
         )
+    }
+
+    override suspend fun insertMedia(media: Media) {
+        cinemaniaLocalDataSource.insertMedia(media.toMediaEntity())
     }
 
 }

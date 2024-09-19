@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import coil.compose.rememberAsyncImagePainter
 import com.example.cinemania.core.domain.model.Media
+import com.example.cinemania.core.network.utils.UrlHelper.BASE_IMAGE_URL
+import com.example.cinemania.core.network.utils.UrlHelper.BASE_IMAGE_URL_HIGH_QUALITY
 import kotlin.math.absoluteValue
 import kotlin.math.ceil
 
@@ -47,7 +49,11 @@ fun ImageSlider(
             pageSpacing = 16.dp
         ) { currentPage ->
             val painter =
-                rememberAsyncImagePainter(model = images[currentPage % images.size]?.posterPath)
+                rememberAsyncImagePainter(
+                    model =
+                    "$BASE_IMAGE_URL$BASE_IMAGE_URL_HIGH_QUALITY"
+                            + images[currentPage % images.size]?.posterPath
+                )
 
             Card(
                 modifier = modifier

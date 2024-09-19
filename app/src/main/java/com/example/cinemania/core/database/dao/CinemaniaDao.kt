@@ -12,7 +12,10 @@ import kotlinx.coroutines.flow.Flow
 interface CinemaniaDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMedia(movies: List<MediaEntity>)
+    suspend fun insertMediaList(media: List<MediaEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMedia(media: MediaEntity)
 
     @Transaction
     @Query("SELECT * FROM MediaEntity")

@@ -1,6 +1,7 @@
 package com.example.cinemania.feature.search
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -56,6 +57,8 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.rememberAsyncImagePainter
 import com.example.cinemania.R
 import com.example.cinemania.core.domain.model.Media
+import com.example.cinemania.core.network.utils.UrlHelper.BASE_IMAGE_URL
+import com.example.cinemania.core.network.utils.UrlHelper.BASE_IMAGE_URL_LOW_QUALITY
 import com.example.cinemania.core.utils.CinemaniaConstants
 import com.example.cinemania.feature.components.PullToRefreshContent
 import com.example.cinemania.feature.details.extractYear
@@ -65,8 +68,9 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 fun SearchRoute(
     contentPadding: PaddingValues,
-    onNetworkConnectionError: (showError: Boolean) -> Unit,
     snackBarResult: SnackbarResult,
+    onNetworkConnectionError: (showError: Boolean) -> Unit,
+    onNavigateToDetailsScreen: (id: Int) -> Unit,
     modifier: Modifier = Modifier,
     searchViewModel: SearchViewModel = hiltViewModel()
 ) {
@@ -84,6 +88,7 @@ fun SearchRoute(
         contentPadding = contentPadding,
         snackBarResult = snackBarResult,
         onNetworkConnectionError = onNetworkConnectionError,
+        onNavigateToDetailsScreen = onNavigateToDetailsScreen,
         onEvent = { event ->
             searchViewModel.onEvent(event)
         },
@@ -96,8 +101,9 @@ fun SearchScreen(
     searchUiState: SearchUiState,
     contentPadding: PaddingValues,
     snackBarResult: SnackbarResult,
-    onNetworkConnectionError: (showError: Boolean) -> Unit,
     onEvent: (SearchUiEvent) -> Unit,
+    onNetworkConnectionError: (showError: Boolean) -> Unit,
+    onNavigateToDetailsScreen: (id: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -124,7 +130,8 @@ fun SearchScreen(
                     isLoadingNextPage = searchUiState.isLoadingNextPage,
                     showPaginationError = searchUiState.showPaginationError,
                     searchResult = searchUiState.searchResult,
-                    onEvent = onEvent
+                    onEvent = onEvent,
+                    onNavigateToDetailsScreen = onNavigateToDetailsScreen
                 )
             }
         }
@@ -201,6 +208,7 @@ fun SearchResultList(
     showPaginationError: Boolean,
     searchResult: Flow<PagingData<Media>>?,
     onEvent: (SearchUiEvent) -> Unit,
+    onNavigateToDetailsScreen: (id: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -257,7 +265,11 @@ fun SearchResultList(
                         title = media.title.orEmpty(),
                         image = media.posterPath,
                         voteAverage = media.voteAverage,
-                        releaseDate = media.releaseDate
+                        releaseDate = media.releaseDate,
+                        onNavigateToDetailsScreen = {
+                            onEvent(SearchUiEvent.navigateToDetailsScreen(media))
+                            onNavigateToDetailsScreen(media.id)
+                        }
                     )
                 }
             }
@@ -317,12 +329,18 @@ fun SearchItem(
     image: String?,
     voteAverage: Double?,
     releaseDate: String?,
+    onNavigateToDetailsScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
-    val painter = rememberAsyncImagePainter(model = image)
+    val painter =
+        rememberAsyncImagePainter(model = BASE_IMAGE_URL + BASE_IMAGE_URL_LOW_QUALITY + image)
 
-    Row(modifier = modifier.padding(start = 8.dp, top = 16.dp)) {
+    Row(modifier = modifier
+        .padding(start = 8.dp, top = 16.dp)
+        .clickable {
+            onNavigateToDetailsScreen()
+        }) {
 
         Image(
             painter = painter,
@@ -377,7 +395,8 @@ fun SearchItemPreview() {
             title = "Inside out 2",
             image = "",
             voteAverage = 7.9,
-            releaseDate = "2024"
+            releaseDate = "2024",
+            onNavigateToDetailsScreen = {}
         )
     }
 }

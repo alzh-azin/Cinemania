@@ -5,7 +5,6 @@ import androidx.paging.PagingState
 import com.example.cinemania.core.domain.model.Media
 import com.example.cinemania.core.network.model.toMedia
 import com.example.cinemania.core.network.utils.NetworkResult
-import com.example.cinemania.core.network.utils.UrlHelper.BASE_IMAGE_URL_LOW_QUALITY
 
 class SearchPagingSource(
     private val searchQuery: String,
@@ -27,7 +26,7 @@ class SearchPagingSource(
             when (response) {
                 is NetworkResult.Success -> {
                     LoadResult.Page(
-                        data = response.data?.results?.map { it.toMedia(BASE_IMAGE_URL_LOW_QUALITY) }
+                        data = response.data?.results?.map { it.toMedia() }
                             .orEmpty(),
                         prevKey = if (page == 1) null else page - 1,
                         nextKey = if (response.data?.results?.isEmpty() == true) null else page + 1

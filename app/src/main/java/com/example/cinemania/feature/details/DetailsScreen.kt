@@ -39,6 +39,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.example.cinemania.core.domain.model.Media
+import com.example.cinemania.core.network.utils.UrlHelper.BASE_IMAGE_URL
+import com.example.cinemania.core.network.utils.UrlHelper.BASE_IMAGE_URL_HIGH_QUALITY
 import com.example.cinemania.ui.theme.amber600
 import com.example.cinemania.ui.theme.lightBlue500
 import com.example.cinemania.ui.theme.purpleA700
@@ -120,7 +122,8 @@ fun DetailsHeaderImage(
     imageUrl: String,
     modifier: Modifier = Modifier
 ) {
-    val painter = rememberAsyncImagePainter(model = imageUrl)
+    val painter =
+        rememberAsyncImagePainter(model = "$BASE_IMAGE_URL$BASE_IMAGE_URL_HIGH_QUALITY" + imageUrl)
     Image(
         painter = painter,
         contentDescription = null,

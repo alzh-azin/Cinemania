@@ -15,10 +15,13 @@ class CinemaniaLocalDataSource @Inject constructor(
     suspend fun insertTrendMovies(movies: List<MediaEntity>) {
         cinemaniaDatabase.withTransaction {
             cinemaniaDao.deleteTrendMedia()
-            cinemaniaDao.insertMedia(movies)
+            cinemaniaDao.insertMediaList(movies)
         }
     }
 
+    suspend fun insertMedia(media: MediaEntity) {
+        cinemaniaDao.insertMedia(media)
+    }
 
     fun getTrendMovies() =
         cinemaniaDao.getMediaTrendList()

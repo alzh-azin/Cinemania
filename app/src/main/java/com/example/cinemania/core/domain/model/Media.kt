@@ -9,7 +9,7 @@ data class Media(
     val index: Int = 0,
     val overview: String?,
     val posterPath: String?,
-    val mediaType: String?,
+    val mediaType: MediaType?,
     val title: String?,
     val releaseDate: String?,
     val voteAverage: Double?,
