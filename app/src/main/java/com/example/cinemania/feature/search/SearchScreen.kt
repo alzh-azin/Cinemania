@@ -31,26 +31,19 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -144,30 +137,11 @@ fun SearchTextField(
     onEvent: (SearchUiEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val focusManager = LocalFocusManager.current
-    var isFocused by rememberSaveable { mutableStateOf(false) }
-    val lifecycleOwner = LocalLifecycleOwner.current
-
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_STOP) {
-                focusManager.clearFocus()
-                isFocused = false
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-        }
-    }
 
     TextField(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp)
-            .onFocusEvent { focusState ->
-                isFocused = focusState.isFocused
-            },
+            .padding(16.dp),
         shape = RoundedCornerShape(32.dp),
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.Transparent,
@@ -188,18 +162,11 @@ fun SearchTextField(
             if (query.isNotEmpty())
                 IconButton(onClick = {
                     onEvent(SearchUiEvent.ClearSearch)
-                    focusManager.clearFocus()
                 }) {
                     Icon(imageVector = Icons.Filled.Clear, contentDescription = null)
                 }
         }
     )
-
-    LaunchedEffect(isFocused) {
-        if (!isFocused) {
-            focusManager.clearFocus()
-        }
-    }
 }
 
 @Composable
@@ -212,38 +179,13 @@ fun SearchResultList(
     modifier: Modifier = Modifier
 ) {
 
-    val searchList = searchResult?.collectAsLazyPagingItems()
+    val pagingItem = searchResult?.collectAsLazyPagingItems()
 
-    LaunchedEffect(key1 = searchList?.loadState) {
+    PaginationStateHandler(loadState = pagingItem?.loadState, onEvent = onEvent)
 
-        if (searchList?.loadState?.append is LoadState.Error) {
-            onEvent(SearchUiEvent.ShowPaginationError)
-
-        }
-        if (searchList?.loadState?.append is LoadState.Loading) {
-
-            onEvent(SearchUiEvent.StartPaginationLoading)
-        }
-        if (searchList?.loadState?.append is LoadState.NotLoading) {
-            onEvent(SearchUiEvent.StopPaginationLoading)
-        }
-
-        if (searchList?.loadState?.refresh is LoadState.Loading) {
-            onEvent(SearchUiEvent.StartLoading)
-        }
-        if (searchList?.loadState?.refresh is LoadState.NotLoading) {
-            onEvent(SearchUiEvent.StopLoading)
-        }
-        if (searchList?.loadState?.refresh is LoadState.Error) {
-            onEvent(SearchUiEvent.ShowSearchResultError)
-            onEvent(SearchUiEvent.StopLoading)
-        }
-    }
-
-    if (searchList?.itemCount == 0
-        && searchList.loadState.source.isIdle
+    if (pagingItem?.itemCount == 0
+        && pagingItem.loadState.source.isIdle
     ) {
-
         Text(
             modifier = modifier
                 .fillMaxSize()
@@ -253,12 +195,12 @@ fun SearchResultList(
     } else {
         LazyColumn {
             items(
-                count = searchList?.itemCount ?: 0,
+                count = pagingItem?.itemCount ?: 0,
                 key = { index ->
-                    searchList?.peek(index)?.id ?: 0
+                    pagingItem?.peek(index)?.id ?: 0
                 }
             ) { index ->
-                val media = searchList?.get(index)
+                val media = pagingItem?.get(index)
 
                 if (media != null) {
                     SearchItem(
@@ -273,13 +215,15 @@ fun SearchResultList(
                     )
                 }
             }
-            if (isLoadingNextPage && searchList?.itemCount?.rem(CinemaniaConstants.PAGE_SIZE) == 0) {
-                item { LoadingItem() }
+            // If itemCount % 20 is not 0, it means itemCount for current page is less than 20
+            // and there is no more pages for that search query, so LoadingItem should not appear
+            if (isLoadingNextPage && pagingItem?.itemCount?.rem(CinemaniaConstants.PAGE_SIZE) == 0) {
+                item { PaginationLoadingItem() }
             }
             if (showPaginationError) {
                 item {
-                    ErrorMessage(message = "Please try again") {
-                        searchList?.retry()
+                    PaginationErrorItem {
+                        pagingItem?.retry()
                     }
                 }
             }
@@ -289,7 +233,37 @@ fun SearchResultList(
 }
 
 @Composable
-fun LoadingItem(modifier: Modifier = Modifier) {
+fun PaginationStateHandler(loadState: CombinedLoadStates?, onEvent: (SearchUiEvent) -> Unit) {
+
+    LaunchedEffect(key1 = loadState) {
+
+        if (loadState?.append is LoadState.Error) {
+            onEvent(SearchUiEvent.ShowPaginationError)
+
+        }
+        if (loadState?.append is LoadState.Loading) {
+
+            onEvent(SearchUiEvent.StartPaginationLoading)
+        }
+        if (loadState?.append is LoadState.NotLoading) {
+            onEvent(SearchUiEvent.StopPaginationLoading)
+        }
+
+        if (loadState?.refresh is LoadState.Loading) {
+            onEvent(SearchUiEvent.StartLoading)
+        }
+        if (loadState?.refresh is LoadState.NotLoading) {
+            onEvent(SearchUiEvent.StopLoading)
+        }
+        if (loadState?.refresh is LoadState.Error) {
+            onEvent(SearchUiEvent.ShowSearchResultError)
+            onEvent(SearchUiEvent.StopLoading)
+        }
+    }
+}
+
+@Composable
+fun PaginationLoadingItem(modifier: Modifier = Modifier) {
     CircularProgressIndicator(
         modifier = modifier
             .fillMaxWidth()
@@ -299,26 +273,30 @@ fun LoadingItem(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ErrorMessage(
-    message: String,
+fun PaginationErrorItem(
     modifier: Modifier = Modifier,
     onClickRetry: () -> Unit
 ) {
-    //TODO change the design
 
     Row(
-        modifier = modifier.padding(10.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(start = 8.dp, end = 8.dp),
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = message,
-            color = MaterialTheme.colorScheme.error,
-            modifier = Modifier.weight(1f),
-            maxLines = 2
+            modifier = modifier.padding(end = 8.dp),
+            text = stringResource(id = R.string.msg_network_error),
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center
         )
         OutlinedButton(onClick = onClickRetry) {
-            Text(text = "Retry")
+            Text(
+                text = stringResource(id = R.string.label_retry),
+                style = MaterialTheme.typography.bodyMedium,
+            )
         }
     }
 }
@@ -353,6 +331,7 @@ fun SearchItem(
         Column(modifier = modifier.padding(top = 24.dp, start = 8.dp, end = 8.dp)) {
             Text(
                 style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface,
                 text = title.orEmpty(),
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
@@ -384,7 +363,6 @@ fun SearchItem(
             )
         }
     }
-
 }
 
 @Preview(name = "SearchItem")
@@ -398,5 +376,15 @@ fun SearchItemPreview() {
             releaseDate = "2024",
             onNavigateToDetailsScreen = {}
         )
+    }
+}
+
+@Preview(name = "PaginationErrorItem")
+@Composable
+fun PaginationErrorItemPreview() {
+    CinemaniaTheme {
+        PaginationErrorItem {
+
+        }
     }
 }
