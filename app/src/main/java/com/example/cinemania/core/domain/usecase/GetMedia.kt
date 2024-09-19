@@ -6,15 +6,5 @@ import javax.inject.Inject
 class GetMedia @Inject constructor(
     private val cinemaniaRepository: CinemaniaRepository
 ) {
-    operator fun invoke(
-        id: Int,
-        onStart: () -> Unit,
-        onComplete: () -> Unit,
-        onError: (String?) -> Unit,
-    ) = cinemaniaRepository.getMedia(
-        id = id,
-        onStart = onStart,
-        onComplete = onComplete,
-        onError = onError
-    )
+    suspend operator fun invoke(id: Int) = cinemaniaRepository.getMedia(id = id)
 }

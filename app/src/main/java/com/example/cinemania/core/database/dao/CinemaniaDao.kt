@@ -27,7 +27,7 @@ interface CinemaniaDao {
 
     @Transaction
     @Query("SELECT * FROM MediaEntity WHERE id = :id")
-    suspend fun getMedia(id: Int): MediaEntity
+    fun getMedia(id: Int): Flow<MediaEntity>
 
     @Transaction
     @Query("DELETE FROM MediaEntity WHERE isTrendMedia = 1")

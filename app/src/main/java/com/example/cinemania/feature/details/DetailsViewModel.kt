@@ -26,12 +26,7 @@ class DetailsViewModel @Inject constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val media = id.flatMapLatest { id ->
-        getMedia(
-            id = id,
-            onStart = {},
-            onComplete = {},
-            onError = {}
-        )
+        getMedia(id = id)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),

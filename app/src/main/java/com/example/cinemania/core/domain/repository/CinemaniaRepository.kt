@@ -13,12 +13,7 @@ interface CinemaniaRepository {
 
     suspend fun searchMediaRemote(query: String, pageSize: Int): Flow<PagingData<Media>>
 
-    fun getMedia(
-        id: Int,
-        onStart: () -> Unit,
-        onComplete: () -> Unit,
-        onError: (String?) -> Unit
-    ): Flow<Media>
+    fun getMedia(id: Int): Flow<Media>
 
     suspend fun insertMedia(media: Media)
 }

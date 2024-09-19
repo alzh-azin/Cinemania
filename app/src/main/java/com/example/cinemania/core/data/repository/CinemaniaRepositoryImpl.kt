@@ -13,7 +13,6 @@ import com.example.cinemania.core.network.service.SearchPagingSource
 import com.example.cinemania.core.network.utils.NetworkResult
 import com.example.cinemania.core.utils.CinemaniaConstants.TREND_MOVIES_LIST_SIZE
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -73,17 +72,10 @@ class CinemaniaRepositoryImpl @Inject constructor(
             }
         ).flow
 
-
-    override fun getMedia(
-        id: Int,
-        onStart: () -> Unit,
-        onComplete: () -> Unit,
-        onError: (String?) -> Unit
-    ): Flow<Media> = flow {
-
-        emit(
-            cinemaniaLocalDataSource.getMedia(id).toMedia()
-        )
+    override fun getMedia(id: Int): Flow<Media> {
+        return cinemaniaLocalDataSource.getMedia(id).map {
+            it.toMedia()
+        }
     }
 
     override suspend fun insertMedia(media: Media) {
