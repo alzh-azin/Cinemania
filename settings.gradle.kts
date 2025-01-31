@@ -1,14 +1,9 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
-
         maven {
-            url = uri("https://inexus.samentic.com/repository/samentic-android")
-            credentials {
-                username = "azin.alizadeh"
-                password = "K}bWjB%k7PpAJ>."
-            }
+            url = uri("https://maven.myket.ir")
         }
-
         google {
             content {
                 includeGroupByRegex("com\\.android.*")
@@ -24,11 +19,7 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         maven {
-            url = uri("https://inexus.samentic.com/repository/samentic-android")
-            credentials {
-                username = "azin.alizadeh"
-                password = "K}bWjB%k7PpAJ>."
-            }
+            url = uri("https://maven.myket.ir")
         }
         google()
         mavenCentral()
@@ -36,5 +27,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Cinemania"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
- 
+include(":core:data")

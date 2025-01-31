@@ -2,7 +2,7 @@ package com.example.cinemania.core.data.repository
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import com.example.cinemania.core.data.util.NetworkConnectivityObserver
+import com.example.core.data.util.NetworkConnectivityObserver
 import com.example.cinemania.core.database.dao.CinemaniaLocalDataSource
 import com.example.cinemania.core.database.model.toMediaEntity
 import com.example.cinemania.core.domain.model.Media

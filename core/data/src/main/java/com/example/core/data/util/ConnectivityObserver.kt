@@ -1,4 +1,4 @@
-package com.example.cinemania.core.network.utils
+package com.example.core.data.util
 
 import kotlinx.coroutines.flow.Flow
 

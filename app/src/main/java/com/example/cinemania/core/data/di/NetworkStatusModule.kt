@@ -1,7 +1,7 @@
 package com.example.cinemania.core.data.di
 
-import com.example.cinemania.core.data.util.NetworkConnectivityObserver
-import com.example.cinemania.core.network.utils.ConnectivityObserver
+import com.example.core.data.util.ConnectivityObserver
+import com.example.core.data.util.NetworkConnectivityObserver
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

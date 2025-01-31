@@ -8,7 +8,8 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class MediaNetwork(
+data class
+MediaNetwork(
     @Json(name = "backdrop_path")
     val backdropPath: String?,
     val id: Int,
