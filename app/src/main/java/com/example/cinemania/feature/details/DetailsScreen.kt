@@ -38,13 +38,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
-import com.example.cinemania.core.domain.model.Media
 import com.example.cinemania.core.network.utils.UrlHelper.BASE_IMAGE_URL
 import com.example.cinemania.core.network.utils.UrlHelper.BASE_IMAGE_URL_HIGH_QUALITY
 import com.example.cinemania.ui.theme.amber600
 import com.example.cinemania.ui.theme.lightBlue500
 import com.example.cinemania.ui.theme.purpleA700
 import com.example.cinemania.ui.theme.white
+import com.example.core.domain.model.Media
 
 @Composable
 fun DetailsRoute(

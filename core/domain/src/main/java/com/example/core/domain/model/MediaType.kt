@@ -1,4 +1,4 @@
-package com.example.cinemania.core.domain.model
+package com.example.core.domain.model
 
 enum class MediaType(val value: String, val typeName: String) {
     MOVIE("movie", "Movie"),

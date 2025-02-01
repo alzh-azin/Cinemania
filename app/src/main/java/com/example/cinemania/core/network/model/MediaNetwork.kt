@@ -1,9 +1,9 @@
 package com.example.cinemania.core.network.model
 
 import com.example.cinemania.core.database.model.MediaEntity
-import com.example.cinemania.core.domain.model.GenreType
-import com.example.cinemania.core.domain.model.Media
-import com.example.cinemania.core.domain.model.MediaType
+import com.example.core.domain.model.GenreType
+import com.example.core.domain.model.Media
+import com.example.core.domain.model.MediaType
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

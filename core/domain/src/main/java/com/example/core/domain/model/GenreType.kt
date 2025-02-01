@@ -1,4 +1,4 @@
-package com.example.cinemania.core.domain.model
+package com.example.core.domain.model
 
 data class Genre(
     val genreName: String,

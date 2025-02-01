@@ -2,9 +2,10 @@ package com.example.cinemania.core.database.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.cinemania.core.domain.model.GenreType
-import com.example.cinemania.core.domain.model.Media
-import com.example.cinemania.core.domain.model.MediaType
+import com.example.core.domain.model.GenreType
+import com.example.core.domain.model.Media
+import com.example.core.domain.model.MediaType
+
 
 @Entity
 data class MediaEntity(

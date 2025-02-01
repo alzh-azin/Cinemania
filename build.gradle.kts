@@ -10,3 +10,10 @@ plugins {
     alias(libs.plugins.kapt) apply false
     alias(libs.plugins.ksp) apply false
 }
+
+/*
+allprojects {
+    tasks.matching { it.name.contains("kapt") || it.name.contains("ksp") }.configureEach {
+        enabled = false
+    }
+}*/

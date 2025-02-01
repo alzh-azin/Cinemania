@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.cinemania.android.application.ui)
     alias(libs.plugins.cinemania.android.hilt)
@@ -22,4 +20,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(project(":core:data"))
+    implementation(project(":core:domain"))
 }

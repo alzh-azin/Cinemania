@@ -1,9 +1,9 @@
 package com.example.cinemania.feature.home
 
 import androidx.compose.runtime.Stable
-import com.example.cinemania.core.domain.model.Genre
-import com.example.cinemania.core.domain.model.GenreType
-import com.example.cinemania.core.domain.model.Media
+import com.example.core.domain.model.Genre
+import com.example.core.domain.model.GenreType
+import com.example.core.domain.model.Media
 
 @Stable
 data class HomeUiState(

@@ -1,8 +1,6 @@
-package com.example.cinemania.core.domain.model
+package com.example.core.domain.model
 
-import androidx.compose.runtime.Stable
-
-@Stable
+//@Stable
 data class Media(
     val backdropPath: String?,
     val id: Int,

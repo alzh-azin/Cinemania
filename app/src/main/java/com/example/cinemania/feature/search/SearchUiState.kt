@@ -2,7 +2,7 @@ package com.example.cinemania.feature.search
 
 import androidx.compose.runtime.Stable
 import androidx.paging.PagingData
-import com.example.cinemania.core.domain.model.Media
+import com.example.core.domain.model.Media
 import kotlinx.coroutines.flow.Flow
 
 @Stable

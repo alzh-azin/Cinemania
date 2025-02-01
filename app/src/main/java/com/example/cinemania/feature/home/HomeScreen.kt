@@ -17,9 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.cinemania.core.domain.model.Genre
 import com.example.cinemania.feature.components.ImageSlider
 import com.example.cinemania.feature.components.PullToRefreshContent
+import com.example.core.domain.model.Genre
 
 @Composable
 fun HomeRoute(

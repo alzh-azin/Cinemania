@@ -1,6 +1,6 @@
 package com.example.cinemania.feature.search
 
-import com.example.cinemania.core.domain.model.Media
+import com.example.core.domain.model.Media
 
 sealed class SearchUiEvent {
 
