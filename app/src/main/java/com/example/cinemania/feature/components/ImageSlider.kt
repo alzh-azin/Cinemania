@@ -21,9 +21,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import coil.compose.rememberAsyncImagePainter
-import com.example.cinemania.core.network.utils.UrlHelper.BASE_IMAGE_URL
-import com.example.cinemania.core.network.utils.UrlHelper.BASE_IMAGE_URL_HIGH_QUALITY
 import com.example.core.domain.model.Media
+import com.example.core.network.utils.UrlHelper.BASE_IMAGE_URL
+import com.example.core.network.utils.UrlHelper.BASE_IMAGE_URL_HIGH_QUALITY
 import kotlin.math.absoluteValue
 import kotlin.math.ceil
 

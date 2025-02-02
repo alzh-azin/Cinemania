@@ -1,4 +1,4 @@
-package com.example.cinemania.core.network.utils
+package com.example.core.network.utils
 
 data class CinemaniaError(
     var code: String? = null,

@@ -19,6 +19,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(project(":core:data"))
-    implementation(project(":core:domain"))
+    implementation(projects.core.data)
+    implementation(projects.core.domain)
+    implementation(projects.core.network)
 }

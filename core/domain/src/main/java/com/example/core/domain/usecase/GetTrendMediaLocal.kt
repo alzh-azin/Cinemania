@@ -1,6 +1,6 @@
-package com.example.cinemania.core.domain.usecase
+package com.example.core.domain.usecase
 
-import com.example.cinemania.core.domain.repository.CinemaniaRepository
+import com.example.core.domain.repository.CinemaniaRepository
 import javax.inject.Inject
 
 class GetTrendMediaLocal @Inject constructor(

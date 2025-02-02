@@ -1,24 +1,20 @@
 package com.example.cinemania.core.data.repository
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import com.example.cinemania.core.database.dao.CinemaniaLocalDataSource
 import com.example.cinemania.core.database.model.toMediaEntity
-import com.example.cinemania.core.domain.repository.CinemaniaRepository
 import com.example.cinemania.core.network.model.toMediaEntity
 import com.example.cinemania.core.network.service.CinemaniaRemoteDataSource
 import com.example.cinemania.core.network.service.SearchPagingSource
-import com.example.cinemania.core.network.utils.NetworkResult
-import com.example.cinemania.core.utils.CinemaniaConstants.TREND_MOVIES_LIST_SIZE
+import com.example.cinemania.core.utils.CinemaniaConstants
 import com.example.core.data.util.NetworkConnectivityObserver
 import com.example.core.domain.model.Media
+import com.example.core.domain.repository.CinemaniaRepository
+import com.example.core.network.utils.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class CinemaniaRepositoryImpl @Inject constructor(
+@javax.inject.Singleton
+class CinemaniaRepositoryImpl @javax.inject.Inject constructor(
     private val cinemaniaLocalDataSource: CinemaniaLocalDataSource,
     private val cinemaniaRemoteDataSource: CinemaniaRemoteDataSource,
     private val connectivityObserver: NetworkConnectivityObserver
@@ -39,7 +35,7 @@ class CinemaniaRepositoryImpl @Inject constructor(
 
                     val networkList = trendingMediaNetwork.data?.results?.map { mediaNetwork ->
                         mediaNetwork
-                    }?.take(TREND_MOVIES_LIST_SIZE)
+                    }?.take(CinemaniaConstants.TREND_MOVIES_LIST_SIZE)
 
                     cinemaniaLocalDataSource.insertTrendMovies(networkList?.mapIndexed { index, mediaNetwork ->
                         mediaNetwork.toMediaEntity(
@@ -51,7 +47,7 @@ class CinemaniaRepositoryImpl @Inject constructor(
                     return NetworkResult.Success(Unit)
                 }
 
-                is NetworkResult.Error -> {
+                is Error -> {
                     return NetworkResult.Error(errorMessage = "Something went wrong, please try again")
                 }
 
@@ -65,10 +61,13 @@ class CinemaniaRepositoryImpl @Inject constructor(
     }
 
     override suspend fun searchMediaRemote(query: String, pageSize: Int) =
-        Pager(
-            config = PagingConfig(pageSize = pageSize),
+        androidx.paging.Pager(
+            config = androidx.paging.PagingConfig(pageSize = pageSize),
             pagingSourceFactory = {
-                SearchPagingSource(query, cinemaniaRemoteDataSource)
+                SearchPagingSource(
+                    query,
+                    cinemaniaRemoteDataSource
+                )
             }
         ).flow
 

@@ -3,8 +3,8 @@ package com.example.cinemania.core.network.service
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.cinemania.core.network.model.toMedia
-import com.example.cinemania.core.network.utils.NetworkResult
 import com.example.core.domain.model.Media
+import com.example.core.network.utils.NetworkResult
 
 class SearchPagingSource(
     private val searchQuery: String,

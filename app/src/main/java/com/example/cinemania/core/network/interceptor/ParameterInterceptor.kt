@@ -1,6 +1,6 @@
 package com.example.cinemania.core.network.interceptor
 
-import com.example.cinemania.core.network.utils.UrlHelper
+import com.example.core.network.utils.UrlHelper
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject

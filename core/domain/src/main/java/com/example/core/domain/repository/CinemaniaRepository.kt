@@ -1,8 +1,8 @@
-package com.example.cinemania.core.domain.repository
+package com.example.core.domain.repository
 
 import androidx.paging.PagingData
-import com.example.cinemania.core.network.utils.NetworkResult
 import com.example.core.domain.model.Media
+import com.example.core.network.utils.NetworkResult
 import kotlinx.coroutines.flow.Flow
 
 interface CinemaniaRepository {

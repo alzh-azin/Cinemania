@@ -1,4 +1,4 @@
-package com.example.cinemania.core.network.utils
+package com.example.core.network.utils
 
 import org.json.JSONObject
 import retrofit2.Response

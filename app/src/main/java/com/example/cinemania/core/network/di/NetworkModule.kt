@@ -2,7 +2,7 @@ package com.example.cinemania.core.network.di
 
 import com.example.cinemania.core.network.interceptor.ParameterInterceptor
 import com.example.cinemania.core.network.service.CinemaniaService
-import com.example.cinemania.core.network.utils.UrlHelper.BASE_URL
+import com.example.core.network.utils.UrlHelper.BASE_URL
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module

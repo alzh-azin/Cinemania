@@ -35,7 +35,6 @@ internal fun Project.configureAndroidUi(commonExtension: CommonExtension<*, *, *
             "implementation"(libs.findLibrary("androidx.ui.tooling.preview").get())
             "implementation"(libs.findLibrary("androidx.material3").get())
             "implementation"(libs.findLibrary("navigation.compose").get())
-            "implementation"(libs.findLibrary("paging-runtime").get())
             "implementation"(libs.findLibrary("paging-compose").get())
             "implementation"(libs.findLibrary("io-coil-compose").get())
             "implementation"(libs.findLibrary("lifecycle-viewmodel-ktx").get())
