@@ -1,5 +1,6 @@
 package com.example.core.network.utils
 
+import com.example.core.common.result.NetworkResult
 import org.json.JSONObject
 import retrofit2.Response
 

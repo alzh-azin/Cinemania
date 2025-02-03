@@ -1,15 +1,15 @@
 package com.example.cinemania.core.data.repository
 
-import com.example.cinemania.core.database.dao.CinemaniaLocalDataSource
-import com.example.cinemania.core.database.model.toMediaEntity
-import com.example.cinemania.core.network.model.toMediaEntity
-import com.example.cinemania.core.network.service.CinemaniaRemoteDataSource
-import com.example.cinemania.core.network.service.SearchPagingSource
 import com.example.cinemania.core.utils.CinemaniaConstants
+import com.example.core.common.result.NetworkResult
 import com.example.core.data.util.NetworkConnectivityObserver
+import com.example.core.database.dao.CinemaniaLocalDataSource
+import com.example.core.database.model.toMediaEntity
 import com.example.core.domain.model.Media
 import com.example.core.domain.repository.CinemaniaRepository
-import com.example.core.network.utils.NetworkResult
+import com.example.core.network.model.toMediaEntity
+import com.example.core.network.service.CinemaniaRemoteDataSource
+import com.example.core.network.service.SearchPagingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

@@ -5,12 +5,9 @@ plugins {
 }
 
 android {
-    namespace = "com.example.cinemania.core.network"
+    namespace = "com.example.cinemania.core.database"
 }
 
 dependencies {
-
-    implementation(projects.core.common)
     implementation(projects.core.domain)
-    implementation(projects.core.database)
 }

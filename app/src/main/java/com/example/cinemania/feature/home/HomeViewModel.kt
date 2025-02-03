@@ -2,9 +2,9 @@ package com.example.cinemania.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.core.common.result.NetworkResult
 import com.example.core.domain.usecase.GetTrendMediaLocal
 import com.example.core.domain.usecase.GetTrendMediaRemote
-import com.example.core.network.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
