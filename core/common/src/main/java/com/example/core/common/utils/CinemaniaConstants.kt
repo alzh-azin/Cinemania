@@ -1,4 +1,4 @@
-package com.example.cinemania.core.utils
+package com.example.core.common.utils
 
 object CinemaniaConstants {
     const val PAGE_SIZE = 20

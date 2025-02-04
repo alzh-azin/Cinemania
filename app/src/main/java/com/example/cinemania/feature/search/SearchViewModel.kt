@@ -2,7 +2,7 @@ package com.example.cinemania.feature.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cinemania.core.utils.CinemaniaConstants
+import com.example.core.common.utils.CinemaniaConstants
 import com.example.core.domain.usecase.InsertMedia
 import com.example.core.domain.usecase.SearchMediaRemote
 import dagger.hilt.android.lifecycle.HiltViewModel

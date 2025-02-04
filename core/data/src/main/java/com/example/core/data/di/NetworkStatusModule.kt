@@ -1,4 +1,4 @@
-package com.example.cinemania.core.data.di
+package com.example.core.data.di
 
 import com.example.core.data.util.ConnectivityObserver
 import com.example.core.data.util.NetworkConnectivityObserver

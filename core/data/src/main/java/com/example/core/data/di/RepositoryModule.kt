@@ -1,6 +1,6 @@
-package com.example.cinemania.core.data.di
+package com.example.core.data.di
 
-import com.example.cinemania.core.data.repository.CinemaniaRepositoryImpl
+import com.example.core.data.repository.CinemaniaRepositoryImpl
 import com.example.core.domain.repository.CinemaniaRepository
 import dagger.Binds
 import dagger.Module

@@ -49,10 +49,10 @@ import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.rememberAsyncImagePainter
 import com.example.cinemania.R
-import com.example.cinemania.core.utils.CinemaniaConstants
 import com.example.cinemania.feature.components.PullToRefreshContent
 import com.example.cinemania.feature.details.extractYear
 import com.example.cinemania.ui.theme.CinemaniaTheme
+import com.example.core.common.utils.CinemaniaConstants
 import com.example.core.domain.model.Media
 import com.example.core.network.utils.UrlHelper.BASE_IMAGE_URL
 import com.example.core.network.utils.UrlHelper.BASE_IMAGE_URL_LOW_QUALITY
