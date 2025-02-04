@@ -23,10 +23,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
-import com.example.cinemania.feature.NavigationRoutes
 import com.example.cinemania.ui.theme.CinemaniaNavigationDefaults.navigationContentColor
 import com.example.cinemania.ui.theme.CinemaniaNavigationDefaults.navigationIndicatorColor
 import com.example.cinemania.ui.theme.CinemaniaNavigationDefaults.navigationSelectedItemColor
+import com.example.core.designsystem.navigation.NavigationRoutes
 
 enum class NavigationBarTypes {
     Home,

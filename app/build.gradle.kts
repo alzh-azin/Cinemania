@@ -24,4 +24,5 @@ dependencies {
     implementation(projects.core.network)
     implementation(projects.core.common)
     implementation(projects.core.database)
+    implementation(projects.core.designSystem)
 }

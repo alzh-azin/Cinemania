@@ -3,15 +3,15 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType
 import utils.configureAndroidUi
-import utils.getAndroidLibrary
-import utils.getKotlinAndroid
+import utils.getComposeCompiler
+import utils.getKsp
 
 class AndroidLibraryUiConventionPlugin: Plugin<Project> {
     override fun apply(target: Project) {
 
         target.apply {
-            plugin(target.getAndroidLibrary())
-            plugin(target.getKotlinAndroid())
+            plugin(target.getKsp())
+            plugin(target.getComposeCompiler())
         }
 
         target.run {

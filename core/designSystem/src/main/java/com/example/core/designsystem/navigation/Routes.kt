@@ -1,4 +1,4 @@
-package com.example.cinemania.feature
+package com.example.core.designsystem.navigation
 
 import kotlinx.serialization.Serializable
 
