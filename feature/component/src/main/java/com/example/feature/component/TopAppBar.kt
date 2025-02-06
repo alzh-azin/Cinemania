@@ -1,4 +1,4 @@
-package com.example.cinemania.feature.components
+package com.example.feature.component
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack

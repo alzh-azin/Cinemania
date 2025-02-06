@@ -18,7 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cinemania.R
 import com.example.feature.component.CinemaniaNavigationBar
 import com.example.feature.component.NavigationBarScreens
-import com.example.cinemania.feature.components.TopAppBar
+import com.example.feature.component.TopAppBar
 import com.example.core.designsystem.navigation.NavigationRoutes
 
 @Composable
