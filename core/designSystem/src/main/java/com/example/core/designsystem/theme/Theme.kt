@@ -1,4 +1,4 @@
-package com.example.cinemania.ui.theme
+package com.example.core.designsystem.theme
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme

@@ -1,4 +1,4 @@
-package com.example.cinemania.feature.components
+package com.example.feature.component
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -23,10 +23,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
-import com.example.cinemania.ui.theme.CinemaniaNavigationDefaults.navigationContentColor
-import com.example.cinemania.ui.theme.CinemaniaNavigationDefaults.navigationIndicatorColor
-import com.example.cinemania.ui.theme.CinemaniaNavigationDefaults.navigationSelectedItemColor
 import com.example.core.designsystem.navigation.NavigationRoutes
+import com.example.core.designsystem.theme.CinemaniaNavigationDefaults.navigationContentColor
+import com.example.core.designsystem.theme.CinemaniaNavigationDefaults.navigationIndicatorColor
+import com.example.core.designsystem.theme.CinemaniaNavigationDefaults.navigationSelectedItemColor
 
 enum class NavigationBarTypes {
     Home,

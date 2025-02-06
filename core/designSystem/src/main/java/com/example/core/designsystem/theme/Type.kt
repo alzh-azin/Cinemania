@@ -1,4 +1,4 @@
-package com.example.cinemania.ui.theme
+package com.example.core.designsystem.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

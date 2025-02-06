@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Surface
 import androidx.compose.ui.unit.dp
-import com.example.cinemania.ui.theme.CinemaniaTheme
+import com.example.core.designsystem.theme.CinemaniaTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

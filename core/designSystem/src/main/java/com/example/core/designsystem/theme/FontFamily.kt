@@ -1,9 +1,9 @@
-package com.example.cinemania.ui.theme
+package com.example.core.designsystem.theme
 
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import com.example.cinemania.R
+import com.example.cinemania.core.designSystem.R
 
 val RobotoFontFamily = FontFamily(
     Font(R.font.roboto_light, FontWeight.Light),
