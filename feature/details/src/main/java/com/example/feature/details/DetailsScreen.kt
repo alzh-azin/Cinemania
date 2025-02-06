@@ -1,4 +1,4 @@
-package com.example.cinemania.feature.details
+package com.example.feature.details
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

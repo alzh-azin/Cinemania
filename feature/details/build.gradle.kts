@@ -1,9 +1,10 @@
 plugins {
     alias(libs.plugins.cinemania.android.library.ui)
+    alias(libs.plugins.cinemania.android.hilt)
 }
 
 android {
-    namespace = "com.example.cinemania.feature.component"
+    namespace = "com.example.cinemania.feature.details"
 }
 dependencies {
 

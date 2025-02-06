@@ -6,9 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.cinemania.feature.details.DetailsRoute
 import com.example.cinemania.feature.search.SearchRoute
 import com.example.core.designsystem.navigation.NavigationRoutes
+import com.example.feature.details.DetailsRoute
 
 @Composable
 fun NavGraph(

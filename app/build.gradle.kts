@@ -26,4 +26,5 @@ dependencies {
     implementation(projects.core.database)
     implementation(projects.core.designSystem)
     implementation(projects.feature.component)
+    implementation(projects.feature.details)
 }

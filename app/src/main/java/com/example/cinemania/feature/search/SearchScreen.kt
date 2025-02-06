@@ -50,7 +50,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.rememberAsyncImagePainter
 import com.example.cinemania.R
 import com.example.feature.component.PullToRefreshContent
-import com.example.cinemania.feature.details.extractYear
+import com.example.feature.details.extractYear
 import com.example.core.designsystem.theme.CinemaniaTheme
 import com.example.core.common.utils.CinemaniaConstants
 import com.example.core.common.utils.CinemaniaConstants.BASE_IMAGE_URL
