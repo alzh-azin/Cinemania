@@ -1,4 +1,4 @@
-package com.example.cinemania.feature.search
+package com.example.feature.search
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -48,14 +48,14 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.rememberAsyncImagePainter
-import com.example.cinemania.R
-import com.example.feature.component.PullToRefreshContent
-import com.example.feature.details.extractYear
+import com.example.cinemania.feature.search.R
 import com.example.core.designsystem.theme.CinemaniaTheme
 import com.example.core.common.utils.CinemaniaConstants
 import com.example.core.common.utils.CinemaniaConstants.BASE_IMAGE_URL
 import com.example.core.common.utils.CinemaniaConstants.BASE_IMAGE_URL_LOW_QUALITY
+import com.example.core.common.utils.extractYear
 import com.example.core.domain.model.Media
+import com.example.feature.component.PullToRefreshContent
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -233,7 +233,10 @@ fun SearchResultList(
 }
 
 @Composable
-fun PaginationStateHandler(loadState: CombinedLoadStates?, onEvent: (SearchUiEvent) -> Unit) {
+fun PaginationStateHandler(
+    loadState: CombinedLoadStates?,
+    onEvent: (SearchUiEvent) -> Unit
+) {
 
     LaunchedEffect(key1 = loadState) {
 

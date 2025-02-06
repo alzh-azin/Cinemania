@@ -44,6 +44,7 @@ import com.example.core.designsystem.theme.purpleA700
 import com.example.core.designsystem.theme.white
 import com.example.core.common.utils.CinemaniaConstants.BASE_IMAGE_URL
 import com.example.core.common.utils.CinemaniaConstants.BASE_IMAGE_URL_HIGH_QUALITY
+import com.example.core.common.utils.extractYear
 import com.example.core.domain.model.Media
 
 @Composable
@@ -308,11 +309,4 @@ fun DetailsGenreTag(
         )
 
     }
-}
-
-//TODO move this function to utils
-fun extractYear(dateString: String): String? {
-    val regex = """^(\d{4})""".toRegex()
-    val matchResult = regex.find(dateString)
-    return matchResult?.groups?.get(1)?.value
 }

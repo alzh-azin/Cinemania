@@ -27,4 +27,5 @@ dependencies {
     implementation(projects.core.designSystem)
     implementation(projects.feature.component)
     implementation(projects.feature.details)
+    implementation(projects.feature.search)
 }

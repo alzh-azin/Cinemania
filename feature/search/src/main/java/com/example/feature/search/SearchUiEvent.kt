@@ -1,4 +1,4 @@
-package com.example.cinemania.feature.search
+package com.example.feature.search
 
 import com.example.core.domain.model.Media
 

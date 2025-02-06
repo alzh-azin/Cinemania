@@ -1,4 +1,4 @@
-package com.example.cinemania.feature.search
+package com.example.feature.search
 
 import androidx.compose.runtime.Stable
 import androidx.paging.PagingData

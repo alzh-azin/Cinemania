@@ -1,4 +1,4 @@
-package com.example.cinemania.feature.search
+package com.example.feature.search
 
 data class SearchUiEffect(
     val showError: Boolean = false

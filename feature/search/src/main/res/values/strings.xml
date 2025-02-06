@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="msg_network_error">Something went wrong.</string>
+    <string name="label_retry">Retry</string>
+    <string name="label_search">What do you want to search for?</string>
+    <string name="msg_no_result">No results found</string>
+</resources>
