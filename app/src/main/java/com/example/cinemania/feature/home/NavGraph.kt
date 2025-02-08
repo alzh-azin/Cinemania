@@ -5,10 +5,9 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import com.example.core.designsystem.navigation.NavigationRoutes
-import com.example.feature.details.DetailsRoute
-import com.example.feature.search.SearchRoute
+import com.example.feature.details.detailsScreen
+import com.example.feature.details.navigateToDetails
+import com.example.feature.search.searchScreen
 
 @Composable
 fun NavGraph(
@@ -17,65 +16,47 @@ fun NavGraph(
     onTopAppBarAvailable: (Boolean) -> Unit,
     onNavigateBackAvailable: (Boolean) -> Unit,
     onNavigateBarAvailable: (Boolean) -> Unit,
-    onNetworkConnectionError: (isConnected: Boolean) -> Unit,
+    onNetworkConnectionError: (Boolean) -> Unit,
     navController: NavHostController,
 ) {
-
     NavHost(
         navController = navController,
-        startDestination = NavigationRoutes.Home
+        startDestination = HomeRoute
     ) {
+        homeScreen(
+            onNavigateToDetailsScreen = { id -> navController.navigateToDetails(id) },
+            onNetworkConnectionError = onNetworkConnectionError,
+            snackBarResult = snackBarResult,
+            contentPadding = contentPadding,
+            onTopAppBarAvailable = onTopAppBarAvailable,
+            onNavigateBackAvailable = onNavigateBackAvailable,
+            onNavigateBarAvailable = onNavigateBarAvailable
+        )
 
-        composable<NavigationRoutes.Home> {
+        detailsScreen(
+            contentPadding = contentPadding,
+            onTopAppBarAvailable = onTopAppBarAvailable,
+            onNavigateBackAvailable = onNavigateBackAvailable,
+            onNavigateBarAvailable = onNavigateBarAvailable
+        )
 
-            onTopAppBarAvailable(true)
-            onNavigateBackAvailable(false)
-            onNavigateBarAvailable(true)
+        /* discoverScreen(
+             onTopAppBarAvailable = onTopAppBarAvailable,
+             onNavigateBarAvailable = onNavigateBarAvailable
+         )
 
-            HomeRoute(
-                contentPadding = contentPadding,
-                onNavigateToDetailsScreen = { id ->
-                    navController.navigate(NavigationRoutes.Details(id))
-                },
-                onNetworkConnectionError = onNetworkConnectionError,
-                snackBarResult = snackBarResult
-            )
-        }
+         favoritesScreen(
+             onTopAppBarAvailable = onTopAppBarAvailable,
+             onNavigateBarAvailable = onNavigateBarAvailable
+         )*/
 
-        composable<NavigationRoutes.Details> {
-
-            onTopAppBarAvailable(true)
-            onNavigateBackAvailable(true)
-            onNavigateBarAvailable(false)
-
-            DetailsRoute(contentPadding = contentPadding)
-        }
-
-        composable<NavigationRoutes.Discover> {
-
-            onTopAppBarAvailable(true)
-            onNavigateBarAvailable(true)
-        }
-
-        composable<NavigationRoutes.Favorites> {
-
-            onTopAppBarAvailable(true)
-            onNavigateBarAvailable(true)
-        }
-
-        composable<NavigationRoutes.Search> {
-
-            onTopAppBarAvailable(false)
-            onNavigateBarAvailable(false)
-
-            SearchRoute(
-                contentPadding = contentPadding,
-                onNetworkConnectionError = onNetworkConnectionError,
-                snackBarResult = snackBarResult,
-                onNavigateToDetailsScreen = {
-                    navController.navigate(NavigationRoutes.Details(it))
-                }
-            )
-        }
+        searchScreen(
+            contentPadding = contentPadding,
+            onNetworkConnectionError = onNetworkConnectionError,
+            snackBarResult = snackBarResult,
+            onNavigateToDetailsScreen = { navController.navigateToDetails(it) },
+            onTopAppBarAvailable = onTopAppBarAvailable,
+            onNavigateBarAvailable = onNavigateBarAvailable
+        )
     }
 }
