@@ -31,7 +31,10 @@ MediaNetwork(
     val genres: List<Int>?
 )
 
-fun MediaNetwork.toMedia() = Media(
+fun MediaNetwork.toMedia(
+    isTrendMedia: Boolean = false,
+    index: Int = 0
+) = Media(
     backdropPath = backdropPath,
     id = id,
     overview = overview,
@@ -50,27 +53,7 @@ fun MediaNetwork.toMedia() = Media(
     voteAverage = voteAverage,
     genres = genres?.map {
         GenreType.enumValueOf(it)
-    }
-)
-
-fun MediaNetwork.toMediaEntity(isTrendMedia: Boolean = false, index: Int = 0) = MediaEntity(
-    backdropPath = backdropPath,
-    id = id,
-    overview = overview,
-    posterPath = posterPath,
-    mediaType = mediaType,
-    title = when (mediaType) {
-        MediaType.MOVIE.value -> title
-        MediaType.TV_SHOW.value -> name
-        else -> ""
     },
-    releaseDate = when (mediaType) {
-        MediaType.MOVIE.value -> releaseDate
-        MediaType.TV_SHOW.value -> firstAirDate
-        else -> ""
-    },
-    voteAverage = voteAverage,
-    isTrendMedia = isTrendMedia,
-    genres = genres,
-    index = index
+    index = index,
+    isTrendMedia = isTrendMedia
 )

@@ -46,11 +46,10 @@ fun Media.toMediaEntity() = MediaEntity(
     title = title,
     releaseDate = releaseDate,
     voteAverage = voteAverage,
-    isTrendMedia = false,
+    isTrendMedia = isTrendMedia,
     genres = genres?.map {
         GenreType.getGenreCode(it, mediaType)
     },
     index = index
-
 )
 

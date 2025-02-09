@@ -110,3 +110,4 @@ cinemania-android-library-ui = {id = "cinemania.android.library.ui" , version = 
 cinemania-android-serialization = {id = "cinemania.android.serialization" , version = "unspecified"}
 cinemania-android-hilt = { id = "cinemania.android.hilt" , version = "unspecified"}
 cinemania-android-network = {id = "cinemania.android.network" , version = "unspecified"}
+cinemania-android-database = {id = "cinemania.android.database" , version = "unspecified"}

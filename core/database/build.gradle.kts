@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.cinemania.android.library)
-    alias(libs.plugins.cinemania.android.network)
+    alias(libs.plugins.cinemania.android.database)
     alias(libs.plugins.cinemania.android.hilt)
 }
 

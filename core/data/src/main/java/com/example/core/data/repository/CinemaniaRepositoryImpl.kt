@@ -7,7 +7,7 @@ import com.example.core.database.dao.CinemaniaLocalDataSource
 import com.example.core.database.model.toMediaEntity
 import com.example.core.domain.model.Media
 import com.example.core.domain.repository.CinemaniaRepository
-import com.example.core.network.model.toMediaEntity
+import com.example.core.network.model.toMedia
 import com.example.core.network.service.CinemaniaRemoteDataSource
 import com.example.core.network.service.SearchPagingSource
 import kotlinx.coroutines.flow.Flow
@@ -38,10 +38,10 @@ class CinemaniaRepositoryImpl @javax.inject.Inject constructor(
                     }?.take(CinemaniaConstants.TREND_MOVIES_LIST_SIZE)
 
                     cinemaniaLocalDataSource.insertTrendMovies(networkList?.mapIndexed { index, mediaNetwork ->
-                        mediaNetwork.toMediaEntity(
+                        mediaNetwork.toMedia(
                             isTrendMedia = true,
                             index = index
-                        )
+                        ).toMediaEntity()
                     }.orEmpty())
 
                     return NetworkResult.Success(Unit)

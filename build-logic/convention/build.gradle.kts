@@ -65,6 +65,11 @@ gradlePlugin {
             id = "cinemania.android.network"
             implementationClass = "NetworkConventionPlugin"
         }
+
+        register("database"){
+            id = "cinemania.android.database"
+            implementationClass = "DatabaseConventionPlugin"
+        }
     }
 
 }

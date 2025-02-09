@@ -19,9 +19,6 @@ class NetworkConventionPlugin : Plugin<Project> {
                 "implementation"(libs.findLibrary("moshi-kotlin").get())
                 "implementation"(libs.findLibrary("logging-interceptor").get())
                 "ksp"(libs.findLibrary("moshi-kotlin-codegen").get())
-                "implementation"(libs.findLibrary("room-runtime").get())
-                "implementation"(libs.findLibrary("room-ktx").get())
-                "ksp"(libs.findLibrary("room-compiler").get())
                 "implementation"(libs.findLibrary("paging-runtime").get())
             }
         }
