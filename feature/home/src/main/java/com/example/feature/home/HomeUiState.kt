@@ -1,4 +1,4 @@
-package com.example.cinemania.feature.home
+package com.example.feature.home
 
 import androidx.compose.runtime.Stable
 import com.example.core.domain.model.Genre

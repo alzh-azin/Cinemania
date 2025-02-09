@@ -1,4 +1,4 @@
-package com.example.cinemania.feature.home
+package com.example.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

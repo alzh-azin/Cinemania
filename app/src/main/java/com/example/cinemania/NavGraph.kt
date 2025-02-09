@@ -1,4 +1,4 @@
-package com.example.cinemania.feature.home
+package com.example.cinemania
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.SnackbarResult
@@ -7,6 +7,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.feature.details.detailsScreen
 import com.example.feature.details.navigateToDetails
+import com.example.feature.home.HomeRoute
+import com.example.feature.home.homeScreen
 import com.example.feature.search.searchScreen
 
 @Composable

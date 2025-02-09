@@ -1,4 +1,4 @@
-package com.example.cinemania.feature.home
+package com.example.feature.home
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.SnackbarResult

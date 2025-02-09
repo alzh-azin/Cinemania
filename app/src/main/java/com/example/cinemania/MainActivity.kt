@@ -1,4 +1,4 @@
-package com.example.cinemania.feature.home
+package com.example.cinemania
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

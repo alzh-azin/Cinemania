@@ -1,4 +1,4 @@
-package com.example.cinemania.feature.home
+package com.example.cinemania
 
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration.Indefinite
@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.cinemania.R
 import com.example.feature.component.CinemaniaNavigationBar
 import com.example.feature.component.NavigationBarScreens
 import com.example.feature.component.TopAppBar

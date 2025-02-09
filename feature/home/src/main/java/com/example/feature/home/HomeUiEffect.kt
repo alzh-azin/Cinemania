@@ -1,4 +1,4 @@
-package com.example.cinemania.feature.home
+package com.example.feature.home
 
 data class HomeUiEffect(
     val showError: Boolean = false
