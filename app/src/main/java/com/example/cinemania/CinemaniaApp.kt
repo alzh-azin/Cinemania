@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.cinemania.navigation.NavGraph
 import com.example.feature.component.CinemaniaNavigationBar
 import com.example.feature.component.NavigationBarScreens
 import com.example.feature.component.TopAppBar

@@ -18,8 +18,8 @@ class NetworkConventionPlugin : Plugin<Project> {
                 "implementation"(libs.findLibrary("convertor-moshi").get())
                 "implementation"(libs.findLibrary("moshi-kotlin").get())
                 "implementation"(libs.findLibrary("logging-interceptor").get())
-                "ksp"(libs.findLibrary("moshi-kotlin-codegen").get())
                 "implementation"(libs.findLibrary("paging-runtime").get())
+                "ksp"(libs.findLibrary("moshi-kotlin-codegen").get())
             }
         }
     }

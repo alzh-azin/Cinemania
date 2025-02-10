@@ -26,6 +26,7 @@ internal fun Project.configureKotlinAndroid(
 
             //TODO should be moved to a better place. this is temporary
             "implementation"(libs.findLibrary("kotlinx-coroutines-android").get())
+            "implementation"(libs.findLibrary("paging-common").get())
         }
     }
 

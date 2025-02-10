@@ -12,9 +12,10 @@ import com.example.core.network.service.CinemaniaRemoteDataSource
 import com.example.core.network.service.SearchPagingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 @javax.inject.Singleton
-class CinemaniaRepositoryImpl @javax.inject.Inject constructor(
+class CinemaniaRepositoryImpl @Inject constructor(
     private val cinemaniaLocalDataSource: CinemaniaLocalDataSource,
     private val cinemaniaRemoteDataSource: CinemaniaRemoteDataSource,
     private val connectivityObserver: NetworkConnectivityObserver

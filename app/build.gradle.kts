@@ -1,8 +1,6 @@
 plugins {
     alias(libs.plugins.cinemania.android.application.ui)
     alias(libs.plugins.cinemania.android.hilt)
-    alias(libs.plugins.cinemania.android.serialization)
-    alias(libs.plugins.cinemania.android.network)
 }
 
 android {

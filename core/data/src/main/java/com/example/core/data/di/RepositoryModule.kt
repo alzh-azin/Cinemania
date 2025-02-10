@@ -12,7 +12,6 @@ import javax.inject.Singleton
 @Module
 abstract class RepositoryModule {
 
-
     @Singleton
     @Binds
     internal abstract fun bindsCinemaniaRepository(

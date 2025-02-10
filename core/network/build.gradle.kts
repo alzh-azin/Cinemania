@@ -12,5 +12,4 @@ dependencies {
 
     implementation(projects.core.common)
     implementation(projects.core.domain)
-    implementation(projects.core.database)
 }

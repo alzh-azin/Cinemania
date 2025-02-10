@@ -1,4 +1,4 @@
-package com.example.cinemania
+package com.example.cinemania.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.SnackbarResult

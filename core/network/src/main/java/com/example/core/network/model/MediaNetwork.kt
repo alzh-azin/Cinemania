@@ -1,6 +1,5 @@
 package com.example.core.network.model
 
-import com.example.core.database.model.MediaEntity
 import com.example.core.domain.model.GenreType
 import com.example.core.domain.model.Media
 import com.example.core.domain.model.MediaType
