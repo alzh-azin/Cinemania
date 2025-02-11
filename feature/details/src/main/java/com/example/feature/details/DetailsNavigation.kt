@@ -5,13 +5,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class DetailsRoute(val id: Int)
+import com.example.core.ui.NavigationRoutes
 
 fun NavController.navigateToDetails(id: Int, navOptions: NavOptions? = null) =
-    navigate(DetailsRoute(id), navOptions)
+    navigate(NavigationRoutes.Details(id), navOptions)
 
 fun NavGraphBuilder.detailsScreen(
     contentPadding: PaddingValues,
@@ -19,7 +16,7 @@ fun NavGraphBuilder.detailsScreen(
     onNavigateBackAvailable: (Boolean) -> Unit,
     onNavigateBarAvailable: (Boolean) -> Unit
 ) {
-    composable<DetailsRoute> {
+    composable<NavigationRoutes.Details> {
 
         onTopAppBarAvailable(true)
         onNavigateBackAvailable(true)

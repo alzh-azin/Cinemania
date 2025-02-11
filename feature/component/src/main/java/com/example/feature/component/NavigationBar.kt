@@ -23,10 +23,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
-import com.example.core.designsystem.navigation.NavigationRoutes
 import com.example.core.designsystem.theme.CinemaniaNavigationDefaults.navigationContentColor
 import com.example.core.designsystem.theme.CinemaniaNavigationDefaults.navigationIndicatorColor
 import com.example.core.designsystem.theme.CinemaniaNavigationDefaults.navigationSelectedItemColor
+import com.example.core.ui.NavigationRoutes
 
 enum class NavigationBarTypes {
     Home,
@@ -51,7 +51,7 @@ sealed class NavigationBarScreens(
         NavigationBarScreens(
             title = NavigationBarTypes.Discover,
             icon = Icons.Filled.Search,
-            route = NavigationRoutes.Discover
+            route = NavigationRoutes.Search
         )
 
     data object Favorites :

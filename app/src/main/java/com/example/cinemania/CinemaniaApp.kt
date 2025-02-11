@@ -16,10 +16,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.cinemania.navigation.NavGraph
+import com.example.core.ui.NavigationRoutes
 import com.example.feature.component.CinemaniaNavigationBar
 import com.example.feature.component.NavigationBarScreens
 import com.example.feature.component.TopAppBar
-import com.example.core.designsystem.navigation.NavigationRoutes
 
 @Composable
 fun CinemaniaApp(

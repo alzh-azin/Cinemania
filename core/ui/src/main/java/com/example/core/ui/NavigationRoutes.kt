@@ -1,4 +1,4 @@
-package com.example.core.designsystem.navigation
+package com.example.core.ui
 
 import kotlinx.serialization.Serializable
 

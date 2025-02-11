@@ -5,9 +5,9 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.example.core.ui.NavigationRoutes
 import com.example.feature.details.detailsScreen
 import com.example.feature.details.navigateToDetails
-import com.example.feature.home.HomeRoute
 import com.example.feature.home.homeScreen
 import com.example.feature.search.searchScreen
 
@@ -23,7 +23,7 @@ fun NavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = HomeRoute
+        startDestination = NavigationRoutes.Home
     ) {
         homeScreen(
             onNavigateToDetailsScreen = { id -> navController.navigateToDetails(id) },

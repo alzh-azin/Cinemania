@@ -6,13 +6,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import kotlinx.serialization.Serializable
-
-@Serializable
-data object HomeRoute
+import com.example.core.ui.NavigationRoutes
 
 fun NavController.navigateToHome(navOptions: NavOptions? = null) =
-    navigate(HomeRoute, navOptions)
+    navigate(NavigationRoutes.Home, navOptions)
 
 fun NavGraphBuilder.homeScreen(
     onNavigateToDetailsScreen: (Int) -> Unit,
@@ -23,7 +20,7 @@ fun NavGraphBuilder.homeScreen(
     onNavigateBackAvailable: (Boolean) -> Unit,
     onNavigateBarAvailable: (Boolean) -> Unit,
 ) {
-    composable<HomeRoute> {
+    composable<NavigationRoutes.Home> {
         onTopAppBarAvailable(true)
         onNavigateBackAvailable(false)
         onNavigateBarAvailable(true)

@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.cinemania.android.library.ui)
     alias(libs.plugins.cinemania.android.hilt)
-    alias(libs.plugins.cinemania.android.serialization)
 }
 
 android {
@@ -11,5 +10,6 @@ dependencies {
 
     implementation(projects.core.domain)
     implementation(projects.core.common)
+    implementation(projects.core.ui)
     implementation(projects.core.designSystem)
 }

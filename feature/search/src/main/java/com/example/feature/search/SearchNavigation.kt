@@ -6,13 +6,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import kotlinx.serialization.Serializable
-
-@Serializable
-data object SearchRoute
+import com.example.core.ui.NavigationRoutes
 
 fun NavController.navigateToSearch(navOptions: NavOptions? = null) =
-    navigate(SearchRoute, navOptions)
+    navigate(NavigationRoutes.Search, navOptions)
 
 fun NavGraphBuilder.searchScreen(
     contentPadding: PaddingValues,
@@ -22,7 +19,7 @@ fun NavGraphBuilder.searchScreen(
     onTopAppBarAvailable: (Boolean) -> Unit,
     onNavigateBarAvailable: (Boolean) -> Unit
 ) {
-    composable<SearchRoute> {
+    composable<NavigationRoutes.Search> {
         onTopAppBarAvailable(false)
         onNavigateBarAvailable(false)
 
