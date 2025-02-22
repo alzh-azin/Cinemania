@@ -1,17 +1,13 @@
 package com.example.core.domain.model
 
-data class Genre(
-    val genreName: String,
-    val movieCode: Int? = null,
-    val tvShowCode: Int? = null,
-    var isSelected: Boolean
-)
-
 enum class GenreType(
     val genreName: String,
     val movieCode: Int? = null,
     val tvShowCode: Int? = null
 ) {
+
+    //TODO move movieCode & tvShowCode to GenreTypeEntity
+
     Action(genreName = "Action", movieCode = 28, tvShowCode = 28),
     Adventure(genreName = "Adventure", movieCode = 12, tvShowCode = 10759),
     Animation(genreName = "Animation", movieCode = 16, tvShowCode = 16),
@@ -61,17 +57,19 @@ enum class GenreType(
             return -1
         }
 
-        fun getGenreList(): List<Genre> {
-            val allGenre = Genre("All", isSelected = true)
-            val genreList = enumValues<GenreType>().map { genreType ->
-                Genre(
-                    genreName = genreType.genreName,
-                    isSelected = false,
-                    movieCode = genreType.movieCode,
-                    tvShowCode = genreType.tvShowCode
-                )
+
+        fun generateGenreMap(): Map<GenreType, Boolean> {
+
+            return buildMap {
+                put(DEFAULT_GENRE, true)
+
+                enumValues<GenreType>()
+                    .filterNot { it == DEFAULT_GENRE }
+                    .forEach { put(it, false) }
             }
-            return listOf(allGenre) + genreList
         }
+
+        val DEFAULT_GENRE = Comedy
+
     }
 }

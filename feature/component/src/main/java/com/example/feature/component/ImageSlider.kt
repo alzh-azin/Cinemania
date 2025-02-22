@@ -45,7 +45,7 @@ fun ImageSlider(
             modifier = modifier
                 .padding(vertical = 16.dp)
                 .verticalScroll(rememberScrollState()),
-            contentPadding = PaddingValues(horizontal = 48.dp),
+            contentPadding = PaddingValues(horizontal = 90.dp),
             pageSpacing = 16.dp
         ) { currentPage ->
             val painter =
@@ -79,7 +79,6 @@ fun ImageSlider(
                         images[currentPage % images.size]
                             ?.let { onNavigateToDetailsScreen(it.id) }
                     },
-                elevation = CardDefaults.cardElevation(8.dp)
             ) {
                 Image(
                     painter = painter,

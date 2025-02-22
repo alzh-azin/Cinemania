@@ -20,4 +20,10 @@ interface CinemaniaService {
         @Query("query") query: String,
         @Query("page") page: Int
     ): Response<CinemaniaListApiResponse>
+
+    @GET(UrlHelper.TREND_MOVIES_BY_GENRE)
+    suspend fun getTrendMoviesByGenre(
+        @Query("with_genres") genre: String,
+        @Query("sort_by") sortBy: String = "popularity.desc"
+    ): Response<CinemaniaListApiResponse>
 }

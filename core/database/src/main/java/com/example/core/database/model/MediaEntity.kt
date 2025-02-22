@@ -18,7 +18,6 @@ data class MediaEntity(
     val title: String?,
     val releaseDate: String?,
     val voteAverage: Double?,
-    val isTrendMedia: Boolean?,
     val genres: List<Int>?,
     val index: Int,
 ) {
@@ -46,7 +45,6 @@ fun Media.toMediaEntity() = MediaEntity(
     title = title,
     releaseDate = releaseDate,
     voteAverage = voteAverage,
-    isTrendMedia = isTrendMedia,
     genres = genres?.map {
         GenreType.getGenreCode(it, mediaType)
     },

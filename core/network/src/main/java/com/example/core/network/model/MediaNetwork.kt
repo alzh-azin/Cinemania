@@ -17,7 +17,7 @@ MediaNetwork(
     @Json(name = "poster_path")
     val posterPath: String?,
     @Json(name = "media_type")
-    val mediaType: String?,
+    var mediaType: String?,
     val title: String?,
     val name: String?,
     @Json(name = "release_date")
@@ -53,6 +53,5 @@ fun MediaNetwork.toMedia(
     genres = genres?.map {
         GenreType.enumValueOf(it)
     },
-    index = index,
-    isTrendMedia = isTrendMedia
+    index = index
 )

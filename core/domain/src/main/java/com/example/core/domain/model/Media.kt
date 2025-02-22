@@ -1,6 +1,5 @@
 package com.example.core.domain.model
 
-//@Stable
 data class Media(
     val backdropPath: String?,
     val id: Int,
@@ -12,5 +11,4 @@ data class Media(
     val releaseDate: String?,
     val voteAverage: Double?,
     val genres: List<String>?,
-    val isTrendMedia: Boolean? = null,
 )

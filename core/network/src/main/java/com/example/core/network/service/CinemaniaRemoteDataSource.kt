@@ -26,4 +26,12 @@ class CinemaniaRemoteDataSource @Inject constructor(
             },
             exceptionMessage = "Error searching media"
         )
+
+    suspend fun getTrendMoviesByGenre(genre : Int?) : NetworkResult<CinemaniaListApiResponse> =
+        safeApiCall(
+            call = {
+                cinemaniaService.getTrendMoviesByGenre(genre = genre.toString())
+            },
+            exceptionMessage = "Error getting trend movies by genre"
+        )
 }

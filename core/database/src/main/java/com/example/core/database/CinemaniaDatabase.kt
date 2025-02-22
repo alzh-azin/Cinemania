@@ -6,10 +6,12 @@ import androidx.room.TypeConverters
 import com.example.core.database.dao.CinemaniaDao
 import com.example.core.database.model.GenreTypeConvertor
 import com.example.core.database.model.MediaEntity
+import com.example.core.database.model.MediaFilterEntity
 
 @Database(
     entities = [
-        MediaEntity::class
+        MediaEntity::class,
+        MediaFilterEntity::class
     ],
     version = 1
 )
