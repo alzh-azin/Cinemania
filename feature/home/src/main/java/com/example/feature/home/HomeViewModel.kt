@@ -108,13 +108,9 @@ class HomeViewModel @Inject constructor(
     }
 
     fun selectGenreType(genre: GenreType) {
-        val genreList = homeUiState.value.genreList.toMutableMap()
-
-        genreList[selectedGenre.value] = false
-        genreList[genre] = true
         selectedGenre.value = genre
 
-        homeUiState.value = homeUiState.value.copy(genreList = genreList)
+        homeUiState.value = homeUiState.value.copy(selectedGenre = genre)
     }
 
     private fun updateLoadingState(requestTag: HomeRequestTag, isLoading: Boolean) {

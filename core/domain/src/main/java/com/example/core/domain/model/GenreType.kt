@@ -8,10 +8,10 @@ enum class GenreType(
 
     //TODO move movieCode & tvShowCode to GenreTypeEntity
 
+    Comedy(genreName = "Comedy", movieCode = 35, tvShowCode = 35),
     Action(genreName = "Action", movieCode = 28, tvShowCode = 28),
     Adventure(genreName = "Adventure", movieCode = 12, tvShowCode = 10759),
     Animation(genreName = "Animation", movieCode = 16, tvShowCode = 16),
-    Comedy(genreName = "Comedy", movieCode = 35, tvShowCode = 35),
     Crime(genreName = "Crime", movieCode = 80, tvShowCode = 80),
     Documentary(genreName = "Documentary", movieCode = 99, tvShowCode = 99),
     Drama(genreName = "Drama", movieCode = 18, tvShowCode = 18),
@@ -58,15 +58,9 @@ enum class GenreType(
         }
 
 
-        fun generateGenreMap(): Map<GenreType, Boolean> {
+        fun generateGenreList(): List<GenreType> {
 
-            return buildMap {
-                put(DEFAULT_GENRE, true)
-
-                enumValues<GenreType>()
-                    .filterNot { it == DEFAULT_GENRE }
-                    .forEach { put(it, false) }
-            }
+            return enumValues<GenreType>().toList()
         }
 
         val DEFAULT_GENRE = Comedy
