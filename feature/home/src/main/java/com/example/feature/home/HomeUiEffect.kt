@@ -1,5 +1,5 @@
 package com.example.feature.home
 
-data class HomeUiEffect(
-    val showError: Boolean = false
-)
+sealed class HomeUiEffect {
+    data object ShowNetworkError : HomeUiEffect()
+}

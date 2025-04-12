@@ -32,6 +32,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -59,12 +61,23 @@ fun HomeRoute(
         }
     }
 
+    LaunchedEffect(key1 = snackBarResult) {
+        if (snackBarResult == SnackbarResult.ActionPerformed) {
+            homeViewModel.getRemoteData()
+            onNetworkConnectionError(false)
+        }
+    }
+
+    LaunchedEffect(homeUiState.isLoading) {
+        if (homeUiState.isLoading) {
+            onNetworkConnectionError(false)
+        }
+    }
+
     HomeScreen(
         contentPadding = contentPadding,
         homeUiState = homeUiState,
-        snackBarResult = snackBarResult,
         onNavigateToDetailsScreen = onNavigateToDetailsScreen,
-        onNetworkConnectionError = onNetworkConnectionError,
         onRefresh = { homeViewModel.getRemoteData() },
         onSelectGenre = { genre ->
             homeViewModel.selectGenreType(genre)
@@ -76,23 +89,11 @@ fun HomeRoute(
 fun HomeScreen(
     contentPadding: PaddingValues,
     homeUiState: HomeUiState,
-    snackBarResult: SnackbarResult,
     onNavigateToDetailsScreen: (id: Int) -> Unit,
     onRefresh: () -> Unit,
-    onNetworkConnectionError: (showError: Boolean) -> Unit,
     onSelectGenre: (genre: GenreType) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-    LaunchedEffect(key1 = snackBarResult) {
-        if (snackBarResult == SnackbarResult.ActionPerformed) {
-            onRefresh()
-            onNetworkConnectionError(false)
-        }
-    }
-
-    if (homeUiState.isLoading)
-        onNetworkConnectionError(false)
 
     PullToRefreshContent(
         isRefreshing = homeUiState.isLoading,

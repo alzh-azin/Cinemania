@@ -139,7 +139,7 @@ class HomeViewModel @Inject constructor(
             val networkResult = request.await()
 
             if (networkResult is NetworkResult.Error) {
-                homeUiEffect.emit(HomeUiEffect(showError = true))
+                homeUiEffect.emit(HomeUiEffect.ShowNetworkError)
             }
 
             updateLoadingState(requestTag, false)
