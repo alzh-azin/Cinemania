@@ -1,6 +1,5 @@
 package com.example.feature.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.common.result.NetworkResult
@@ -45,6 +44,25 @@ class HomeViewModel @Inject constructor(
 
         getRemoteData()
 
+    }
+
+    fun onEvent(event: HomeUiEvent) {
+        when (event) {
+            is HomeUiEvent.GetData,
+            is HomeUiEvent.Refresh -> {
+                getRemoteData()
+            }
+
+            is HomeUiEvent.SelectGenre -> {
+                selectGenreType(event.genre)
+            }
+
+            is HomeUiEvent.MediaClicked -> {
+                viewModelScope.launch {
+                    homeUiEffect.emit(HomeUiEffect.NavigateToDetails(event.mediaId))
+                }
+            }
+        }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -107,7 +125,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun selectGenreType(genre: GenreType) {
+    private fun selectGenreType(genre: GenreType) {
         selectedGenre.value = genre
 
         homeUiState.value = homeUiState.value.copy(selectedGenre = genre)

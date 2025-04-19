@@ -32,8 +32,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -44,6 +42,8 @@ import com.example.feature.component.ImageSlider
 import com.example.feature.component.PullToRefreshContent
 import com.example.core.domain.model.GenreType
 import com.example.core.domain.model.Media
+import com.example.feature.component.NavigationBarScreens
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun HomeRoute(
@@ -56,8 +56,14 @@ fun HomeRoute(
     val homeUiState by homeViewModel.homeUiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = Unit) {
-        homeViewModel.homeUiEffect.collect {
-            onNetworkConnectionError(true)
+        homeViewModel.homeUiEffect.collectLatest { effect ->
+            when(effect){
+                is HomeUiEffect.NavigateToDetails -> {
+                    onNavigateToDetailsScreen(effect.mediaId)
+                }
+                is HomeUiEffect.ShowNetworkError -> onNetworkConnectionError(true)
+            }
+
         }
     }
 
@@ -77,10 +83,8 @@ fun HomeRoute(
     HomeScreen(
         contentPadding = contentPadding,
         homeUiState = homeUiState,
-        onNavigateToDetailsScreen = onNavigateToDetailsScreen,
-        onRefresh = { homeViewModel.getRemoteData() },
-        onSelectGenre = { genre ->
-            homeViewModel.selectGenreType(genre)
+        onEvent = { event ->
+            homeViewModel.onEvent(event)
         }
     )
 }
@@ -89,34 +93,34 @@ fun HomeRoute(
 fun HomeScreen(
     contentPadding: PaddingValues,
     homeUiState: HomeUiState,
-    onNavigateToDetailsScreen: (id: Int) -> Unit,
-    onRefresh: () -> Unit,
-    onSelectGenre: (genre: GenreType) -> Unit,
+    onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
     PullToRefreshContent(
         isRefreshing = homeUiState.isLoading,
         contentPadding = contentPadding,
-        onRefresh = { onRefresh() },
+        onRefresh = { onEvent(HomeUiEvent.GetData) },
     ) {
         if (homeUiState.trendMedia.isNotEmpty()) {
             Column {
                 Row {
                     ImageSlider(
-                        homeUiState.trendMedia,
-                        onNavigateToDetailsScreen
+                        images = homeUiState.trendMedia,
+                        onNavigateToDetailsScreen = {mediaId ->
+                            onEvent(HomeUiEvent.MediaClicked(mediaId))
+                        }
                     )
                 }
                 GenreList(
                     genreList = homeUiState.genreList,
                     selectedGenre = homeUiState.selectedGenre,
-                    onSelectGenre = onSelectGenre
+                    onEvent = onEvent
                 )
                 TrendMediaByGenreList(
                     mediaList = homeUiState.trendMediaByGenre,
                     selectedGenre = homeUiState.selectedGenre,
-                    onNavigateToDetailsScreen = onNavigateToDetailsScreen
+                    onEvent = onEvent
                 )
             }
         }
@@ -127,7 +131,7 @@ fun HomeScreen(
 fun GenreList(
     genreList: List<GenreType>,
     selectedGenre: GenreType,
-    onSelectGenre: (genre: GenreType) -> Unit,
+    onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -138,9 +142,9 @@ fun GenreList(
     ) {
         items(genreList) { item ->
             GenreChip(
-                title = item.genreName,
+                genre = item,
                 isSelected = item == selectedGenre,
-                onSelectGenre = { onSelectGenre(item) }
+                onEvent = onEvent
             )
         }
     }
@@ -148,18 +152,18 @@ fun GenreList(
 
 @Composable
 fun GenreChip(
-    title: String,
+    genre : GenreType,
     isSelected: Boolean,
     modifier: Modifier = Modifier,
-    onSelectGenre: () -> Unit,
+    onEvent: (HomeUiEvent) -> Unit,
 ) {
     FilterChip(
         modifier = modifier.padding(4.dp),
         onClick = {
-            onSelectGenre()
+            onEvent(HomeUiEvent.SelectGenre(genre))
         },
         label = {
-            Text(text = title)
+            Text(text = genre.genreName)
         },
         selected = isSelected
     )
@@ -169,7 +173,7 @@ fun GenreChip(
 fun TrendMediaByGenreList(
     mediaList: List<Media>,
     selectedGenre: GenreType,
-    onNavigateToDetailsScreen: (id: Int) -> Unit,
+    onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -188,7 +192,7 @@ fun TrendMediaByGenreList(
         modifier = modifier.padding(horizontal = 8.dp)
     ) {
         items(mediaList) { media ->
-            TrendMediaByGenreItem(media, onNavigateToDetailsScreen)
+            TrendMediaByGenreItem(media, onEvent)
         }
     }
 }
@@ -196,7 +200,7 @@ fun TrendMediaByGenreList(
 @Composable
 fun TrendMediaByGenreItem(
     media: Media,
-    onNavigateToDetailsScreen: (id: Int) -> Unit,
+    onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val painter =
@@ -211,7 +215,7 @@ fun TrendMediaByGenreItem(
             .wrapContentHeight()
             .padding(4.dp)
             .clickable {
-                onNavigateToDetailsScreen(media.id)
+                onEvent(HomeUiEvent.MediaClicked(media.id))
             },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
