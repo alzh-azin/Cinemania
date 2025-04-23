@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,13 +32,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
+import com.example.cinemania.core.ui.R
 import com.example.core.common.utils.CinemaniaConstants.BASE_IMAGE_URL
 import com.example.core.common.utils.CinemaniaConstants.BASE_IMAGE_URL_LOW_QUALITY
+import com.example.core.designsystem.preview.PreviewContainer
 import com.example.feature.component.ImageSlider
 import com.example.feature.component.PullToRefreshContent
 import com.example.core.domain.model.GenreType
@@ -57,7 +64,7 @@ fun HomeRoute(
 
     LaunchedEffect(key1 = Unit) {
         homeViewModel.homeUiEffect.collectLatest { effect ->
-            when(effect){
+            when (effect) {
                 is HomeUiEffect.NavigateToDetails -> {
                     onNavigateToDetailsScreen(effect.mediaId)
                 }
@@ -107,7 +114,7 @@ fun HomeScreen(
                 Row {
                     ImageSlider(
                         images = homeUiState.trendMedia,
-                        onNavigateToDetailsScreen = {mediaId ->
+                        onNavigateToDetailsScreen = { mediaId ->
                             onEvent(HomeUiEvent.MediaClicked(mediaId))
                         }
                     )
@@ -152,7 +159,7 @@ fun GenreList(
 
 @Composable
 fun GenreChip(
-    genre : GenreType,
+    genre: GenreType,
     isSelected: Boolean,
     modifier: Modifier = Modifier,
     onEvent: (HomeUiEvent) -> Unit,
@@ -201,13 +208,16 @@ fun TrendMediaByGenreList(
 fun TrendMediaByGenreItem(
     media: Media,
     onEvent: (HomeUiEvent) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
-    val painter =
+    val painter = if (!LocalInspectionMode.current) {
         rememberAsyncImagePainter(
             model =
-            "$BASE_IMAGE_URL$BASE_IMAGE_URL_LOW_QUALITY${media.posterPath}"
+                "$BASE_IMAGE_URL$BASE_IMAGE_URL_LOW_QUALITY${media.posterPath}"
         )
+    }else{
+        painterResource(R.drawable.ic_preview_placeholder)
+    }
 
     Column(
         modifier
@@ -221,7 +231,8 @@ fun TrendMediaByGenreItem(
     ) {
 
         Card(
-            modifier = modifier.clip(shape = RoundedCornerShape(16.dp))
+            modifier = modifier
+                .clip(shape = RoundedCornerShape(16.dp))
         ) {
             Image(
                 painter = painter,
@@ -244,5 +255,103 @@ fun TrendMediaByGenreItem(
             textAlign = TextAlign.Center
         )
     }
+}
+
+@Preview(name = "HomeScreen", showBackground = true)
+@Composable
+fun HomeScreenPreview(
+    @PreviewParameter(HomeUiStatePreviewProvider::class) state: HomeUiState
+) {
+    CompositionLocalProvider(LocalInspectionMode provides true) {
+        PreviewContainer {
+            HomeScreen(
+                contentPadding = PaddingValues(0.dp),
+                homeUiState = state,
+                onEvent = {}
+            )
+        }
+    }
+}
+
+@Preview("TrendMediaByGenreList", showBackground = true)
+@Composable
+fun TrendMediaByGenreListPreview(
+    @PreviewParameter(MediaListPreviewProvider::class) list: List<Media>
+) {
+    CompositionLocalProvider(
+        LocalInspectionMode provides true,
+    ){
+        PreviewContainer {
+            TrendMediaByGenreList(
+                mediaList = list,
+                GenreType.Drama,
+                onEvent = {}
+            )
+        }
+
+    }
 
 }
+
+@Preview("TrendMediaByGenreItem", showBackground = true)
+@Composable
+fun TrendMediaByGenreItemPreview(
+    @PreviewParameter(MediaPreviewProvider::class) media: Media
+) {
+
+    CompositionLocalProvider(
+        LocalInspectionMode provides true,
+    ){
+        PreviewContainer {
+            TrendMediaByGenreItem(
+                media = media,
+                onEvent = {}
+            )
+        }
+    }
+
+}
+
+@Preview(name = "GenreChip - Selected", showBackground = true)
+@Composable
+fun GenreChipSelectedPreview(
+    @PreviewParameter(GenreTypePreviewProvider::class) genre: GenreType
+) {
+    PreviewContainer {
+        GenreChip(
+            genre = genre,
+            isSelected = true,
+            onEvent = {}
+        )
+    }
+}
+
+@Preview(name = "GenreChip - Unselected", showBackground = true)
+@Composable
+fun GenreChipUnselectedPreview(
+    @PreviewParameter(GenreTypePreviewProvider::class) genre: GenreType
+) {
+    PreviewContainer {
+        GenreChip(
+            genre = genre,
+            isSelected = false,
+            onEvent = {}
+        )
+    }
+}
+
+@Preview(name = "GenreList", showBackground = true)
+@Composable
+fun GenreListPreview(
+    @PreviewParameter(GenreListPreviewProvider::class) genreList: List<GenreType>
+) {
+    PreviewContainer {
+        GenreList(
+            genreList = genreList,
+            selectedGenre = genreList.last(),
+            onEvent = {}
+        )
+    }
+}
+
+

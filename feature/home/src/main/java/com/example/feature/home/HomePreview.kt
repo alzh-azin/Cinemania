@@ -5,57 +5,98 @@ import com.example.core.domain.model.GenreType
 import com.example.core.domain.model.Media
 import com.example.core.domain.model.MediaType
 
-class PreviewMediaProvider : PreviewParameterProvider<Media> {
+class MediaPreviewProvider : PreviewParameterProvider<Media> {
     override val values = sequenceOf(
         Media(
+            backdropPath = "/backdrop.jpg",
             id = 1,
-            title = "Inception",
-            overview = "A mind-bending sci-fi thriller",
-            mediaType = MediaType.MOVIE,
-            backdropPath = "/sample.jpg",
+            index = 0,
+            overview = "This is a preview overview of the movie.",
             posterPath = "/poster.jpg",
-            releaseDate = "2010-07-16",
-            voteAverage = 8.8,
-            genres = listOf("Sci-Fi", "Action"),
-            index = 0
+            mediaType = MediaType.MOVIE,
+            title = "Preview Movie Title",
+            releaseDate = "2024-01-01",
+            voteAverage = 8.5,
+            genres = listOf("Action", "Adventure")
         )
     )
 }
 
-class PreviewHomeUiStateProvider : PreviewParameterProvider<HomeUiState> {
+class MediaListPreviewProvider : PreviewParameterProvider<List<Media>> {
+    override val values = sequenceOf(
+        listOf(
+            Media(
+                backdropPath = "/backdrop1.jpg",
+                id = 1,
+                index = 0,
+                overview = "Movie 1 description.",
+                posterPath = "/poster1.jpg",
+                mediaType = MediaType.MOVIE,
+                title = "Movie One",
+                releaseDate = "2024-01-01",
+                voteAverage = 7.2,
+                genres = listOf("Action")
+            ),
+            Media(
+                backdropPath = "/backdrop2.jpg",
+                id = 2,
+                index = 1,
+                overview = "Movie 2 description.",
+                posterPath = "/poster2.jpg",
+                mediaType = MediaType.MOVIE,
+                title = "Movie Two",
+                releaseDate = "2024-02-01",
+                voteAverage = 8.0,
+                genres = listOf("Drama")
+            ),
+            Media(
+                backdropPath = "/backdrop3.jpg",
+                id = 3,
+                index = 2,
+                overview = "Movie 3 description.",
+                posterPath = "/poster3.jpg",
+                mediaType = MediaType.MOVIE,
+                title = "Movie Three",
+                releaseDate = "2024-02-01",
+                voteAverage = 8.0,
+                genres = listOf("Comedy")
+            )
+        )
+    )
+}
+
+class GenreTypePreviewProvider : PreviewParameterProvider<GenreType> {
+    override val values = sequenceOf(
+        GenreType.Action
+    )
+}
+
+class GenreListPreviewProvider : PreviewParameterProvider<List<GenreType>> {
+    override val values = sequenceOf(
+        listOf(
+            GenreType.Action,
+            GenreType.Comedy,
+            GenreType.Drama,
+            GenreType.ScienceFiction
+        )
+    )
+}
+
+class HomeUiStatePreviewProvider : PreviewParameterProvider<HomeUiState> {
     override val values = sequenceOf(
         HomeUiState(
-            isLoading = false,
-            trendMedia = List(5) {
-                Media(
-                    id = it,
-                    title = "Movie $it",
-                    posterPath = "/poster$it.jpg",
-                    backdropPath = "/backdrop$it.jpg",
-                    overview = "Description of Movie $it",
-                    mediaType = MediaType.MOVIE,
-                    releaseDate = "2023-0${(it + 1)}-01",
-                    voteAverage = 7.5 + it,
-                    genres = listOf("Action", "Drama"),
-                    index = it
-                )
-            },
-            genreList = listOf(GenreType.Action, GenreType.Comedy, GenreType.Drama),
+            trendMedia = MediaListPreviewProvider().values.first(),
+            trendMediaByGenre = MediaListPreviewProvider().values.first(),
+            genreList = GenreListPreviewProvider().values.first(),
+            selectedGenre = GenreType.Comedy,
+            isLoading = false
+        ),
+        HomeUiState(
+            trendMedia = emptyList(),
+            trendMediaByGenre = emptyList(),
+            genreList = GenreListPreviewProvider().values.first(),
             selectedGenre = GenreType.Action,
-            trendMediaByGenre = List(3) {
-                Media(
-                    id = it + 100,
-                    title = "Genre Movie $it",
-                    posterPath = "/genre$it.jpg",
-                    backdropPath = null,
-                    overview = null,
-                    mediaType = MediaType.MOVIE,
-                    releaseDate = null,
-                    voteAverage = null,
-                    genres = null,
-                    index = it
-                )
-            }
+            isLoading = true
         )
     )
 }

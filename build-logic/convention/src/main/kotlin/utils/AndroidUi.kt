@@ -26,6 +26,7 @@ internal fun Project.configureAndroidUi(commonExtension: CommonExtension<*, *, *
             "implementation"(platform(bom))
             "androidTestImplementation"(platform(bom))
             "debugImplementation"(libs.findLibrary("androidx.ui.tooling.preview").get())
+            "debugImplementation"(libs.findLibrary("androidx.ui.tooling").get())
 
             "implementation"(libs.findLibrary("androidx.core.ktx").get())
             "implementation"(libs.findLibrary("androidx.lifecycle.runtime.ktx").get())

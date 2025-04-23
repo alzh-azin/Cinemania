@@ -3,6 +3,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType
 import utils.configureAndroidUi
+import utils.getAndroidLibrary
 import utils.getComposeCompiler
 import utils.getKsp
 
@@ -11,6 +12,7 @@ class AndroidLibraryUiConventionPlugin: Plugin<Project> {
 
         target.apply {
             plugin(target.getKsp())
+            plugin(target.getAndroidLibrary())
             plugin(target.getComposeCompiler())
         }
 

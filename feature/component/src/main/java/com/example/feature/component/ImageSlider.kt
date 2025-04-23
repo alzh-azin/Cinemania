@@ -18,9 +18,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import coil.compose.rememberAsyncImagePainter
+import com.example.cinemania.core.ui.R
 import com.example.core.common.utils.CinemaniaConstants.BASE_IMAGE_URL
 import com.example.core.common.utils.CinemaniaConstants.BASE_IMAGE_URL_HIGH_QUALITY
 import com.example.core.domain.model.Media
@@ -49,11 +52,16 @@ fun ImageSlider(
             pageSpacing = 16.dp
         ) { currentPage ->
             val painter =
-                rememberAsyncImagePainter(
-                    model =
-                    "$BASE_IMAGE_URL$BASE_IMAGE_URL_HIGH_QUALITY"
-                            + images[currentPage % images.size]?.posterPath
-                )
+                if (!LocalInspectionMode.current) {
+                    rememberAsyncImagePainter(
+                        model =
+                            "$BASE_IMAGE_URL$BASE_IMAGE_URL_HIGH_QUALITY"
+                                    + images[currentPage % images.size]?.posterPath
+                    )
+                }
+                else {
+                    painterResource(R.drawable.ic_preview_placeholder)
+                }
 
             Card(
                 modifier = modifier
