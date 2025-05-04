@@ -27,6 +27,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,10 +35,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
+import com.example.cinemania.core.ui.R
 import com.example.core.designsystem.theme.amber600
 import com.example.core.designsystem.theme.lightBlue500
 import com.example.core.designsystem.theme.purpleA700
@@ -45,6 +51,7 @@ import com.example.core.designsystem.theme.white
 import com.example.core.common.utils.CinemaniaConstants.BASE_IMAGE_URL
 import com.example.core.common.utils.CinemaniaConstants.BASE_IMAGE_URL_HIGH_QUALITY
 import com.example.core.common.utils.extractYear
+import com.example.core.designsystem.preview.PreviewContainer
 import com.example.core.domain.model.Media
 
 @Composable
@@ -123,8 +130,13 @@ fun DetailsHeaderImage(
     imageUrl: String,
     modifier: Modifier = Modifier
 ) {
-    val painter =
+    val painter = if (!LocalInspectionMode.current) {
+
         rememberAsyncImagePainter(model = "$BASE_IMAGE_URL$BASE_IMAGE_URL_HIGH_QUALITY" + imageUrl)
+    } else {
+        painterResource(R.drawable.ic_preview_placeholder)
+    }
+
     Image(
         painter = painter,
         contentDescription = null,
@@ -308,5 +320,87 @@ fun DetailsGenreTag(
             style = MaterialTheme.typography.labelLarge,
         )
 
+    }
+}
+
+@Preview(name = "DetailsScreen", showBackground = true)
+@Composable
+fun DetailsScreenPreview(
+    @PreviewParameter(MediaPreviewProvider::class) media: Media
+) {
+    CompositionLocalProvider(LocalInspectionMode provides true) {
+        PreviewContainer {
+            DetailsScreen(
+                media = media,
+                contentPadding = PaddingValues(0.dp)
+            )
+        }
+    }
+}
+
+@Preview(name = "DetailsHeader", showBackground = true)
+@Composable
+fun DetailsHeaderPreview(
+    @PreviewParameter(MediaPreviewProvider::class) media: Media
+) {
+    CompositionLocalProvider(LocalInspectionMode provides true) {
+        PreviewContainer {
+            DetailsHeader(
+                imageUrl = media.posterPath.orEmpty(),
+                title = media.title.orEmpty(),
+                voteAverage = media.voteAverage,
+                genres = media.genres ?: emptyList(),
+                releaseDate = media.releaseDate.orEmpty()
+            )
+        }
+    }
+}
+
+@Preview(name = "DetailsHeaderCard", showBackground = true)
+@Composable
+fun DetailsHeaderCardPreview(
+    @PreviewParameter(MediaPreviewProvider::class) media: Media
+) {
+    CompositionLocalProvider(LocalInspectionMode provides true) {
+        PreviewContainer {
+            DetailsHeaderCard {
+                DetailsHeaderTitle(
+                    title = media.title.orEmpty(),
+                    voteAverage = media.voteAverage
+                )
+                DetailsHeaderTagList(
+                    genres = media.genres ?: emptyList(),
+                    releaseDate = media.releaseDate.orEmpty()
+                )
+            }
+        }
+    }
+}
+
+@Preview(name = "DetailsHeaderTagList", showBackground = true)
+@Composable
+fun DetailsHeaderTagListPreview(
+    @PreviewParameter(MediaPreviewProvider::class) media: Media
+) {
+    CompositionLocalProvider(LocalInspectionMode provides true) {
+        PreviewContainer {
+            DetailsHeaderTagList(
+                genres = media.genres ?: emptyList(),
+                releaseDate = media.releaseDate.orEmpty()
+            )
+        }
+    }
+}
+
+@Preview(name = "DetailsGenreTag", showBackground = true)
+@Composable
+fun DetailsGenreTagPreview() {
+    CompositionLocalProvider(LocalInspectionMode provides true) {
+        PreviewContainer {
+            DetailsGenreTag(
+                title = "Fantasy",
+                backgroundColor = Color(0xFF6200EE)
+            )
+        }
     }
 }
