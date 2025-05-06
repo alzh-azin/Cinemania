@@ -36,12 +36,15 @@ class CinemaniaRepositoryImpl @Inject constructor(
                         mediaNetwork
                     }?.take(CinemaniaConstants.TREND_MOVIES_LIST_SIZE)
 
-                    cinemaniaLocalDataSource.insertTrendMovies(networkList?.mapIndexed { index, mediaNetwork ->
-                        mediaNetwork.toMedia(
-                            isTrendMedia = true,
-                            index = index
-                        ).toMediaEntity()
-                    }.orEmpty())
+                    cinemaniaLocalDataSource.insertMedia(
+                        filterType = FilterTypeEntity.TrendMedia,
+                        mediaList = networkList?.mapIndexed { index, mediaNetwork ->
+                            mediaNetwork.toMedia(
+                                isTrendMedia = true,
+                                index = index
+                            ).toMediaEntity()
+                        }.orEmpty()
+                    )
 
                     return NetworkResult.Success(Unit)
                 }
@@ -78,7 +81,8 @@ class CinemaniaRepositoryImpl @Inject constructor(
                 cinemaniaRemoteDataSource.getTrendMoviesByGenre(genre.movieCode)) {
                 is NetworkResult.Success -> {
 
-                    cinemaniaLocalDataSource.insertTrendMediaByGenre(
+                    cinemaniaLocalDataSource.insertMedia(
+                        filterType = FilterTypeEntity.TrendMediaByGenre,
                         genreName = genre.genreName,
                         mediaList = trendMoviesByGenre.data?.results?.map {
 
@@ -109,8 +113,8 @@ class CinemaniaRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getMediaByFilterTypeLocal(genre: GenreType? , filterType: FilterType) =
-        cinemaniaLocalDataSource.getMediaByFilterType(
+    override fun getMediaByFilterTypeLocal(genre: GenreType?, filterType: FilterType) =
+        cinemaniaLocalDataSource.getMedia(
             filterType.toFilterTypeEntity(),
             genre?.genreName.orEmpty()
         ).map { mediaList ->

@@ -34,4 +34,7 @@ interface CinemaniaDao {
     )
      fun getMediaByFilterType(filterType: String): Flow<List<MediaEntity>>
 
+     @Transaction
+     @Query("DELETE FROM MediaFilterEntity WHERE category = :filterType")
+    suspend fun deleteMediaByGenre(filterType: String)
 }

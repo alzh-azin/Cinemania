@@ -15,45 +15,40 @@ class CinemaniaLocalDataSource @Inject constructor(
     private val cinemaniaDatabase: CinemaniaDatabase
 ) {
 
-    suspend fun insertTrendMovies(mediaList: List<MediaEntity>) {
+    suspend fun insertMedia(media: MediaEntity) {
+        cinemaniaDao.insertMedia(media)
+    }
+
+    suspend fun insertMedia(
+        filterType: FilterTypeEntity,
+        genreName: String? = null,
+        mediaList: List<MediaEntity>
+    ) {
+
         cinemaniaDatabase.withTransaction {
 
-            cinemaniaDao.insertMediaFilterList(
-                mediaList.mapIndexed { index, media ->
-                    media.toMediaFilterEntity(
-                        filterTypeEntity = FilterTypeEntity.TrendMedia,
-                        index = index
-                    )
-                }
+            cinemaniaDao.deleteMediaByGenre(
+                getCategory(
+                    filterTypeEntity =filterType,
+                    genreName = genreName
+                )
             )
+
+            cinemaniaDao.insertMediaFilterList(mediaList.mapIndexed { index, media ->
+                media.toMediaFilterEntity(
+                    filterTypeEntity = filterType,
+                    genreName = genreName,
+                    index = index
+                )
+            })
 
             cinemaniaDao.insertMediaList(mediaList)
         }
     }
 
-    suspend fun insertTrendMediaByGenre(
-        genreName: String,
-        mediaList: List<MediaEntity>
-    ) {
-
-        cinemaniaDao.insertMediaFilterList(mediaList.mapIndexed { index, media ->
-            media.toMediaFilterEntity(
-                filterTypeEntity = FilterTypeEntity.TrendMediaByGenre,
-                genreName = genreName,
-                index = index
-            )
-        })
-
-        cinemaniaDao.insertMediaList(mediaList)
-    }
-
-    suspend fun insertMedia(media: MediaEntity) {
-        cinemaniaDao.insertMedia(media)
-    }
-
     fun getMedia(id: Int) =
         cinemaniaDao.getMedia(id)
 
-    fun getMediaByFilterType(filterType: FilterTypeEntity, genreName: String) =
+    fun getMedia(filterType: FilterTypeEntity, genreName: String) =
         cinemaniaDao.getMediaByFilterType(getCategory(filterType, genreName))
 }
