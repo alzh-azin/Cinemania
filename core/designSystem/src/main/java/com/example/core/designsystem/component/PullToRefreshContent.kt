@@ -1,4 +1,4 @@
-package com.example.feature.component
+package com.example.core.designsystem.component
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding

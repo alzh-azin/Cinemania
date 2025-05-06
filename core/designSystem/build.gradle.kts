@@ -6,3 +6,7 @@ plugins {
 android {
     namespace = "com.example.cinemania.core.designSystem"
 }
+
+dependencies{
+    implementation(projects.core.common)
+}

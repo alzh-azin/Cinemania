@@ -1,4 +1,4 @@
-package com.example.feature.component
+package com.example.core.designsystem.component
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBar(
+    title : String,
     navigateBackAvailable: Boolean,
     onNavigationClick: () -> Unit,
     onSearchClick: () -> Unit,
@@ -29,7 +30,7 @@ fun TopAppBar(
     CenterAlignedTopAppBar(
         title = {
             TopAppBarTitle(
-                title = "Cinemania",
+                title = title,
                 isVisible = !navigateBackAvailable
             )
         },

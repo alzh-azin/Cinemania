@@ -41,15 +41,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
-import com.example.cinemania.core.ui.R
+import com.example.cinemania.core.designSystem.R
 import com.example.core.common.utils.CinemaniaConstants.BASE_IMAGE_URL
 import com.example.core.common.utils.CinemaniaConstants.BASE_IMAGE_URL_LOW_QUALITY
+import com.example.core.designsystem.component.ImageSlider
+import com.example.core.designsystem.component.SliderItem
 import com.example.core.designsystem.preview.PreviewContainer
-import com.example.feature.component.ImageSlider
-import com.example.feature.component.PullToRefreshContent
+import com.example.core.designsystem.component.PullToRefreshContent
 import com.example.core.domain.model.GenreType
 import com.example.core.domain.model.Media
-import com.example.feature.component.NavigationBarScreens
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -113,8 +113,14 @@ fun HomeScreen(
             Column {
                 Row {
                     ImageSlider(
-                        images = homeUiState.trendMedia,
-                        onNavigateToDetailsScreen = { mediaId ->
+                        images = homeUiState.trendMedia.map {
+                            //TODO implement a mapper function after MediaUi is implemented
+                            SliderItem(
+                                id = it.id,
+                                imageUrl = it.posterPath.orEmpty()
+                            )
+                        },
+                        onItemClick = { mediaId ->
                             onEvent(HomeUiEvent.MediaClicked(mediaId))
                         }
                     )
@@ -213,9 +219,9 @@ fun TrendMediaByGenreItem(
     val painter = if (!LocalInspectionMode.current) {
         rememberAsyncImagePainter(
             model =
-                "$BASE_IMAGE_URL$BASE_IMAGE_URL_LOW_QUALITY${media.posterPath}"
+            "$BASE_IMAGE_URL$BASE_IMAGE_URL_LOW_QUALITY${media.posterPath}"
         )
-    }else{
+    } else {
         painterResource(R.drawable.ic_preview_placeholder)
     }
 
@@ -280,7 +286,7 @@ fun TrendMediaByGenreListPreview(
 ) {
     CompositionLocalProvider(
         LocalInspectionMode provides true,
-    ){
+    ) {
         PreviewContainer {
             TrendMediaByGenreList(
                 mediaList = list,
@@ -301,7 +307,7 @@ fun TrendMediaByGenreItemPreview(
 
     CompositionLocalProvider(
         LocalInspectionMode provides true,
-    ){
+    ) {
         PreviewContainer {
             TrendMediaByGenreItem(
                 media = media,

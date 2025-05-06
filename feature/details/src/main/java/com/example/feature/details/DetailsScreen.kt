@@ -43,7 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
-import com.example.cinemania.core.ui.R
+import com.example.cinemania.core.designSystem.R
 import com.example.core.designsystem.theme.amber600
 import com.example.core.designsystem.theme.lightBlue500
 import com.example.core.designsystem.theme.purpleA700

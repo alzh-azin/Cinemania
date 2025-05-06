@@ -44,7 +44,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -54,14 +53,14 @@ import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.rememberAsyncImagePainter
 import com.example.cinemania.feature.search.R
-import com.example.core.designsystem.theme.CinemaniaTheme
+import com.example.cinemania.core.designSystem.R as designSystemR
 import com.example.core.common.utils.CinemaniaConstants
 import com.example.core.common.utils.CinemaniaConstants.BASE_IMAGE_URL
 import com.example.core.common.utils.CinemaniaConstants.BASE_IMAGE_URL_LOW_QUALITY
 import com.example.core.common.utils.extractYear
 import com.example.core.designsystem.preview.PreviewContainer
 import com.example.core.domain.model.Media
-import com.example.feature.component.PullToRefreshContent
+import com.example.core.designsystem.component.PullToRefreshContent
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -324,7 +323,7 @@ fun SearchItem(
 
         rememberAsyncImagePainter(model = BASE_IMAGE_URL + BASE_IMAGE_URL_LOW_QUALITY + image)
     } else {
-        painterResource(com.example.cinemania.core.ui.R.drawable.ic_preview_placeholder)
+        painterResource(designSystemR.drawable.ic_preview_placeholder)
     }
 
     Row(modifier = modifier

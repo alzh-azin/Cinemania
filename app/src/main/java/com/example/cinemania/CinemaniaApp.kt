@@ -1,6 +1,5 @@
 package com.example.cinemania
 
-import androidx.compose.foundation.Image
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration.Indefinite
 import androidx.compose.material3.SnackbarHost
@@ -9,18 +8,20 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.cinemania.navigation.NavGraph
+import com.example.core.designsystem.component.BottomNavigationBar
 import com.example.core.ui.NavigationRoutes
-import com.example.feature.component.CinemaniaNavigationBar
-import com.example.feature.component.NavigationBarScreens
-import com.example.feature.component.TopAppBar
+import com.example.core.ui.NavigationBarRoute
+import com.example.core.designsystem.component.TopAppBar
 
 @Composable
 fun CinemaniaApp(
@@ -79,6 +80,7 @@ fun CinemaniaApp(
         topBar = {
             if (topAppBarAvailable) {
                 TopAppBar(
+                    title = stringResource(R.string.app_name),
                     navigateBackAvailable = navigateBackAvailable,
                     onNavigationClick = { navController.navigateUp() },
                     onSearchClick = {
@@ -89,12 +91,27 @@ fun CinemaniaApp(
         },
         bottomBar = {
             val items = listOf(
-                NavigationBarScreens.Home,
-                NavigationBarScreens.Search,
-                NavigationBarScreens.Favorites
+                NavigationBarRoute.Home,
+                NavigationBarRoute.Search,
+                NavigationBarRoute.Favorites
             )
+
+            var selectedItemIndex by rememberSaveable {
+                mutableIntStateOf(0)
+            }
+
             if (navigationBarAvailable)
-                CinemaniaNavigationBar(navController = navController, items = items)
+                BottomNavigationBar(
+                    items = items.map { bottomNavItem ->
+                        bottomNavItem.toNavigationItem(
+                            onClick = { index ->
+                                selectedItemIndex = index
+                                navController.navigate(bottomNavItem.route)
+                            }
+                        )
+                    },
+                    selectedIndex = selectedItemIndex
+                )
         },
         snackbarHost = {
             SnackbarHost(hostState = snackBarHostState)

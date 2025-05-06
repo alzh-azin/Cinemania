@@ -1,4 +1,4 @@
-package com.example.feature.component
+package com.example.core.designsystem.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -13,7 +13,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -23,20 +22,23 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import coil.compose.rememberAsyncImagePainter
-import com.example.cinemania.core.ui.R
+import com.example.cinemania.core.designSystem.R
 import com.example.core.common.utils.CinemaniaConstants.BASE_IMAGE_URL
 import com.example.core.common.utils.CinemaniaConstants.BASE_IMAGE_URL_HIGH_QUALITY
-import com.example.core.domain.model.Media
 import kotlin.math.absoluteValue
 import kotlin.math.ceil
 
+data class SliderItem(
+    val id: Int,
+    val imageUrl: String
+)
+
 @Composable
 fun ImageSlider(
-    images: List<Media?>,
-    onNavigateToDetailsScreen: (id: Int) -> Unit,
+    images: List<SliderItem>,
+    onItemClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     val pagerState = rememberPagerState(initialPage = ceil(images.size / 2f).toInt() - 1) {
         images.size
     }
@@ -55,11 +57,10 @@ fun ImageSlider(
                 if (!LocalInspectionMode.current) {
                     rememberAsyncImagePainter(
                         model =
-                            "$BASE_IMAGE_URL$BASE_IMAGE_URL_HIGH_QUALITY"
-                                    + images[currentPage % images.size]?.posterPath
+                        "$BASE_IMAGE_URL$BASE_IMAGE_URL_HIGH_QUALITY"
+                                + images[currentPage % images.size].imageUrl
                     )
-                }
-                else {
+                } else {
                     painterResource(R.drawable.ic_preview_placeholder)
                 }
 
@@ -84,8 +85,7 @@ fun ImageSlider(
                         )
                     }
                     .clickable {
-                        images[currentPage % images.size]
-                            ?.let { onNavigateToDetailsScreen(it.id) }
+                        images[currentPage % images.size].let { onItemClick(it.id) }
                     },
             ) {
                 Image(
@@ -100,4 +100,5 @@ fun ImageSlider(
 
         }
     }
+
 }
