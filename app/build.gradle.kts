@@ -23,9 +23,10 @@ dependencies {
     implementation(projects.core.network)
     implementation(projects.core.common)
     implementation(projects.core.database)
-    implementation(projects.feature.home)
     implementation(projects.core.designSystem)
+    implementation(projects.feature.home)
     implementation(projects.feature.component)
     implementation(projects.feature.details)
     implementation(projects.feature.search)
+    implementation(projects.feature.favorites)
 }

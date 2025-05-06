@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import com.example.core.ui.NavigationRoutes
 import com.example.feature.details.detailsScreen
 import com.example.feature.details.navigateToDetails
+import com.example.feature.favorites.favoritesScreen
 import com.example.feature.home.homeScreen
 import com.example.feature.search.searchScreen
 
@@ -42,15 +43,12 @@ fun NavGraph(
             onNavigateBarAvailable = onNavigateBarAvailable
         )
 
-        /* discoverScreen(
-             onTopAppBarAvailable = onTopAppBarAvailable,
-             onNavigateBarAvailable = onNavigateBarAvailable
-         )
-
-         favoritesScreen(
-             onTopAppBarAvailable = onTopAppBarAvailable,
-             onNavigateBarAvailable = onNavigateBarAvailable
-         )*/
+        favoritesScreen(
+            contentPadding = contentPadding,
+            snackBarResult = snackBarResult,
+            onTopAppBarAvailable = onTopAppBarAvailable,
+            onNavigateBarAvailable = onNavigateBarAvailable,
+        )
 
         searchScreen(
             contentPadding = contentPadding,

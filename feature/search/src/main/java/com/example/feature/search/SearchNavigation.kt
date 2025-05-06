@@ -21,7 +21,7 @@ fun NavGraphBuilder.searchScreen(
 ) {
     composable<NavigationRoutes.Search> {
         onTopAppBarAvailable(false)
-        onNavigateBarAvailable(false)
+        onNavigateBarAvailable(true)
 
         SearchRoute(
             contentPadding = contentPadding,
