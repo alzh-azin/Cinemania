@@ -28,6 +28,7 @@ fun TopAppBar(
 ) {
 
     CenterAlignedTopAppBar(
+        modifier = modifier,
         title = {
             TopAppBarTitle(
                 title = title,

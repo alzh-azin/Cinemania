@@ -77,6 +77,7 @@ fun CinemaniaApp(
     }
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             if (topAppBarAvailable) {
                 TopAppBar(

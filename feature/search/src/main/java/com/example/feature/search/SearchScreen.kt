@@ -69,7 +69,6 @@ fun SearchRoute(
     snackBarResult: SnackbarResult,
     onNetworkConnectionError: (showError: Boolean) -> Unit,
     onNavigateToDetailsScreen: (id: Int) -> Unit,
-    modifier: Modifier = Modifier,
     searchViewModel: SearchViewModel = hiltViewModel()
 ) {
 
@@ -89,8 +88,7 @@ fun SearchRoute(
         onNavigateToDetailsScreen = onNavigateToDetailsScreen,
         onEvent = { event ->
             searchViewModel.onEvent(event)
-        },
-        modifier = modifier
+        }
     )
 }
 
@@ -115,6 +113,7 @@ fun SearchScreen(
     PullToRefreshContent(
         isRefreshing = searchUiState.isLoading,
         contentPadding = contentPadding,
+        modifier = modifier,
         onRefresh = {
             onEvent(SearchUiEvent.Refresh)
         }) {
@@ -285,7 +284,6 @@ fun PaginationErrorItem(
     modifier: Modifier = Modifier,
     onClickRetry: () -> Unit
 ) {
-
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -294,7 +292,7 @@ fun PaginationErrorItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            modifier = modifier.padding(end = 8.dp),
+            modifier = Modifier.padding(end = 8.dp),
             text = stringResource(id = R.string.msg_network_error),
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyLarge,
@@ -335,12 +333,12 @@ fun SearchItem(
         Image(
             painter = painter,
             contentDescription = null,
-            modifier = modifier
+            modifier = Modifier
                 .width(100.dp)
                 .aspectRatio(6 / 8f)
         )
 
-        Column(modifier = modifier.padding(top = 24.dp, start = 8.dp, end = 8.dp)) {
+        Column(modifier = Modifier.padding(top = 24.dp, start = 8.dp, end = 8.dp)) {
             Text(
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -349,7 +347,7 @@ fun SearchItem(
                 overflow = TextOverflow.Ellipsis
             )
 
-            Spacer(modifier = modifier.padding(4.dp))
+            Spacer(modifier = Modifier.padding(4.dp))
 
             Row {
                 Icon(
@@ -357,17 +355,17 @@ fun SearchItem(
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurface
                 )
-                Spacer(modifier = modifier.padding(2.dp))
+                Spacer(modifier = Modifier.padding(2.dp))
                 //TODO - Move this to utils
                 Text(
                     text = String.format("%.1f", voteAverage),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface,
-                    modifier = modifier.wrapContentHeight()
+                    modifier = Modifier.wrapContentHeight()
                 )
             }
 
-            Spacer(modifier = modifier.padding(4.dp))
+            Spacer(modifier = Modifier.padding(4.dp))
             Text(
                 text = extractYear(releaseDate.orEmpty()).orEmpty(),
                 style = MaterialTheme.typography.bodyLarge,

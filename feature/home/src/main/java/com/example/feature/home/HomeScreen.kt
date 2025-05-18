@@ -68,6 +68,7 @@ fun HomeRoute(
                 is HomeUiEffect.NavigateToDetails -> {
                     onNavigateToDetailsScreen(effect.mediaId)
                 }
+
                 is HomeUiEffect.ShowNetworkError -> onNetworkConnectionError(true)
             }
 
@@ -108,6 +109,7 @@ fun HomeScreen(
         isRefreshing = homeUiState.isLoading,
         contentPadding = contentPadding,
         onRefresh = { onEvent(HomeUiEvent.GetData) },
+        modifier = modifier
     ) {
         if (homeUiState.trendMedia.isNotEmpty()) {
             Column {
@@ -167,8 +169,8 @@ fun GenreList(
 fun GenreChip(
     genre: GenreType,
     isSelected: Boolean,
-    modifier: Modifier = Modifier,
     onEvent: (HomeUiEvent) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     FilterChip(
         modifier = modifier.padding(4.dp),
@@ -237,13 +239,13 @@ fun TrendMediaByGenreItem(
     ) {
 
         Card(
-            modifier = modifier
+            modifier = Modifier
                 .clip(shape = RoundedCornerShape(16.dp))
         ) {
             Image(
                 painter = painter,
                 contentDescription = null,
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(6 / 8f),
                 contentScale = ContentScale.FillBounds,
@@ -254,7 +256,7 @@ fun TrendMediaByGenreItem(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            modifier = modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
             text = media.title.orEmpty(),
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.labelSmall,

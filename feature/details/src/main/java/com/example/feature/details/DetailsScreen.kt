@@ -57,7 +57,6 @@ import com.example.core.domain.model.Media
 @Composable
 fun DetailsRoute(
     contentPadding: PaddingValues,
-    modifier: Modifier = Modifier,
     detailsViewModel: DetailsViewModel = hiltViewModel()
 ) {
 
@@ -65,7 +64,6 @@ fun DetailsRoute(
 
     DetailsScreen(
         media = media,
-        modifier = modifier,
         contentPadding = contentPadding
     )
 }
@@ -154,7 +152,7 @@ fun BoxScope.DetailsHeaderImageOverlay(
 ) {
 
     Box(
-        modifier = modifier
+        modifier = Modifier
             .align(Alignment.TopCenter)
             .fillMaxWidth()
             .height(
@@ -240,7 +238,7 @@ fun DetailsHeaderTitle(
             text = title,
             color = MaterialTheme.colorScheme.onSecondaryContainer,
             style = MaterialTheme.typography.titleLarge,
-            modifier = modifier.weight(1f)
+            modifier = Modifier.weight(1f)
         )
         if (voteAverage != null) {
 
@@ -249,9 +247,8 @@ fun DetailsHeaderTitle(
                 text = String.format("%.1f", voteAverage),
                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                 style = MaterialTheme.typography.labelLarge,
-                modifier = modifier
             )
-            Spacer(modifier = modifier.padding(2.dp))
+            Spacer(modifier = Modifier.padding(2.dp))
             Icon(
                 imageVector = Icons.Filled.Star,
                 contentDescription = null,
@@ -284,14 +281,14 @@ fun DetailsHeaderTagList(
         }
 
         if (genres.size > 1) {
-            Spacer(modifier = modifier.padding(horizontal = 4.dp))
+            Spacer(modifier = Modifier.padding(horizontal = 4.dp))
             DetailsGenreTag(
                 title = genres[1],
                 backgroundColor = purpleA700
             )
         }
 
-        Spacer(modifier = modifier.padding(horizontal = 4.dp))
+        Spacer(modifier = Modifier.padding(horizontal = 4.dp))
         DetailsGenreTag(
             title = extractYear(releaseDate).orEmpty(),
             backgroundColor = amber600

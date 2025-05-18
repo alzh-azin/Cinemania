@@ -65,7 +65,7 @@ fun ImageSlider(
                 }
 
             Card(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(6 / 8f)
                     .graphicsLayer {
@@ -91,7 +91,7 @@ fun ImageSlider(
                 Image(
                     painter = painter,
                     contentDescription = null,
-                    modifier = modifier
+                    modifier = Modifier
                         .fillMaxSize(),
                     contentScale = ContentScale.FillBounds
 

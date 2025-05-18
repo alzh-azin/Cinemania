@@ -15,7 +15,8 @@ fun PreviewContainer(
 ) {
     CinemaniaTheme {
         Surface(
-            tonalElevation = tonalElevation
+            tonalElevation = tonalElevation,
+            modifier = modifier
         ) {
             content()
         }
