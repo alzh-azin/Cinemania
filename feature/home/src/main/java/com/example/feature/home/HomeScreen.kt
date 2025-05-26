@@ -49,7 +49,7 @@ import com.example.core.designsystem.component.SliderItem
 import com.example.core.designsystem.preview.PreviewContainer
 import com.example.core.designsystem.component.PullToRefreshContent
 import com.example.core.domain.model.GenreType
-import com.example.core.domain.model.Media
+import com.example.core.ui.model.MediaUi
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -186,7 +186,7 @@ fun GenreChip(
 
 @Composable
 fun TrendMediaByGenreList(
-    mediaList: List<Media>,
+    mediaList: List<MediaUi>,
     selectedGenre: GenreType,
     onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier
@@ -214,7 +214,7 @@ fun TrendMediaByGenreList(
 
 @Composable
 fun TrendMediaByGenreItem(
-    media: Media,
+    media: MediaUi,
     onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -284,7 +284,7 @@ fun HomeScreenPreview(
 @Preview("TrendMediaByGenreList", showBackground = true)
 @Composable
 fun TrendMediaByGenreListPreview(
-    @PreviewParameter(MediaListPreviewProvider::class) list: List<Media>
+    @PreviewParameter(MediaListPreviewProvider::class) list: List<MediaUi>
 ) {
     CompositionLocalProvider(
         LocalInspectionMode provides true,
@@ -304,7 +304,7 @@ fun TrendMediaByGenreListPreview(
 @Preview("TrendMediaByGenreItem", showBackground = true)
 @Composable
 fun TrendMediaByGenreItemPreview(
-    @PreviewParameter(MediaPreviewProvider::class) media: Media
+    @PreviewParameter(MediaPreviewProvider::class) media: MediaUi
 ) {
 
     CompositionLocalProvider(

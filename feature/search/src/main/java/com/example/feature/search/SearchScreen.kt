@@ -61,6 +61,7 @@ import com.example.core.common.utils.extractYear
 import com.example.core.designsystem.preview.PreviewContainer
 import com.example.core.domain.model.Media
 import com.example.core.designsystem.component.PullToRefreshContent
+import com.example.core.ui.model.MediaUi
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -177,7 +178,7 @@ fun SearchTextField(
 fun SearchResultList(
     isLoadingNextPage: Boolean,
     showPaginationError: Boolean,
-    searchResult: Flow<PagingData<Media>>?,
+    searchResult: Flow<PagingData<MediaUi>>?,
     onEvent: (SearchUiEvent) -> Unit,
     onNavigateToDetailsScreen: (id: Int) -> Unit,
     modifier: Modifier = Modifier

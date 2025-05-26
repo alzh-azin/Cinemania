@@ -4,6 +4,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.paging.PagingData
 import com.example.core.domain.model.Media
 import com.example.core.domain.model.MediaType
+import com.example.core.ui.model.MediaUi
 import kotlinx.coroutines.flow.flowOf
 
 class MediaPreviewProvider : PreviewParameterProvider<Media> {
@@ -23,10 +24,10 @@ class MediaPreviewProvider : PreviewParameterProvider<Media> {
     )
 }
 
-class MediaListPreviewProvider : PreviewParameterProvider<List<Media>> {
+class MediaListPreviewProvider : PreviewParameterProvider<List<MediaUi>> {
     override val values = sequenceOf(
         listOf(
-            Media(
+            MediaUi(
                 backdropPath = "/backdrop1.jpg",
                 id = 1,
                 index = 0,
@@ -38,7 +39,7 @@ class MediaListPreviewProvider : PreviewParameterProvider<List<Media>> {
                 voteAverage = 7.2,
                 genres = listOf("Action")
             ),
-            Media(
+            MediaUi(
                 backdropPath = "/backdrop2.jpg",
                 id = 2,
                 index = 1,
@@ -50,7 +51,7 @@ class MediaListPreviewProvider : PreviewParameterProvider<List<Media>> {
                 voteAverage = 8.0,
                 genres = listOf("Drama")
             ),
-            Media(
+            MediaUi(
                 backdropPath = "/backdrop3.jpg",
                 id = 3,
                 index = 2,
@@ -66,7 +67,7 @@ class MediaListPreviewProvider : PreviewParameterProvider<List<Media>> {
     )
 }
 
-private val sampleMedia = Media(
+private val sampleMedia = MediaUi(
     backdropPath = null,
     id = 42,
     overview = "A thrilling preview of Compose.",

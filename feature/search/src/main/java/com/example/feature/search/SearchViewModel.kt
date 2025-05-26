@@ -2,9 +2,11 @@ package com.example.feature.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.map
 import com.example.core.common.utils.CinemaniaConstants
 import com.example.core.domain.usecase.InsertMedia
 import com.example.core.domain.usecase.SearchMediaRemote
+import com.example.core.ui.model.toMediaUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -12,6 +14,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -88,17 +91,22 @@ class SearchViewModel @Inject constructor(
 
             is SearchUiEvent.NavigateToDetailsScreen -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    insertMedia(event.media)
+                    insertMedia(event.media.toMedia())
                 }
             }
         }
     }
 
-    fun searchMedia(query: String) {
+    private fun searchMedia(query: String) {
         viewModelScope.launch(Dispatchers.IO) {
 
             val searchResult = async { searchMediaRemote(query, CinemaniaConstants.PAGE_SIZE) }
-            searchUiState.value = searchUiState.value.copy(searchResult = searchResult.await())
+            searchUiState.value =
+                searchUiState.value.copy(searchResult = searchResult.await().map { paginatedData ->
+                    paginatedData.map { media ->
+                        media.toMediaUi()
+                    }
+                })
 
         }
     }

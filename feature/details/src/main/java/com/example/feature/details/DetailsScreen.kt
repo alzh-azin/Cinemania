@@ -52,7 +52,7 @@ import com.example.core.common.utils.CinemaniaConstants.BASE_IMAGE_URL
 import com.example.core.common.utils.CinemaniaConstants.BASE_IMAGE_URL_HIGH_QUALITY
 import com.example.core.common.utils.extractYear
 import com.example.core.designsystem.preview.PreviewContainer
-import com.example.core.domain.model.Media
+import com.example.core.ui.model.MediaUi
 
 @Composable
 fun DetailsRoute(
@@ -70,7 +70,7 @@ fun DetailsRoute(
 
 @Composable
 fun DetailsScreen(
-    media: Media?,
+    media: MediaUi?,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
@@ -323,7 +323,7 @@ fun DetailsGenreTag(
 @Preview(name = "DetailsScreen", showBackground = true)
 @Composable
 fun DetailsScreenPreview(
-    @PreviewParameter(MediaPreviewProvider::class) media: Media
+    @PreviewParameter(MediaPreviewProvider::class) media: MediaUi
 ) {
     CompositionLocalProvider(LocalInspectionMode provides true) {
         PreviewContainer {
@@ -338,7 +338,7 @@ fun DetailsScreenPreview(
 @Preview(name = "DetailsHeader", showBackground = true)
 @Composable
 fun DetailsHeaderPreview(
-    @PreviewParameter(MediaPreviewProvider::class) media: Media
+    @PreviewParameter(MediaPreviewProvider::class) media: MediaUi
 ) {
     CompositionLocalProvider(LocalInspectionMode provides true) {
         PreviewContainer {
@@ -356,7 +356,7 @@ fun DetailsHeaderPreview(
 @Preview(name = "DetailsHeaderCard", showBackground = true)
 @Composable
 fun DetailsHeaderCardPreview(
-    @PreviewParameter(MediaPreviewProvider::class) media: Media
+    @PreviewParameter(MediaPreviewProvider::class) media: MediaUi
 ) {
     CompositionLocalProvider(LocalInspectionMode provides true) {
         PreviewContainer {
@@ -377,7 +377,7 @@ fun DetailsHeaderCardPreview(
 @Preview(name = "DetailsHeaderTagList", showBackground = true)
 @Composable
 fun DetailsHeaderTagListPreview(
-    @PreviewParameter(MediaPreviewProvider::class) media: Media
+    @PreviewParameter(MediaPreviewProvider::class) media: MediaUi
 ) {
     CompositionLocalProvider(LocalInspectionMode provides true) {
         PreviewContainer {

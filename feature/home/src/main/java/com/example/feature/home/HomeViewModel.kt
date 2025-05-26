@@ -9,6 +9,7 @@ import com.example.core.domain.model.GenreType.Companion.DEFAULT_GENRE
 import com.example.core.domain.usecase.GetTrendMediaRemote
 import com.example.core.domain.usecase.GetMediaByFilterTypeLocal
 import com.example.core.domain.usecase.GetTrendMoviesByGenreRemote
+import com.example.core.ui.model.toMediaUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -71,7 +72,10 @@ class HomeViewModel @Inject constructor(
 
             getMediaByFilterLocal.invoke(filterType = FilterType.TrendMedia)
                 .collect { trendMediaList ->
-                    homeUiState.value = homeUiState.value.copy(trendMedia = trendMediaList)
+                    homeUiState.value =
+                        homeUiState.value.copy(trendMedia = trendMediaList.map { media ->
+                            media.toMediaUi()
+                        })
                 }
 
         }
@@ -81,7 +85,9 @@ class HomeViewModel @Inject constructor(
                 getMediaByFilterLocal.invoke(genre, FilterType.TrendMediaByGenre)
             }.collectLatest { trendMediaByGenreList ->
                 homeUiState.value =
-                    homeUiState.value.copy(trendMediaByGenre = trendMediaByGenreList)
+                    homeUiState.value.copy(trendMediaByGenre = trendMediaByGenreList.map { media ->
+                        media.toMediaUi()
+                    })
             }
 
         }

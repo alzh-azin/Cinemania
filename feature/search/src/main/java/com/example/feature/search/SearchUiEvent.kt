@@ -1,6 +1,7 @@
 package com.example.feature.search
 
 import com.example.core.domain.model.Media
+import com.example.core.ui.model.MediaUi
 
 sealed class SearchUiEvent {
 
@@ -22,5 +23,5 @@ sealed class SearchUiEvent {
 
     data object ShowSearchResultError : SearchUiEvent()
 
-    data class NavigateToDetailsScreen(val media: Media) : SearchUiEvent()
+    data class NavigateToDetailsScreen(val media: MediaUi) : SearchUiEvent()
 }
