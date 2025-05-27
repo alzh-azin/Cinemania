@@ -1,12 +1,11 @@
 package com.example.feature.search
 
-import androidx.compose.runtime.Stable
+import androidx.compose.runtime.Immutable
 import androidx.paging.PagingData
-import com.example.core.domain.model.Media
 import com.example.core.ui.model.MediaUi
 import kotlinx.coroutines.flow.Flow
 
-@Stable
+@Immutable
 data class SearchUiState(
     val searchQuery: String = "",
     val searchResult: Flow<PagingData<MediaUi>>? = null,

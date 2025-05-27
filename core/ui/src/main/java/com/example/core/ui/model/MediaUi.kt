@@ -1,10 +1,10 @@
 package com.example.core.ui.model
 
-import androidx.compose.runtime.Stable
+import androidx.compose.runtime.Immutable
 import com.example.core.domain.model.Media
 import com.example.core.domain.model.MediaType
 
-@Stable
+@Immutable
 data class MediaUi(
     val backdropPath: String?,
     val id: Int,
